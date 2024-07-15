@@ -38,14 +38,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::delete('/items/{item}', [ItemsController::class, 'destroy'])->name('items.destroy');
     Route::get('/borrowed-items', [BorrowedItemController::class, 'index'])->name('borrowed-items.index');
     Route::post('/borrowed-items', [BorrowedItemController::class, 'store'])->name('borrowed-items.store');
+    Route::post('/borrowed-items/return', [BorrowedItemController::class, 'returnItem'])
+    ->name('borrowed-items.return');
     Route::get('total-borrowed-quantity-per-item', [BorrowedItemController::class, 'totalBorrowedQuantityPerItem'])
     ->name('borrowed-items.totalBorrowedQuantityPerItem');
-    Route::post('/borrowed-items/return', [BorrowedItemController::class, 'returnItem'])->name('borrowed-items.return');
-    Route::get('total-overdue-quantities-per-item', [BorrowedItemController::class, 'totalOverdueQuantitiesPerItem'])
-    ->name('borrowed-items.totalOverdueQuantitiesPerItem');
+    Route::get('total-overdue-quantities-per-item', [BorrowedItemController::class, 'totalOverdueQuantitiesPerItem']
+    )->name('borrowed-items.totalOverdueQuantitiesPerItem');
     Route::get('/damaged-items', [DamagedItemController::class, 'index'])->name('damaged-items.index');
     Route::post('damaged-items', [BorrowedItemController::class, 'markAsDamaged'])->name('damaged-items.post');
     Route::post('/damaged-items/repair', [DamagedItemController::class, 'repairItem'])->name('damaged-items.repair');
+    Route::get('totalDamagedQuantitiesPerItem', [DamagedItemController::class, 'totalDamagedQuantitiesPerItem'])
+    ->name('totalDamagedQuantitiesPerItem');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

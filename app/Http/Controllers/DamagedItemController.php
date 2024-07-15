@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\DamagedItem;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DamagedItemController extends Controller
 {
@@ -39,5 +40,14 @@ class DamagedItemController extends Controller
         $damagedItem->delete();
     
         return redirect()->route('damaged-items.index');
+    }
+
+    public function totalDamagedQuantitiesPerItem()
+    {
+        $damagedQuantities = DamagedItem::select('item_id', DB::raw('SUM(quantity) as total_damaged'))
+            ->groupBy('item_id')
+            ->get();
+    
+        return response()->json($damagedQuantities);
     }
 }

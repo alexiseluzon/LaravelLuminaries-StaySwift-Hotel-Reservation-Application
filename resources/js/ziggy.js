@@ -72,6 +72,10 @@ const Ziggy = {
             "uri":"damaged-items/repair",
             "methods":["POST"],
             "middleware":["web"]},
+        "totalDamagedQuantitiesPerItem":{
+            "uri":"totalDamagedQuantitiesPerItem",
+            "methods":["GET","HEAD"],
+            "middleware":["web"]},
         "profile.edit":{
             "uri":"profile",
             "methods":["GET","HEAD"],

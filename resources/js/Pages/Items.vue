@@ -455,6 +455,30 @@ onMounted(() => {
   fetchOverdueQuantities();
 });
 
+const totalDamagedQuantities = ref({});
+
+const fetchTotalDamagedQuantities = async () => {
+  try {
+    const response = await fetch(route('totalDamagedQuantitiesPerItem'));
+    const data = await response.json();
+    data.forEach(item => {
+      totalDamagedQuantities.value[item.item_id] = item.total_damaged;
+    });
+
+    // Map damaged quantities to items
+    items.value.forEach(item => {
+      item.damaged_items = totalDamagedQuantities.value[item.id] || 0;
+    });
+  } catch (error) {
+    console.error('Error fetching total damaged quantities:', error);
+    Swal.fire('Error!', 'Failed to fetch total damaged quantities.', 'error');
+  }
+};
+
+onMounted(() => {
+  fetchTotalDamagedQuantities();
+});
+
 const sortColumn = ref('');
 const sortOrder = ref('asc'); // Initial sort order
 
