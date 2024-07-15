@@ -20,6 +20,10 @@ const Ziggy = {
             "uri":"dashboard",
             "methods":["GET","HEAD"],
             "middleware":["web"]},
+        "generateReport":{
+            "uri":"generate-report",
+            "methods":["GET","HEAD"],
+            "middleware":["web"]},
         "items.index":{
             "uri":"items",
             "methods":["GET","HEAD"],

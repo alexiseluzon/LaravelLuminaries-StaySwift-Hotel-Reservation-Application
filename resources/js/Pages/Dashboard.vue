@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import BarChart from '@/Components/BarChart.vue';
 
 const props = defineProps({
@@ -23,6 +23,30 @@ const seniorHighData = [
   props.seniorHighInventory.overdue_items,
   props.seniorHighInventory.damaged_items,
 ];
+
+// Method to download the report
+const downloadReport = () => {
+  fetch(route('generateReport'), { 
+    method: 'get',
+    headers: {
+      'Accept': 'text/csv',
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+  })
+  .then(response => response.blob())
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'SNAIC Inventory Report.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(error => {
+    console.error('Error generating report:', error);
+  });
+};
 </script>
 
 <template>
@@ -124,6 +148,14 @@ const seniorHighData = [
         <div class="w-full h-64">
           <BarChart :juniorHighData="juniorHighData" :seniorHighData="seniorHighData" />
         </div>
+      </section>
+
+      <!-- Generate Report Button -->
+      <section class="mt-8">
+        <button @click="downloadReport" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+          <font-awesome-icon icon="file-download" class="h-6 w-6 mr-2" />
+          Generate Report
+        </button>
       </section>
     </div>
   </AuthenticatedLayout>

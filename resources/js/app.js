@@ -11,13 +11,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {faClipboardList, faPlusCircle, faCheckCircle, faTags, faBalanceScale, faGraduationCap, faCog, faEdit,
    faTrashAlt, faDoorOpen, faSort, faSortUp, faSortDown, faPieChart, faCaretLeft, faCaretRight, faHandshake, faTools, 
    faShoppingCart, faUserGraduate, faUserTie, faUser, faCalendarPlus, faCalendarCheck, faInfoCircle, faReply,
-   faThumbsUp, faWarning} from '@fortawesome/free-solid-svg-icons';
+   faThumbsUp, faWarning, faFileDownload} from '@fortawesome/free-solid-svg-icons';
 
 // Add the icons to the library
 library.add(faClipboardList, faPlusCircle, faCheckCircle, faTags, faBalanceScale, faGraduationCap, faCog, faEdit,
    faTrashAlt, faDoorOpen, faSort, faSortUp, faSortDown, faPieChart, faCaretLeft, faCaretRight, faHandshake,
    faTools, faShoppingCart, faUserGraduate, faUserTie, faUser, faCalendarPlus, faCalendarCheck, faInfoCircle, faReply, 
-   faThumbsUp, faWarning);
+   faThumbsUp, faWarning, faFileDownload);
 
 const appName = import.meta.env.VITE_APP_NAME;
 

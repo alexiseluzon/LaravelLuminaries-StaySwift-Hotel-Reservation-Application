@@ -30,6 +30,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [InventoryController::class, 'index'])->name('dashboard');
+    Route::get('generate-report', [InventoryController::class, 'generateReport'])->name('generateReport');
     Route::get('/items', [ItemsController::class, 'index'])->name('items.index');
     Route::get('/items/sort', [ItemsController::class, 'sort']);
     Route::post('/items', [ItemsController::class, 'store'])->name('items.store');

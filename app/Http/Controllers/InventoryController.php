@@ -44,4 +44,57 @@ class InventoryController extends Controller
             'seniorHighInventory' => $seniorHighInventory,
         ]);
     }
+
+    public function generateReport()
+    {
+        $filename = "SNAIC Inventory Report.csv";
+
+        $callback = function() {
+            $file = fopen('php://output', 'w');
+
+            // Header row
+            fputcsv($file, ['School Level', 'Total Items', 'Borrowed Items', 'Overdue Items', 'Damaged Items']);
+
+            // Fetch data
+            $totals = [
+                'Overall Items',
+                Item::sum('item_quantity'),
+                BorrowedItem::sum('quantity'),
+                BorrowedItem::where('status', 'Overdue')->sum('quantity'),
+                DamagedItem::sum('quantity'),
+                
+            ];
+            
+            $juniorHighInventory = [
+                'Junior High School',
+                Item::where('school_level', 'Junior High School')->sum('item_quantity'),
+                BorrowedItem::where('school_level', 'Junior High School')->sum('quantity'),
+                BorrowedItem::where('school_level', 'Junior High School')->where('status', 'Overdue')->sum('quantity'),
+                DamagedItem::where('school_level', 'Junior High School')->sum('quantity'),
+            ];
+
+            $seniorHighInventory = [
+                'Senior High School',
+                Item::where('school_level', 'Senior High School')->sum('item_quantity'),
+                BorrowedItem::where('school_level', 'Senior High School')->sum('quantity'),
+                BorrowedItem::where('school_level', 'Senior High School')->where('status', 'Overdue')->sum('quantity'),
+                DamagedItem::where('school_level', 'Senior High School')->sum('quantity'),
+            ];
+
+            // Write data
+            fputcsv($file, $totals);
+            fputcsv($file, $juniorHighInventory);
+            fputcsv($file, $seniorHighInventory);
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename={$filename}",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ]);
+    }
 }
