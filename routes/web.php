@@ -21,14 +21,17 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+    return redirect()->route('login');
+});
+
+Route::get('/debug-auth', function () {
+    return response()->json([
+        'user' => auth()->user(),
+        'session_id' => session()->getId(),
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [InventoryController::class, 'index'])->name('dashboard');
     Route::get('generate-report', [InventoryController::class, 'generateReport'])->name('generateReport');
     Route::get('/items', [ItemsController::class, 'index'])->name('items.index');
