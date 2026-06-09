@@ -1,5 +1,6 @@
 const Ziggy = {
-    "url":"http:\/\/127.0.0.1:8000",
+    // "url":"http:\/\/127.0.0.1:8000",
+    "url":"https:\/\/inventory-laravel-inertia.pedialink.site",
     "port":null,
     "defaults":{},
     "routes":{
