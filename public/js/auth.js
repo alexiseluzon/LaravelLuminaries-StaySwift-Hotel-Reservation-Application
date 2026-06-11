@@ -6,10 +6,10 @@ $(document).ready(function(){
     });
 });
 
-function seePassword() {
-    var x = document.getElementById("userRegisterPassword");
-    var a = document.getElementById("userRegisterConPassword");
-    x.type = (x.type === 'password') ? 'text' : 'password';
+function seePasswordUserRegistration() {
+    var x = document.getElementById("userPassword");
+    var a = document.getElementById("userConfirmPassword");
+    x.type = x.type === 'password' ? 'text' : 'password';
     a.type = x.type;
 }
 
@@ -27,8 +27,8 @@ function seePasswordAdminLogin() {
 $('#registrationForm').on('submit', function(e) {
     e.preventDefault();
     var email = $('#userEmail').val();
-    var password = $('#userRegisterPassword').val();
-    var confirmPassword = $('#userRegisterConPassword').val();
+    var password = $('#userPassword').val();
+    var confirmPassword = $('#userConfirmPassword').val();
     if (password.length < 6 || password.length > 20) {
         Swal.fire('PASSWORD FAILED', 'The password must be between 6 and 20 characters', 'error');
     } else if (password !== confirmPassword) {
