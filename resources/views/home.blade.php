@@ -4,284 +4,343 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stay Swift Hotel Reservation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body, html {
-            margin: 0;
-            padding: 0;
             height: 100%;
-            font-family: 'Roboto', sans-serif;
-            background-color: #ff8c00;
-            color: #333;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a1612;
+            color: #d4c4a8;
             overflow-x: hidden;
         }
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 1;
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* This ensures the container takes up the full viewport height */
-        }
-
-        .title {
+        /* HERO */
+        .hero {
+            background: #221e18;
+            border-bottom: 1px solid #3a3228;
+            padding: 72px 40px 60px;
             text-align: center;
+        }
+
+        .hero-icon {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            border: 1px solid #c9a96e;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .hero-icon img {
+            width: 28px;
+            opacity: 0.85;
+            filter: brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(600%) hue-rotate(5deg) brightness(95%);
+        }
+
+        .brand-name {
+            font-family: 'Cormorant Garamond', serif;
             font-size: 48px;
-            font-weight: 700;
-            color: #ff8c00;
-            margin-bottom: 20px;
-        }
-
-        .headline {
-            text-align: center;
-            font-size: 24px;
             font-weight: 300;
-            margin-bottom: 40px;
-            color: #555;
+            color: #e8dcc8;
+            letter-spacing: 0.22em;
+            display: block;
+            margin-bottom: 10px;
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 28px;
-            font-weight: 700;
-            margin: 40px 0 20px;
-            color: #ff8c00;
+        .brand-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 16px;
+            color: #7a6a56;
+            letter-spacing: 0.1em;
+            display: block;
+            margin-bottom: 36px;
         }
 
-        .featured-card-container, .special-offers-content, .hotel-amenities-content {
+        .gold-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c9a96e, transparent);
+            width: 160px;
+            margin: 0 auto 36px;
+        }
+
+        .hero-btns {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            padding: 13px 32px;
+            border-radius: 1px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: #c9a96e;
+            color: #1a1612;
+            border-color: #c9a96e;
+        }
+        .btn-primary:hover { background: #e8cfa0; border-color: #e8cfa0; }
+
+        .btn-ghost {
+            background: transparent;
+            color: #c9a96e;
+            border-color: #3a3228;
+        }
+        .btn-ghost:hover { border-color: #c9a96e; }
+
+        /* SECTIONS */
+        .section {
+            padding: 48px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: #3a3228;
+            margin: 0 40px;
+        }
+
+        .section-label {
+            font-size: 8px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: #c9a96e;
+            margin-bottom: 28px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #3a3228;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-label::before {
+            content: '';
+            display: inline-block;
+            width: 18px; height: 1px;
+            background: #c9a96e;
+        }
+
+        /* ROOMS */
+        .rooms-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .room-card {
+            background: #221e18;
+            border: 1px solid #3a3228;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
             gap: 20px;
         }
 
-        .featured-card, .special-offer-item, .hotel-amenity-item {
-            background: #fff;
-            color: #333;
-            margin: 20px 0;
-            border-radius: 10px;
-            overflow: hidden;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: calc(50% - 10px);
+        .room-card img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid #3a3228;
+            flex-shrink: 0;
         }
 
-        .featured-card img, .special-offer-item img, .hotel-amenity-item img {
-            width: 100%;
-            max-height: 300px;
-            object-fit: contain;
+        .room-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 400;
+            color: #e8dcc8;
+            letter-spacing: 0.08em;
+            display: block;
+            margin-bottom: 4px;
         }
 
-        .featured-card-content, .special-offer-item-content, .hotel-amenity-item-content {
+        .room-price {
+            font-size: 11px;
+            color: #7a6a56;
+            letter-spacing: 0.1em;
+        }
+
+        .room-price span { color: #c9a96e; }
+
+        /* OFFERS */
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .offer-card {
+            background: #221e18;
+            border: 1px solid #3a3228;
             padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
-        .featured-card-content h3, .special-offer-item-content h3, .hotel-amenity-item-content h3 {
-            font-size: 22px;
-            font-weight: 700;
-            margin: 10px 0;
+        .offer-title {
+            font-size: 12px;
+            color: #e8dcc8;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
         }
 
-        .featured-card-content p, .special-offer-item-content p, .hotel-amenity-item-content p {
-            font-size: 18px;
-            font-weight: 400;
-            color: #777;
+        .offer-desc {
+            font-size: 11px;
+            color: #7a6a56;
+            line-height: 1.6;
         }
 
-        .special-offers, .hotel-amenities, .testimonials {
-            margin: 20px 0;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* AMENITIES */
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
         }
 
-        .special-offers p, .hotel-amenities p, .testimonials p {
-            margin: 10px 0;
-            font-size: 18px;
-            font-weight: 400;
-            color: #555;
+        .amenity-item {
+            background: #221e18;
+            border: 1px solid #3a3228;
+            padding: 12px 16px;
+            font-size: 11px;
+            color: #d4c4a8;
+            letter-spacing: 0.06em;
         }
 
-        .special-offer-item, .hotel-amenity-item {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* TESTIMONIALS */
+        .testimonial {
+            background: #221e18;
+            border: 1px solid #3a3228;
+            border-left: 2px solid #c9a96e;
+            padding: 20px 24px;
+            margin-bottom: 12px;
         }
 
-        .special-offer-item img, .hotel-amenity-item img {
-            width: 40px;
-            height: 40px;
-            margin-right: 20px;
+        .testimonial p {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 15px;
+            color: #d4c4a8;
+            line-height: 1.7;
         }
 
-        .special-offer-item p, .hotel-amenity-item p {
-            font-size: 18px;
-            font-weight: 400;
-            color: #333;
-            margin: 0;
-        }
-
-        .book-now {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0;
-        }
-
-        .book-now-button, .developers-button {
-            background-color: #ff8c00;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            margin: 0 10px;
-            font-size: 18px;
-            font-weight: 700;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
+        /* FOOTER */
+        .footer {
+            background: #221e18;
+            border-top: 1px solid #3a3228;
+            padding: 28px 40px;
             text-align: center;
-            display: inline-block;
         }
 
-        .book-now-button:hover, .developers-button:hover {
-            background-color: #ff7000;
+        .footer span {
+            font-size: 10px;
+            color: #5a4e3e;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 520px) {
+            .hero { padding: 48px 20px 44px; }
+            .section { padding: 36px 20px; }
+            .section-divider { margin: 0 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="title">Stay Swift</div>
-        <div class="headline">Your Dream Vacation Awaits</div>
 
-        <div class="section-title">Featured Rooms</div>
-        <div class="featured-card-container" id="featuredRoomsContainer"></div>
-
-        <div class="section-title">Special Offers & Discounts</div>
-        <div class="special-offers">
-            <div class="special-offers-content">
-                <div class="special-offer-item">
-                    <p>Early Bird Discount!</p>
-                </div>
-                <div class="special-offer-item">
-                    <p>Stay 3 nights, get 1 night free!</p>
-                </div>
-            </div>
+    {{-- HERO --}}
+    <div class="hero">
+        <div class="hero-icon">
+            <img src="{{ URL('/img/StaySwift Logo no bg.png') }}" alt="StaySwift">
         </div>
-
-        <div class="section-title">Hotel Amenities</div>
-        <div class="hotel-amenities">
-            <div class="hotel-amenities-content">
-                <div class="hotel-amenity-item">
-                    <p>Swimming Pool</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Gym</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Free Wi-Fi</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Fitness Center</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Spa & Wellness Center</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Restaurant & Bar</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Business Center</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Room Service</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Concierge Service</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Laundry Service</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Parking Facilities</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Shuttle Service</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Airport Transfer</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>24-Hour Front Desk</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Conference Rooms</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Banquet Facilities</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Pet-Friendly Accommodations</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Childcare Services</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Gift Shop</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Currency Exchange</p>
-                </div>
-                <div class="hotel-amenity-item">
-                    <p>Elevator</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-title">Customer Testimonials</div>
-        <div class="testimonials">
-            <p>"User-friendly and efficient hotel reservation application that offers seamless booking experiences!" - </p>
-            <p>"Featuring a wide range of accommodations, exclusive packages, and intuitive search functionalities." - </p>
-        </div>
-
-        <div class="book-now">
-            <a href="/login" class="book-now-button">Book Now</a>
-            <a href="/adminLogin" class="book-now-button">Login as Admin</a>
+        <span class="brand-name">Stay Swift</span>
+        <span class="brand-sub">Your dream vacation awaits</span>
+        <div class="gold-line"></div>
+        <div class="hero-btns">
+            <a href="/login" class="btn btn-primary">Book Now</a>
+            <a href="/adminLogin" class="btn btn-ghost">Login as Admin</a>
         </div>
     </div>
+
+    {{-- FEATURED ROOMS --}}
+    <div class="section">
+        <div class="section-label">Featured Rooms</div>
+        <div class="rooms-list" id="featuredRoomsContainer"></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    {{-- SPECIAL OFFERS --}}
+    <div class="section">
+        <div class="section-label">Special Offers</div>
+        <div class="offers-grid">
+            <div class="offer-card">
+                <div class="offer-title">Early Bird Discount</div>
+                <div class="offer-desc">Book 14 days in advance and save up to 20% on any room.</div>
+            </div>
+            <div class="offer-card">
+                <div class="offer-title">Stay 3, Get 1 Free</div>
+                <div class="offer-desc">Book 3 nights and your 4th night is completely on us.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    {{-- AMENITIES --}}
+    <div class="section">
+        <div class="section-label">Hotel Amenities</div>
+        <div class="amenities-grid">
+            <div class="amenity-item">Swimming Pool</div>
+            <div class="amenity-item">Gym</div>
+            <div class="amenity-item">Free Wi-Fi</div>
+            <div class="amenity-item">Fitness Center</div>
+            <div class="amenity-item">Spa & Wellness Center</div>
+            <div class="amenity-item">Restaurant & Bar</div>
+            <div class="amenity-item">Business Center</div>
+            <div class="amenity-item">Room Service</div>
+            <div class="amenity-item">Concierge Service</div>
+            <div class="amenity-item">Laundry Service</div>
+            <div class="amenity-item">Parking Facilities</div>
+            <div class="amenity-item">Shuttle Service</div>
+            <div class="amenity-item">Airport Transfer</div>
+            <div class="amenity-item">24-Hour Front Desk</div>
+            <div class="amenity-item">Conference Rooms</div>
+            <div class="amenity-item">Banquet Facilities</div>
+            <div class="amenity-item">Pet-Friendly</div>
+            <div class="amenity-item">Childcare Services</div>
+            <div class="amenity-item">Gift Shop</div>
+            <div class="amenity-item">Currency Exchange</div>
+            <div class="amenity-item">Elevator</div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    {{-- TESTIMONIALS --}}
+    <div class="section">
+        <div class="section-label">Guest Testimonials</div>
+        <div class="testimonial">
+            <p>"User-friendly and efficient hotel reservation application that offers seamless booking experiences!"</p>
+        </div>
+        <div class="testimonial">
+            <p>"Featuring a wide range of accommodations, exclusive packages, and intuitive search functionalities."</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>Stay Swift &mdash; Where comfort meets elegance</span>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             fetchRooms();
         });
 
@@ -290,27 +349,24 @@
                 .then(response => response.json())
                 .then(rooms => {
                     const container = document.getElementById('featuredRoomsContainer');
-                    container.innerHTML = ''; // Clear any existing content
+                    container.innerHTML = '';
                     let roomIndex = 0;
 
                     function displayRoom() {
                         const room = rooms[roomIndex];
                         container.innerHTML = `
-                            <div class="featured-card">
+                            <div class="room-card">
                                 <img src="${room.photos}" alt="${room.type_of_room}">
-                                <div class="featured-card-content">
-                                    <h3>${room.type_of_room}</h3>
-                                    <p>Starting at P${room.price}/night</p>
+                                <div>
+                                    <span class="room-name">${room.type_of_room}</span>
+                                    <div class="room-price">Starting at <span>&#8369;${room.price} / night</span></div>
                                 </div>
                             </div>
                         `;
                         roomIndex = (roomIndex + 1) % rooms.length;
                     }
 
-                    // Display the first room immediately
                     displayRoom();
-
-                    // Change the room every 5 seconds
                     setInterval(displayRoom, 5000);
                 })
                 .catch(error => console.error('Error fetching rooms:', error));

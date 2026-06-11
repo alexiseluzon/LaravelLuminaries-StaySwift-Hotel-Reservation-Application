@@ -204,7 +204,7 @@
         <a class="homeButton" href="/"><i class="bi bi-arrow-left"></i> Back to Home</a>
 
         <div class="brand">
-            <!-- <img src="<?php echo e(URL('/img/icon.png')); ?>" alt="StaySwift"> -->
+            <img src="<?php echo e(URL('/img/StaySwift Logo no bg.png')); ?>" alt="StaySwift">
             <span class="brand-name">Stay Swift</span>
             <span class="brand-sub">Create your account</span>
         </div>
