@@ -271,8 +271,8 @@
 
         <div class="section-title">Customer Testimonials</div>
         <div class="testimonials">
-            <p>"User-friendly and efficient hotel reservation application that offers seamless booking experiences!" - Alexis Luzon</p>
-            <p>"Featuring a wide range of accommodations, exclusive packages, and intuitive search functionalities." - Justyn Mejia</p>
+            <p>"User-friendly and efficient hotel reservation application that offers seamless booking experiences!" - </p>
+            <p>"Featuring a wide range of accommodations, exclusive packages, and intuitive search functionalities." - </p>
         </div>
 
         <div class="book-now">
@@ -300,7 +300,7 @@
                                 <img src="${room.photos}" alt="${room.type_of_room}">
                                 <div class="featured-card-content">
                                     <h3>${room.type_of_room}</h3>
-                                    <p>Starting at $${room.price_per_hour}/night</p>
+                                    <p>Starting at P${room.price}/night</p>
                                 </div>
                             </div>
                         `;
@@ -311,7 +311,7 @@
                     displayRoom();
 
                     // Change the room every 5 seconds
-                    setInterval(displayRoom, 1000);
+                    setInterval(displayRoom, 5000);
                 })
                 .catch(error => console.error('Error fetching rooms:', error));
         }

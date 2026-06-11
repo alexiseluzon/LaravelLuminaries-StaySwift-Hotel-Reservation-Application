@@ -150,11 +150,15 @@ class Authentication extends Controller
     public function adminLoginFunction(Request $request)
     {
         if (auth()->guard('userModel')->attempt($this->adminCredentials($request))) {
-            if (auth()->guard('userModel')->user()->is_admin === 1) {
-                $request->session()->regenerate();
-                return response()->json(1);
+            if (auth()->guard('userModel')->user()->is_active != 0) {
+                if (auth()->guard('userModel')->user()->is_admin === 1) {
+                    $request->session()->regenerate();
+                    return response()->json(1);
+                } else {
+                    return response()->json(0); // NOT ADMIN
+                }
             } else {
-                return response()->json(0);  // NOT ADMIN
+                return response()->json(3); // INACTIVE ACCOUNT
             }
         } else {
             return response()->json(0); // WRONG CREDENTIALS
