@@ -25,7 +25,7 @@ class roomModel extends Model
         'number_of_bed',
         'details',
         'max_person',
-        'price_per_hour',
+        'price',
         'is_available',
         'status',
     ];
