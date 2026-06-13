@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @include('cdn')
-    {{-- CSS --}}
-        <link href="{{ asset('/css/customerDashboard.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
-        <link rel="shortcut icon" href="{{ URL('/img/StaySwift Login no bg.png')}}" type="image/x-icon">
-    {{-- CSS --}}
+    <?php echo $__env->make('cdn', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    
+        <link href="<?php echo e(asset('/css/customerDashboard.css')); ?>" rel="stylesheet">
+        <link href="<?php echo e(asset('/css/sideBar.css')); ?>" rel="stylesheet">
+        <link rel="shortcut icon" href="<?php echo e(URL('/img/StaySwift Login no bg.png')); ?>" type="image/x-icon">
+    
     <title>StaySwift</title>
 </head>
 <body>
 
     <div class="d-flex" id="wrapper">
-        {{-- SIDE NAV --}}
-            @include('layouts.customerSidebar')
-        {{-- SIDE NAV --}}
+        
+            <?php echo $__env->make('layouts.customerSidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        
 
-        {{-- MAIN CONTENT --}}
+        
             <div id="page-content-wrapper">
-                {{-- NAV BAR --}}
+                
                     <nav class="navbar navbar-expand-lg text-white border-bottom">
                         <div class="container-fluid">
                             <button class="btn btn-lg" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
@@ -31,17 +31,17 @@
                                 <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                     <li>
                                         <a class="nav-link me-3">
-                                            <span>{{ auth()->guard('userModel')->user()->firstname}}</span>
-                                            <span>{{ auth()->guard('userModel')->user()->lastname}}</span>
+                                            <span><?php echo e(auth()->guard('userModel')->user()->firstname); ?></span>
+                                            <span><?php echo e(auth()->guard('userModel')->user()->lastname); ?></span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </nav>
-                {{-- NAV BAR --}}
+                
 
-                {{-- MAIN CONTENT --}}
+                
                     <div class="container-fluid mainBar">
                         <!-- Filter Form -->
                         <form id="filterForm" class="row g-3">
@@ -80,15 +80,15 @@
 
                         <div class="row g-2" id="showTotalRoom"></div>
                     </div>
-                {{-- MAIN CONTENT --}}
+                
             </div>
-        {{-- END MAIN CONTENT --}}
+        
     </div>
 
-    {{-- JS --}}
-        <script src="{{ asset('/js/customer/room.js') }}"></script>
-        <script src="{{ asset('/js/dateTime.js') }}"></script>
-        <script src="{{ asset('/js/logout.js') }}"></script>
+    
+        <script src="<?php echo e(asset('/js/customer/room.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/dateTime.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/logout.js')); ?>"></script>
         <script>
             document.getElementById('filterForm').addEventListener('change', function() {
                 const capacity = document.getElementById('capacityFilter').value;
@@ -98,7 +98,7 @@
             });
 
             function fetchRooms(capacity, type, sort) {
-                const url = new URL('{{ url('/rooms/filter') }}');
+                const url = new URL('<?php echo e(url('/rooms/filter')); ?>');
                 const params = { capacity: capacity, type: type, sort: sort };
                 url.search = new URLSearchParams(params).toString();
 
@@ -131,9 +131,9 @@
                     .catch(error => console.error('Error fetching rooms:', error));
             }
         </script>
-    {{-- END JS --}}
+    
 
-    {{-- MODAL --}}
+    
         <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -143,7 +143,7 @@
                     </div>
                     <div class="modal-body">
                     <form id="bookReservationForm" name="bookReservationForm">
-                    @csrf
+                    <?php echo csrf_field(); ?>
                         <div class="row gap-0">
                             <div class="col-6 my-2">
                                 <label class="form-label">CHECK IN: </label>
@@ -163,6 +163,7 @@
                 </div>
             </div>
         </div>
-    {{-- MODAL --}}
+    
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\resources\views/customer/room.blade.php ENDPATH**/ ?>
