@@ -72,13 +72,16 @@ class Customer extends Controller
     public function getCustomerRoom(Request $request)
     {
         $data = roomModel::where([['is_available', '!=', 0]])->orderBy('room_id')->get();
+        $sort = $request->input('sort');
+        if ($sort === 'asc') $data = $data->sortBy('price');
+        if ($sort === 'desc') $data = $data->sortByDesc('price');
         if ($data->isNotEmpty()) {
             foreach ($data as $item) {
                 echo "
                                 <div class='col-lg-6 col-sm-12 g-0 gx-lg-5 text-center text-lg-start'>
                                     <div class='card mb-3 shadow border-2 border rounded' style='width:100%'>
                                         <div class='row g-0'>
-                                            <img loading='lazy' src=$item->photos class='card-img-top alt='ship'>
+                                            <img loading='lazy' src=$item->photos class='card-img-top>
                                             <div class='col-md-12'>
                                                 <ul class='list-group list-group-flush fw-bold'>
                                                     <li class='list-group-item'>
@@ -107,7 +110,7 @@ class Customer extends Controller
                                                                 Max Person: <span class='fw-normal'>$item->max_person People Only</span>
                                                             </div>
                                                             <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Price Per Night(s): <span class='fw-normal'> ₱$item->price_per_hour.00</span>
+                                                                Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -154,7 +157,7 @@ class Customer extends Controller
         }
     
         if ($sort) {
-            $query->orderBy('price_per_hour', $sort);
+            $query->orderBy('price', $sort);
         }
 
         $rooms = $query->get();
@@ -165,9 +168,15 @@ class Customer extends Controller
     // BOOK RESERVATION
     public function bookReservation(Request $request)
     {
-        $checkInDateTime = Carbon::parse($request->checkInDate . '14:00:00');
+        // dd([
+        // 'checkInDate_raw' => $request->checkInDate,
+        // 'checkOutDate_raw' => $request->checkOutDate,
+        // 'roomId' => $request->roomId,
+        // 'all' => $request->all()
+        // ]);
+        $checkInDateTime = Carbon::parse($request->checkInDateTime . ' 14:00:00');
         $formattedCheckIn = $checkInDateTime->format('Y-m-d H:i:s');
-        $checkOutDateTime = Carbon::parse($request->checkOutDate . '12:00:00');
+        $checkOutDateTime = Carbon::parse($request->checkOutDateTime . ' 12:00:00');
         $formattedCheckOut = $checkOutDateTime->format('Y-m-d H:i:s');
 
         $currentDateTime = now()->format('Y-m-d H:i:s');
@@ -176,7 +185,7 @@ class Customer extends Controller
         $user = auth()->guard('userModel')->user();
 
         if (empty($user->lastname) || empty($user->firstname)) {
-            return response()->json(5);
+            return response()->json(['status' => 5]);
         }
 
         $existingReservation = ReservationModel::where('room_id', $request->roomId)
@@ -196,15 +205,28 @@ class Customer extends Controller
             ->exists();
 
         if ($existingReservation) {
-            return response()->json(6);
+            return response()->json(['status' => 6]);
+        }
+
+        $userExistingReservation = ReservationModel::where('user_id', $user->user_id)
+            ->where('room_id', $request->roomId)
+            ->whereIn('status', ['Pending', 'Unpaid'])
+            ->where(function ($query) use ($formattedCheckIn, $formattedCheckOut) {
+                $query->where('start_dataTime', '<', $formattedCheckOut)
+                      ->where('end_dateTime', '>', $formattedCheckIn);
+            })
+            ->exists();
+
+        if ($userExistingReservation) {
+            return response()->json(['status' => 7]);
         }
 
         if ($currentDateTime > $formattedCheckIn) {
-            return response()->json(4);
+            return response()->json(['status' => 4]);
         } elseif ($formattedCheckIn == $formattedCheckOut) {
-            return response()->json(2);
+            return response()->json(['status' => 2]);
         } elseif ($formattedCheckOut < $formattedCheckIn) {
-            return response()->json(3);
+            return response()->json(['status' => 3]);
         }
 
         $bookRoom = ReservationModel::create([
@@ -236,7 +258,7 @@ class Customer extends Controller
                 'roomTable.type_of_room',
                 'roomTable.number_of_bed',
                 'roomTable.details',
-                'roomTable.price_per_hour',
+                'roomTable.price',
                 'reservationTable.reservation_id',
                 'reservationTable.book_code',
                 'reservationTable.start_dataTime',
@@ -263,7 +285,7 @@ class Customer extends Controller
 
                 $totalNights = ceil($carbonStart->diffInHours($carbonEnd) / 24);
 
-                $totalPayment = $totalNights * $item->price_per_hour;
+                $totalPayment = $totalNights * $item->price;
                 echo "
                                 <div class='col-lg-6 col-sm-12 g-0 gx-lg-5 text-center text-lg-start'>
                                     <div class='card mb-3 shadow border-2 border rounded' style='width:100%'>
@@ -297,7 +319,7 @@ class Customer extends Controller
                                                                 Max Person: <span class='fw-normal'>$item->max_person People Only</span>
                                                             </div>
                                                             <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Price Per Night(s): <span class='fw-normal'> ₱$item->price_per_hour.00</span>
+                                                                Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -356,7 +378,7 @@ class Customer extends Controller
                 'roomTable.number_of_bed',
                 'roomTable.details',
                 'roomTable.max_person',
-                'roomTable.price_per_hour',
+                'roomTable.price',
                 'reservationTable.book_code',
                 'reservationTable.start_dataTime',
                 'reservationTable.end_dateTime',
@@ -377,7 +399,7 @@ class Customer extends Controller
 
                 $totalNights = ceil($carbonStart->diffInHours($carbonEnd) / 24);
 
-                $totalPayment = $totalNights * $item->price_per_hour;
+                $totalPayment = $totalNights * $item->price;
                 echo "
                         <div class='col-lg-6 col-sm-12 g-0 gx-lg-5 text-center text-lg-start'>
                             <div class='card mb-3 shadow border-2 border rounded' style='width:100%'>
@@ -411,7 +433,7 @@ class Customer extends Controller
                                                             Max Person: <span class='fw-normal'>$item->max_person People</span>
                                                         </div>
                                                         <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                            Price Per Night(s): <span class='fw-normal'> ₱$item->price_per_hour.00</span>
+                                                            Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -476,7 +498,7 @@ class Customer extends Controller
                 $carbonEnd = Carbon::parse($checkOutDateTime);
 
                 $totalNights = ceil($carbonStart->diffInHours($carbonEnd) / 24);
-                $totalPayment = $totalNights * $item->price_per_hour;
+                $totalPayment = $totalNights * $item->price;
                 $typeOfRoom = $item->type_of_room;
 
                 echo "
@@ -512,7 +534,7 @@ class Customer extends Controller
                                                     Max Person: <span class='fw-normal'>$item->max_person People Only</span>
                                                 </div>
                                                 <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                    Price Per Night(s): <span class='fw-normal'> ₱$item->price_per_hour.00</span>
+                                                    Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -579,7 +601,7 @@ class Customer extends Controller
 
                 $totalNights = ceil($carbonStart->diffInHours($carbonEnd) / 24);
 
-                $totalPayment = $totalNights * $item->price_per_hour;
+                $totalPayment = $totalNights * $item->price;
                 echo "
                                 <div class='col-lg-6 col-sm-12 g-0 gx-lg-5 text-center text-lg-start'>
                                     <div class='card mb-3 shadow border-2 border rounded' style='width:100%'>
@@ -613,7 +635,7 @@ class Customer extends Controller
                                                                 Max Person: <span class='fw-normal'>$item->max_person People Only</span>
                                                             </div>
                                                             <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Price Per Night(s): <span class='fw-normal'> ₱$item->price_per_hour.00</span>
+                                                                Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -749,9 +771,9 @@ class Customer extends Controller
 
     // UPDATE UNPAID RESERVATION
     public function updateUnpaidReservation(Request $request){
-        $checkInDateTime = Carbon::parse($request->checkInDate . '14:00:00');
+        $checkInDateTime = Carbon::parse($request->checkInDate . ' 14:00:00');
         $formattedCheckIn = $checkInDateTime->format('Y-m-d H:i:s');
-        $checkOutDateTime = Carbon::parse($request->checkOutDate . '12:00:00');
+        $checkOutDateTime = Carbon::parse($request->checkOutDate . ' 12:00:00');
         $formattedCheckOut = $checkOutDateTime->format('Y-m-d H:i:s');
 
         $currentDateTime = now()->format('Y-m-d H:i:s');
@@ -782,6 +804,17 @@ class Customer extends Controller
         if ($existingReservation) {
             return response()->json(6);
         }
+
+        // $userExistingReservation = ReservationModel::where('user_id', $user->user_id)
+            // ->where('room_id', $request->roomId)
+            // ->whereIn('status', ['Pending', 'Unpaid'])
+            // ->where('reservation_id', '!=', $request->reservationId) // exclude self
+            // ->where(function ($query) use ($formattedCheckIn, $formattedCheckOut) {
+                // $query->where('start_dataTime', '<', $formattedCheckOut)
+                    //   ->where('end_dateTime', '>', $formattedCheckIn);
+            // })
+            // ->exists();
+        
         if ($currentDateTime > $formattedCheckIn) {
             return response()->json(4);
         } elseif ($formattedCheckIn == $formattedCheckOut) {
