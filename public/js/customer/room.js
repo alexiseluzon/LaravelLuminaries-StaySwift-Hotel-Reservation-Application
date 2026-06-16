@@ -4,7 +4,7 @@ $(document).ready(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    showTotalRoom();
+    // showTotalRoom();
 });
 
 // SHOW TOTAL ROOM
