@@ -125,7 +125,7 @@
             margin-bottom: 14px;
         }
 
-        /* .room-meta-item { } */
+        .room-meta-item { }
         .room-meta-label {
             font-size: 7.5px;
             letter-spacing: 0.18em;
