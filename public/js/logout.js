@@ -5,9 +5,8 @@ $(document).ready(function(){
             text: "Do you want to logout?",
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
                 sessionStorage.clear() 
@@ -23,6 +22,7 @@ $(document).ready(function(){
                             Swal.fire({
                             icon: 'error',
                             title: 'Logout Failed',
+                            showConfirmButton: true,
                         })     
                         }
                     }

@@ -185,6 +185,60 @@
             transition: color 0.2s;
         }
         .register-link a:hover { color: #c9a96e; }
+        /* SWAL THEME */
+        .swal2-popup {
+            background: #221e18 !important;
+            border: 1px solid #3a3228 !important;
+            border-radius: 0 !important;
+            color: #d4c4a8 !important;
+            font-family: 'Montserrat', sans-serif !important;
+        }
+        .swal2-title {
+            color: #e8dcc8 !important;
+            font-family: 'Cormorant Garamond', serif !important;
+            font-weight: 400 !important;
+            letter-spacing: 0.1em !important;
+        }
+        .swal2-html-container, .swal2-content { color: #7a6a56 !important; font-size: 12px !important; }
+        .swal2-confirm {
+            background: #c9a96e !important;
+            color: #1a1612 !important;
+            border-radius: 0 !important;
+            font-family: 'Montserrat', sans-serif !important;
+            font-size: 10px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.2em !important;
+            text-transform: uppercase !important;
+            padding: 11px 28px !important;
+            border: none !important;
+        }
+        .swal2-confirm:hover { background: #e8cfa0 !important; }
+        .swal2-cancel {
+            background: transparent !important;
+            color: #c9a96e !important;
+            border: 1px solid #3a3228 !important;
+            border-radius: 0 !important;
+            font-family: 'Montserrat', sans-serif !important;
+            font-size: 10px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.2em !important;
+            text-transform: uppercase !important;
+            padding: 11px 28px !important;
+        }
+        .swal2-cancel:hover { border-color: #c9a96e !important; }
+        .swal2-icon.swal2-success { border-color: #c9a96e !important; }
+        .swal2-icon.swal2-success [class^='swal2-success-line'] { background: #c9a96e !important; }
+        .swal2-icon.swal2-success .swal2-success-ring { border-color: #c9a96e !important; }
+        .swal2-icon.swal2-warning { border-color: #c9a96e !important; color: #c9a96e !important; }
+        .swal2-icon.swal2-error { border-color: #c9a96e !important; }
+        .swal2-icon.swal2-error [class^='swal2-x-mark-line'] { background: #c9a96e !important; }
+        /* Toast specifically */
+        .swal2-popup.swal2-toast {
+            background: #221e18 !important;
+            border: 1px solid #3a3228 !important;
+            color: #d4c4a8 !important;
+        }
+        .swal2-popup.swal2-toast .swal2-title { color: #e8dcc8 !important; font-size: 13px !important; }
     </style>
 </head>
 <body>
