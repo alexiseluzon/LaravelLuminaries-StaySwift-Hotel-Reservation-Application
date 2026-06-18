@@ -4,20 +4,7 @@ $(document).ready(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    // showTotalRoom();
 });
-
-// SHOW TOTAL ROOM
-    function showTotalRoom(){
-        $.ajax({
-            url: "/getCustomerRoom",
-            method: 'GET',
-            success : function(data) {
-                $("#showTotalRoom").html(data);
-            }
-        })
-    }
-// SHOW TOTAL ROOM
 
 // FUNCTION FOR BOOKING
     function bookReservation(id){
@@ -31,8 +18,8 @@ $(document).ready(function(){
             confirmButtonText: 'Yes, Continue!'
             }).then((result) => {
             if (result.isConfirmed) {
-                $('#reservationModal').modal('show')
-                $('#submitDateBooking').click(function(){
+                $('#reservationModal').modal('show');
+                $('#submitDateBooking').off('click').on('click', function() {
                     var checkInDateTime = $("#checkInDate").val();
                     var checkOutDateTime = $("#checkOutDate").val();
                     $.ajax({
@@ -43,7 +30,7 @@ $(document).ready(function(){
                         data: {roomId: id, checkInDateTime:checkInDateTime, checkOutDateTime:checkOutDateTime},
                         success: function(response) {
                             if (response.status == 1) {
-                                showTotalRoom();
+                                fetchRoom();
                                 $("#bookReservationForm").trigger("reset");
                                 $('#reservationModal').modal('hide')
                                 Swal.fire({
@@ -127,7 +114,7 @@ $(document).ready(function(){
                 timer: 1000,
             }).then((result) => {
             if (result) {
-                showTotalRoom();            
+                fetchRoom();            
             }
             });
             }
@@ -135,5 +122,54 @@ $(document).ready(function(){
     }
 // FUNCTION FOR BOOKING
 
+    function fetchRooms(capacity = '', type = '', sort = '') {
+        const url = new URL('{{ url('/rooms/filter') }}');
+        url.search = new URLSearchParams({ capacity, type, sort }).toString();
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                const container = document.getElementById('showTotalRoom');
+                if (!data.rooms.length) {
+                    container.innerHTML = `
+                        <div class="empty-state col-12">
+                            <i class="fa-solid fa-door-open"></i>
+                            <p>No rooms available</p>
+                        </div>`;
+                    return;
+                }
+                container.innerHTML = data.rooms.map(renderRoomCard).join('');
+            })
+            .catch(err => console.error('Error fetching rooms:', err));
+    }
 
-
+    function renderRoomCard(room) {
+        return `
+            <div class="col-md-6 col-lg-4 d-flex">
+                <div class="room-card w-100">
+                    <img src="${room.photos}" alt="Room ${room.room_number}">
+                    <div class="room-card-body">
+                        <div class="room-number">Room ${room.room_number}</div>
+                        <div class="room-type-badge">${room.type_of_room}</div>
+                        <div class="room-meta">
+                            <div class="room-meta-item">
+                                <span class="room-meta-label">Floor</span>
+                                <span class="room-meta-value">${room.floor}</span>
+                            </div>
+                            <div class="room-meta-item">
+                                <span class="room-meta-label">Beds</span>
+                                <span class="room-meta-value">${room.number_of_bed}</span>
+                            </div>
+                            <div class="room-meta-item">
+                                <span class="room-meta-label">Max Guests</span>
+                                <span class="room-meta-value">${room.max_person} Persons</span>
+                            </div>
+                        </div>
+                        <div class="room-divider"></div>
+                        <div class="room-details">${room.details}</div>
+                        <div class="room-price">₱${Number(room.price).toLocaleString()}<span> / night</span></div>
+                        <div class="room-divider"></div>
+                        <button onclick="bookReservation(${room.room_id})" type="button" class="book-btn">Book Now</button>
+                    </div>
+                </div>
+            </div>`;
+    }

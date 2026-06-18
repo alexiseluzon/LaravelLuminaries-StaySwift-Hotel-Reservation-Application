@@ -287,77 +287,52 @@ class Customer extends Controller
 
                 $totalPayment = $totalNights * $item->price;
                 echo "
-                                <div class='col-lg-6 col-sm-12 g-0 gx-lg-5 text-center text-lg-start'>
-                                    <div class='card mb-3 shadow border-2 border rounded' style='width:100%'>
-                                        <div class='row g-0'>
-                                            <img loading='lazy' src=$item->photos class='card-img-top img-thumdnail' style='height:230px; width:100%;' alt='ship'>
-                                            <div class='col-md-12'>
-                                                <ul class='list-group list-group-flush fw-bold'>
-                                                    <li class='list-group-item'>
-                                                        <div class='row'>
-                                                            <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                                Room Number: <span class='fw-normal'> $item->room_number</span>
-                                                            </div>
-                                                            <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Room Floor:<span class='fw-normal'> $item->floor</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item'>
-                                                        <div class='row'>
-                                                            <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                                Type of Room: <span class='fw-normal'>$item->type_of_room</span>
-                                                            </div>
-                                                            <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Number of Bed:<span class='fw-normal'> $item->number_of_bed Only</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item'>
-                                                        <div class='row'>
-                                                            <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                                Max Person: <span class='fw-normal'>$item->max_person People Only</span>
-                                                            </div>
-                                                            <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item fw-bold' style='color:#'>
-                                                        <div class='col-12'>
-                                                            Details: <span class='fw-normal'>$item->details</span>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item'>
-                                                        <div class='row'>
-                                                            <div class='col-12 col-lg-7 ps-0 ps-lg-4'>
-                                                                Check In: <span class='fw-normal'> $checkInDateTime - 02:00 PM</span><br>
-                                                                Check Out:<span class='fw-normal'> $checkOutDateTime - 12:00 PM</span>
-                                                            </div>
-                                                            <div class='col-12 col-lg-5 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Total Night(s): <span class='fw-normal'> $totalNights</span><br>
-                                                                Total Payment:<span class='fw-normal'> ₱$totalPayment.00</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item text-center text-lg-end py-2'>
-                                                        <button onclick='cancelReservation($item->reservation_id)' type='button' class='btn btn-sm btn-danger px-4 py-2 rounded-0'>CANCEL BOOK</button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class='col-lg-6 col-sm-12 g-0 gx-lg-5'>
+                        <div class='mb-3' style='width:100%; background:#221e18; border:1px solid #3a3228;'>
+                            <img loading='lazy' src=$item->photos style='height:230px; width:100%; object-fit:contain; background:#1a1612; border-bottom:1px solid #3a3228;' alt='room'>
+                            <div style='padding:20px 24px;'>
+                                <div style='font-family:Cormorant Garamond,serif; font-size:20px; color:#e8dcc8; letter-spacing:0.08em; margin-bottom:16px;'>$item->type_of_room</div>
+                
+                                <div style='display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;'>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Room Number<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$item->room_number</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Floor<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$item->floor</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Number of Beds<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$item->number_of_bed Only</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Max Person<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$item->max_person People Only</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Price Per Night<div style='color:#c9a96e; font-size:13px; margin-top:3px; text-transform:none;'>₱$item->price.00</div></div>
                                 </div>
-                            ";
+                
+                                <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>
+                
+                                <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;'>Details</div>
+                                <div style='font-size:12px; color:#d4c4a8; margin-bottom:14px; line-height:1.6;'>$item->details</div>
+                
+                                <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>
+                
+                                <div style='display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;'>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Check In<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$checkInDateTime<br>02:00 PM</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Check Out<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$checkOutDateTime<br>12:00 PM</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Nights<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$totalNights Night(s)</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Payment<div style='color:#c9a96e; font-size:13px; margin-top:3px; text-transform:none;'>₱$totalPayment.00</div></div>
+                                </div>
+                
+                                <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>
+                                <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; margin-bottom:14px;'>To cancel this booking, please provide a valid reason. Cancellations are subject to review.</div>
+                
+                                <button onclick='cancelReservation($item->reservation_id)' type='button' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 28px; background:transparent; color:#c9a96e; border:1px solid #3a3228; cursor:pointer;'>Cancel Booking</button>
+                            </div>
+                        </div>
+                    </div>
+                ";
             }
         } else {
             echo "
-                        <div class='row applicantNoSchedule' style='margin-top:20rem; color: #8d8a85;'>
-                            <div class='alert alert-light text-center fs-4' role='alert' style='color: #8d8a85;'>
-                                NO RESERVATION FOUND
-                            </div>
-                        </div>
-                        ";
+                <div style='width:100%; text-align:center; padding: 80px 20px;'>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:0 auto 20px;'></div>
+                    <div style='font-family:Cormorant Garamond, serif; font-size:22px; color:#e8dcc8; letter-spacing:0.15em; margin-bottom:10px;'>No Reservations Found</div>
+                    <div style='font-size:11px; color:#7a6a56; letter-spacing:0.1em; text-transform:uppercase;'>You have no pending reservations at this time</div>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:20px auto 0;'></div>
+                </div>
+            ";
         }
     }
 
@@ -502,70 +477,41 @@ class Customer extends Controller
                 $typeOfRoom = $item->type_of_room;
 
                 echo "
-                    <div class='col-lg-6 col-sm-12 g-0 gx-lg-5 text-center text-lg-start'>
-                        <div class='card mb-3 shadow border-2 border rounded' style='width:100%'>
-                            <div class='row g-0'>
-                                <img loading='lazy' src=$item->photos class='card-img-top img-thumdnail' style='height:230px; width:100%;' alt='ship'>
-                                <div class='col-md-12'>
-                                    <ul class='list-group list-group-flush fw-bold'>
-                                        <li class='list-group-item'>
-                                            <div class='row'>
-                                                <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                    Room Number: <span class='fw-normal'> $item->room_number</span>
-                                                </div>
-                                                <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                    Room Floor:<span class='fw-normal'> $item->floor</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class='list-group-item'>
-                                            <div class='row'>
-                                                <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                    Type of Room: <span class='fw-normal'>$item->type_of_room</span>
-                                                </div>
-                                                <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                    Number of Bed:<span class='fw-normal'> $item->number_of_bed Only</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class='list-group-item'>
-                                            <div class='row'>
-                                                <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                    Max Person: <span class='fw-normal'>$item->max_person People Only</span>
-                                                </div>
-                                                <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                    Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class='list-group-item fw-bold' style='color:#'>
-                                            <div class='col-12'>
-                                                Details: <span class='fw-normal'>$item->details</span>
-                                            </div>
-                                        </li>
-                                        <li class='list-group-item'>
-                                            <div class='row'>
-                                                <div class='col-12 col-lg-7 ps-0 ps-lg-4'>
-                                                    Check In: <span class='fw-normal'> $checkInDateTime - 02:00 PM</span><br>
-                                                    Check Out:<span class='fw-normal'> $checkOutDateTime - 12:00 PM</span>
-                                                </div>
-                                                <div class='col-12 col-lg-5 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                    Total Night(s): <span class='fw-normal'> $totalNights</span><br>
-                                                    Total Payment:<span class='fw-normal'> ₱$totalPayment.00</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class='list-group-item text-center text-lg-end py-2'>
-                                            <div class='row mt-3'>
-                                                <div class='col-12 col-lg-12 ps-0 ps-lg-4'>
-                                                    <span class='fw-normal text-dark'>Notes: To proceed this booking, the payment for the reservation is required. </span><br>
-                                                </div>
-                                            </div>
-                                            <a onclick='deleteReservation($item->reservation_id)' type='button' class='btn btn-sm btn-danger px-3 py-2 rounded-0 mt-2 text-white'>Cancel Booking</a>
-                                            <a onclick='getUpdateUnpaidReservation($item->reservation_id)' type='button' class='btn btn-sm btn-secondary px-3 py-2 rounded-0 mt-2 text-white'>Update Booking</a>
-                                            <a href='" . route('stripePayment', ['total_payment' => $totalPayment, 'type_of_room' => $typeOfRoom, 'reservation_id' => $item->reservation_id]) . "' type='button' id='continueToPayBtn' class='btn btn-sm btn-primary px-3 py-2 rounded-0 mt-2'>Continue to Pay</a>
-                                        </li>
-                                    </ul>
+                    <div class='col-lg-6 col-sm-12 g-0 gx-lg-5'>
+                        <div class='mb-3' style='width:100%; background:#221e18; border:1px solid #3a3228;'>
+                            <img loading='lazy' src=$item->photos style='height:230px; width:100%; object-fit:contain; background:#1a1612; border-bottom:1px solid #3a3228;' alt='room'>
+                            <div style='padding:20px 24px;'>
+                                <div style='font-family:Cormorant Garamond,serif; font-size:20px; color:#e8dcc8; letter-spacing:0.08em; margin-bottom:16px;'>$item->type_of_room</div>
+                
+                                <div style='display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;'>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Room Number<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$item->room_number</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Floor<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$item->floor</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Number of Beds<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$item->number_of_bed Only</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Max Person<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$item->max_person People Only</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Price Per Night<div style='color:#c9a96e; font-size:13px; margin-top:3px; text-transform:none;'>₱$item->price.00</div></div>
+                                </div>
+                
+                                <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>
+                
+                                <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;'>Details</div>
+                                <div style='font-size:12px; color:#d4c4a8; margin-bottom:14px; line-height:1.6;'>$item->details</div>
+                
+                                <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>
+                
+                                <div style='display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;'>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Check In<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$checkInDateTime<br>02:00 PM</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Check Out<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$checkOutDateTime<br>12:00 PM</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Nights<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$totalNights Night(s)</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Payment<div style='color:#c9a96e; font-size:13px; margin-top:3px; text-transform:none;'>₱$totalPayment.00</div></div>
+                                </div>
+                
+                                <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>
+                                <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; margin-bottom:14px;'>Notes: To proceed this booking, payment for the reservation is required.</div>
+                
+                                <div style='display:flex; gap:8px; flex-wrap:wrap;'>
+                                    <a onclick='deleteReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#e05555; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Cancel Booking</a>
+                                    <a onclick='getUpdateUnpaidReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#c9a96e; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Update Booking</a>
+                                    <a href='" . route('stripePayment', ['total_payment' => $totalPayment, 'type_of_room' => $typeOfRoom, 'reservation_id' => $item->reservation_id]) . "' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:#c9a96e; color:#1a1612; border:1px solid #c9a96e; cursor:pointer; text-decoration:none;'>Continue to Pay</a>
                                 </div>
                             </div>
                         </div>
@@ -574,12 +520,13 @@ class Customer extends Controller
             }
         } else {
             echo "
-                <div class='row applicantNoSchedule' style='margin-top:20rem; color: #8d8a85;'>
-                    <div class='alert alert-light text-center fs-4' role='alert' style='color: #8d8a85;'>
-                        NO RESERVATION FOUND
-                    </div>
+                <div style='width:100%; text-align:center; padding: 80px 20px;'>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:0 auto 20px;'></div>
+                    <div style='font-family:Cormorant Garamond, serif; font-size:22px; color:#e8dcc8; letter-spacing:0.15em; margin-bottom:10px;'>No Reservations Found</div>
+                    <div style='font-size:11px; color:#7a6a56; letter-spacing:0.1em; text-transform:uppercase;'>You have no unpaid reservations at this time</div>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:20px auto 0;'></div>
                 </div>
-                ";
+            ";
         }
     }
 

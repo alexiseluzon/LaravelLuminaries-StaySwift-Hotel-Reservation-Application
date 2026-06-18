@@ -8,6 +8,7 @@
     @include('cdn')
     <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/customerDashboard.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/swal-theme.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ URL('/img/StaySwift Login no bg.png')}}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <title>StaySwift — Available Rooms</title>

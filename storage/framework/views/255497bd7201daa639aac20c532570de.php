@@ -140,18 +140,22 @@
         .room-card {
             background: #221e18;
             border: 1px solid #3a3228;
-            padding: 20px 24px;
+            padding: 0;
             display: flex;
-            align-items: center;
-            gap: 20px;
+            flex-direction: column;
         }
 
         .room-card img {
-            width: 80px;
-            height: 60px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border: 1px solid #3a3228;
+            border: none;
+            border-bottom: 1px solid #3a3228;
             flex-shrink: 0;
+        }
+
+        .room-info {
+            padding: 16px 20px;
         }
 
         .room-name {
@@ -357,7 +361,7 @@
                         container.innerHTML = `
                             <div class="room-card">
                                 <img src="${room.photos}" alt="${room.type_of_room}">
-                                <div>
+                                <div class="room-info">
                                     <span class="room-name">${room.type_of_room}</span>
                                     <div class="room-price">Starting at <span>&#8369;${room.price} / night</span></div>
                                 </div>

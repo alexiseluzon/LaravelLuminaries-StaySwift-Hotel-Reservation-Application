@@ -10,8 +10,146 @@
         <link href="{{ asset('/css/customerDashboard.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
         <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     {{-- CSS --}}
     <title>StaySwift</title>
+    <style>
+        body, html { background-color: #1a1612 !important; color: #d4c4a8; }
+        .navbar { background-color: #221e18 !important; border-color: #3a3228 !important; }
+        #page-content-wrapper { background-color: #1a1612; }
+        h4 { color: #e8dcc8; letter-spacing: 0.15em; }
+        .mainBar { background-color: #1a1612; }
+
+        .swal2-popup {
+            background: #221e18 !important;
+            border: 1px solid #3a3228 !important;
+            border-radius: 0 !important;
+            color: #d4c4a8 !important;
+            font-family: 'Montserrat', sans-serif !important;
+        }
+        .swal2-title {
+            color: #e8dcc8 !important;
+            font-family: 'Cormorant Garamond', serif !important;
+            font-weight: 400 !important;
+            letter-spacing: 0.1em !important;
+        }
+        .swal2-html-container, .swal2-content { color: #7a6a56 !important; font-size: 12px !important; }
+        .swal2-textarea, .swal2-input {
+            background: #1a1612 !important;
+            border: 1px solid #3a3228 !important;
+            color: #d4c4a8 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        .swal2-textarea:focus, .swal2-input:focus { border-color: #c9a96e !important; outline: none !important; }
+        .swal2-checkbox { background: transparent !important; color: #d4c4a8 !important; }
+        .swal2-checkbox input { accent-color: #c9a96e; }
+        .swal2-label { color: #d4c4a8 !important; }
+        .swal2-label a { color: #c9a96e !important; }
+        .swal2-confirm {
+            background: #c9a96e !important;
+            color: #1a1612 !important;
+            border-radius: 0 !important;
+            font-family: 'Montserrat', sans-serif !important;
+            font-size: 10px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.2em !important;
+            text-transform: uppercase !important;
+            padding: 11px 28px !important;
+            border: none !important;
+        }
+        .swal2-confirm:hover { background: #e8cfa0 !important; }
+        .swal2-cancel {
+            background: transparent !important;
+            color: #c9a96e !important;
+            border: 1px solid #3a3228 !important;
+            border-radius: 0 !important;
+            font-family: 'Montserrat', sans-serif !important;
+            font-size: 10px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.2em !important;
+            text-transform: uppercase !important;
+            padding: 11px 28px !important;
+        }
+        .swal2-cancel:hover { border-color: #c9a96e !important; }
+        .swal2-icon.swal2-question { border-color: #c9a96e !important; color: #c9a96e !important; }
+        .swal2-icon.swal2-success { border-color: #c9a96e !important; }
+        .swal2-icon.swal2-success [class^='swal2-success-line'] { background: #c9a96e !important; }
+        .swal2-icon.swal2-success .swal2-success-ring { border-color: #c9a96e !important; }
+        .swal2-icon.swal2-warning { border-color: #c9a96e !important; color: #c9a96e !important; }
+        .swal2-icon.swal2-error { border-color: #c9a96e !important; }
+        .swal2-icon.swal2-error [class^='swal2-x-mark-line'] { background: #c9a96e !important; }
+
+        /* Modal */
+        .modal-content {
+            background: #221e18;
+            border: 1px solid #3a3228;
+            border-radius: 2px;
+            color: #d4c4a8;
+        }
+        .modal-header { border-bottom: 1px solid #3a3228; }
+        .modal-footer { border-top: 1px solid #3a3228; }
+        .modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 20px;
+            letter-spacing: 0.18em;
+            color: #e8dcc8 !important;
+        }
+        .btn-close { filter: invert(1) brightness(0.5); }
+        .modal-body .form-label {
+            font-size: 8.5px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #7a6a56;
+        }
+        .modal-body .form-control {
+            background: #1a1612;
+            border: 1px solid #3a3228;
+            color: #d4c4a8;
+            border-radius: 1px;
+        }
+        .modal-body .form-control:focus {
+            border-color: #c9a96e;
+            box-shadow: 0 0 0 3px rgba(201,169,110,0.1);
+            background: #1e1a15;
+            color: #d4c4a8;
+        }
+        .modal-body .form-control::-webkit-calendar-picker-indicator { filter: invert(0.6); cursor: pointer; }
+        .flatpickr-calendar {
+            background: #221e18 !important;
+            border: 1px solid #3a3228 !important;
+            border-radius: 2px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+        }
+        .flatpickr-month, .flatpickr-weekdays, span.flatpickr-weekday {
+            background: #221e18 !important;
+            color: #7a6a56 !important;
+        }
+        .flatpickr-current-month input.cur-year,
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            color: #e8dcc8 !important;
+            background: transparent !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months option { background: #221e18; }
+        .flatpickr-day {
+            color: #d4c4a8 !important;
+            border-radius: 1px !important;
+        }
+        .flatpickr-day:hover { background: #3a3228 !important; border-color: #3a3228 !important; }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+            background: #c9a96e !important;
+            border-color: #c9a96e !important;
+            color: #1a1612 !important;
+        }
+        .flatpickr-day.today { border-color: #c9a96e !important; }
+        .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
+            color: #3a3228 !important;
+        }
+        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #c9a96e !important; }
+        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #e8cfa0 !important; }
+    </style>
 </head>
 <body>
 
@@ -65,17 +203,17 @@
                             <div class="col-6 my-2">
                                 <label class="form-label">CHECK IN:</label>
                                 <input type="hidden" id="reservationId" name="reservationId">
-                                <input required type="date" class="form-control shadow-sm bg-body rounded-0" id="checkInDate" name="checkInDate">
+                                <input required type="date" class="form-control" id="checkInDate" name="checkInDate">
                             </div>
                             <div class="col-6 my-2">
                                 <label class="form-label">CHECK OUT:</label>
-                                <input required type="date" class="form-control shadow-sm rounded-0" id="checkOutDate" name="checkOutDate">
+                                <input required type="date" class="form-control" id="checkOutDate" name="checkOutDate">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary rounded-0 px-4" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary rounded-0 px-4">Update</button>
+                        <button type="button" style="font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 24px; background:transparent; color:#7a6a56; border:1px solid #3a3228; cursor:pointer;" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" style="font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 24px; background:#c9a96e; color:#1a1612; border:none; cursor:pointer;">Update</button>
                     </div>
                     </form>
                 </div>
@@ -99,22 +237,29 @@
                 return `${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}-${String(next.getDate()).padStart(2,'0')}`;
             }
 
+            let checkInPicker, checkOutPicker;
+
             function setDateConstraints(checkInVal = null) {
                 const minDate = getPHToday();
-                const checkIn = document.getElementById('checkInDate');
-                const checkOut = document.getElementById('checkOutDate');
 
-                checkIn.min = minDate;
-                checkIn.value = checkInVal || minDate;
-                const minCheckOut = addOneDay(checkIn.value);
-                checkOut.min = minCheckOut;
-                checkOut.value = minCheckOut;
+                if (checkInPicker) checkInPicker.destroy();
+                if (checkOutPicker) checkOutPicker.destroy();
 
-                checkIn.addEventListener('change', function () {
-                    if (!this.value) return;
-                    const min = addOneDay(this.value);
-                    checkOut.min = min;
-                    checkOut.value = min;
+                checkInPicker = flatpickr('#checkInDate', {
+                    minDate: minDate,
+                    defaultDate: checkInVal || minDate,
+                    dateFormat: 'Y-m-d',
+                    onChange: function(selectedDates, dateStr) {
+                        const nextDay = addOneDay(dateStr);
+                        checkOutPicker.set('minDate', nextDay);
+                        checkOutPicker.setDate(nextDay);
+                    }
+                });
+
+                checkOutPicker = flatpickr('#checkOutDate', {
+                    minDate: addOneDay(checkInVal || minDate),
+                    defaultDate: addOneDay(checkInVal || minDate),
+                    dateFormat: 'Y-m-d',
                 });
             }
 
@@ -158,7 +303,7 @@
                         const checkInVal = moment(res.start_dataTime).format('YYYY-MM-DD');
                         const checkOutVal = moment(res.end_dateTime).format('YYYY-MM-DD');
                         setDateConstraints(checkInVal);
-                        document.getElementById('checkOutDate').value = checkOutVal;
+                        checkOutPicker.setDate(checkOutVal);
                         $('#reservationId').val(res.reservation_id);
                         $('#updateUnpaidReservationModal').modal('show');
                     }
