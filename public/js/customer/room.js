@@ -1,11 +1,3 @@
-$(document).ready(function(){
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-});
-
 // FUNCTION FOR BOOKING
     function bookReservation(id){
         Swal.fire({
@@ -126,7 +118,13 @@ $(document).ready(function(){
         const url = new URL('/rooms/filter', window.location.origin);
         url.search = new URLSearchParams({ capacity, type, sort }).toString();
         fetch(url)
-            .then(r => r.json())
+            .then(r => {
+                if (r.status === 401 || r.status === 419) {
+                    window.location = '/login';
+                    return;
+                }
+                return r.json();
+            })
             .then(data => {
                 const container = document.getElementById('showTotalRoom');
                 if (!data.rooms.length) {
