@@ -5,18 +5,18 @@
     </div>
     <div class="list-group list-group-flush recruiterLink">
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
-            href="/customerDashboard"><i class="bi bi-bar-chart pe-3"></i> Details</a>
+            href="/customerDashboard"><i class="bi bi-bar-chart pe-3"></i> Dashboard</a>
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
-            href="/customerRoom"><i class="bi bi-box pe-3"></i> Available Room</a>
+            href="/customerRoom"><i class="bi bi-box pe-3"></i> Available Rooms</a>
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
-            href="/customerUnpaidReservation"><i class="bi bi-piggy-bank pe-3"></i> Unpaid Reservation</a>
+            href="/customerUnpaidReservation"><i class="bi bi-piggy-bank pe-3"></i> Unpaid Reservations</a>
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
-            href="/customerReservation"><i class="bi bi-clock-history pe-3"></i> Pending Reservation</a>
+            href="/customerReservation"><i class="bi bi-clock-history pe-3"></i> Pending Reservations</a>
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
-            href="/customerCompleted"><i class="bi bi-building-check pe-3"></i> Complete Reservation</a>
+            href="/customerCompleted"><i class="bi bi-building-check pe-3"></i> Completed Reservation</a>
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
             href="/customerCancelReservation"><i class="bi bi-calendar2-x pe-3"></i> 
-                Cancelled Reservation</a>
+                Cancelled Reservations</a>
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
             href="/customerAccount"><i class="bi bi-pencil-square pe-3"></i> Manage Account</a>
     </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\Stripe;
 
 // LANDING PAGE
 Route::get('/', [Home::class, 'harborView'])->name('harborView');
+Route::get('/rooms', [Customer::class, 'getRooms']);
 
 // AUTHENTICATION
 Route::get('/login', [Authentication::class, 'login'])->name('login');
@@ -63,7 +64,7 @@ Route::middleware(['auth:userModel', 'is_admin'])->group(function () {
     Route::post('/updateRoom', [Admin::class, 'updateRoom'])->name('updateRoom');
     Route::get('/deactivateRoom', [Admin::class, 'deactivateRoom'])->name('deactivateRoom');
     Route::get('/activateRoom', [Admin::class, 'activateRoom'])->name('activateRoom');
-    Route::get('/getBackOutContentForAdmin', [Admin::class, 'getBackOutContentForAdmin'])->name('getBackOutContentForAdmin');
+    // Route::get('/getBackOutContentForAdmin', [Admin::class, 'getBackOutContentForAdmin'])->name('getBackOutContentForAdmin');
     Route::get('/viewReasonCancelled', [Admin::class, 'viewReasonCancelled'])->name('viewReasonCancelled');
     Route::get('/deactivateCustomer', [Admin::class, 'deactivateCustomer'])->name('deactivateCustomer');
     Route::get('/activateCustomer', [Admin::class, 'activateCustomer'])->name('activateCustomer');
@@ -74,6 +75,7 @@ Route::middleware(['auth:userModel', 'is_admin'])->group(function () {
     Route::get('/getAllTotalForAdmin', [Admin::class, 'getAllTotalForAdmin'])->name('getAllTotalForAdmin');
     Route::get('/paymentGraph', [Admin::class, 'paymentGraph'])->name('paymentGraph');
     Route::get('/unAttendedReservation', [Admin::class, 'unAttendedReservation'])->name('unAttendedReservation');
+    Route::get('/getAllBackOutReservation', [Admin::class, 'getAllBackOutReservation']);
 });
 
 Route::middleware(['auth:userModel', 'is_customer'])->group(function () {
