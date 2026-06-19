@@ -115,4 +115,5 @@ Route::middleware(['auth:userModel', 'is_customer'])->group(function () {
     Route::post('/updateUnpaidReservation', [Customer::class, 'updateUnpaidReservation'])->name('updateUnpaidReservation');
     Route::get('/viewUnpaidReservation', [Customer::class, 'viewUnpaidReservation'])->name('viewUnpaidReservation');
     Route::get('/rooms/filter', [Customer::class, 'filter'])->name('filter');
+    Route::get('/getRoomBookedDates', [Customer::class, 'getRoomBookedDates'])->name('getRoomBookedDates');
 });

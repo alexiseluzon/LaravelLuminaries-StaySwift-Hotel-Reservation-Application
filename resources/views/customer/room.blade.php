@@ -414,30 +414,49 @@
             return `${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}-${String(next.getDate()).padStart(2,'0')}`;
         }
 
+        function findFirstAvailableDate(startDate, disabledRanges) {
+            let current = startDate;
+            let safety = 0; // prevent infinite loop if something's misconfigured
+            while (isDateDisabled(current, disabledRanges) && safety < 365) {
+                current = addOneDay(current);
+                safety++;
+            }
+            return current;
+        }
+        
+        function isDateDisabled(dateStr, disabledRanges) {
+            return disabledRanges.some(range => dateStr >= range.from && dateStr <= range.to);
+        }
+
         let checkInPicker, checkOutPicker;
 
-        function setDateConstraints() {
+        function setDateConstraints(disabledRanges = []) {
             const minDate = getPHToday();
-            const minCheckOut = addOneDay(minDate);
-        
+            const firstAvailableCheckIn = findFirstAvailableDate(minDate, disabledRanges);
+            const minCheckOut = addOneDay(firstAvailableCheckIn);
+            const firstAvailableCheckOut = findFirstAvailableDate(minCheckOut, disabledRanges);
+
             if (checkInPicker) checkInPicker.destroy();
             if (checkOutPicker) checkOutPicker.destroy();
-        
+
             checkInPicker = flatpickr('#checkInDate', {
                 minDate: minDate,
-                defaultDate: minDate,
+                defaultDate: firstAvailableCheckIn,
                 dateFormat: 'Y-m-d',
+                disable: disabledRanges,
                 onChange: function(selectedDates, dateStr) {
                     const nextDay = addOneDay(dateStr);
+                    const nextAvailable = findFirstAvailableDate(nextDay, disabledRanges);
                     checkOutPicker.set('minDate', nextDay);
-                    checkOutPicker.setDate(nextDay);
+                    checkOutPicker.setDate(nextAvailable);
                 }
             });
-        
+
             checkOutPicker = flatpickr('#checkOutDate', {
                 minDate: minCheckOut,
-                defaultDate: minCheckOut,
+                defaultDate: firstAvailableCheckOut,
                 dateFormat: 'Y-m-d',
+                disable: disabledRanges,
             });
         }
 

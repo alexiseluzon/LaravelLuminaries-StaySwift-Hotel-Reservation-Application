@@ -133,11 +133,6 @@
     
         <script>
             $(document).ready(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
                 showBookingPerUser();
             });
             function showBookingPerUser(){
@@ -191,6 +186,7 @@
                 }
         </script>
         <script src="<?php echo e(asset('/js/dateTime.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/global.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/logout.js')); ?>"></script>
     
 </body>
