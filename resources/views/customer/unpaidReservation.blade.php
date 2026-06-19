@@ -296,7 +296,10 @@
                                 setTimeout(() => {
                                     card.style.transition = 'opacity 0.4s';
                                     card.style.opacity = '0';
-                                    setTimeout(() => card.remove(), 400);
+                                    setTimeout(() => {
+                                        card.remove();
+                                        checkIfEmpty();
+                                    }, 400);
                                 }, 1000);
                             }
                             return;
@@ -307,6 +310,19 @@
                         el.textContent = `Expires in ${minutes}m ${String(seconds).padStart(2, '0')}s`;
                     });
                 }, 1000);
+            }
+            
+            function checkIfEmpty() {
+                const container = document.getElementById('showUnpaidReservation');
+                if (container.children.length === 0) {
+                    container.innerHTML = `
+                        <div style="width:100%; text-align:center; padding: 80px 20px;">
+                            <div style="width:40px; height:1px; background:#c9a96e; margin:0 auto 20px;"></div>
+                            <div style="font-family:'Cormorant Garamond', serif; font-size:22px; color:#e8dcc8; letter-spacing:0.15em; margin-bottom:10px;">No Reservations Found</div>
+                            <div style="font-size:11px; color:#7a6a56; letter-spacing:0.1em; text-transform:uppercase;">You have no unpaid reservations at this time</div>
+                            <div style="width:40px; height:1px; background:#c9a96e; margin:20px auto 0;"></div>
+                        </div>`;
+                }
             }
 
             function deleteReservation(id) {
