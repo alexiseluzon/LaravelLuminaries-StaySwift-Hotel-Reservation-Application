@@ -9,7 +9,7 @@
     <link href="<?php echo e(asset('/css/sideBar.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('/css/customerDashboard.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('/css/swal-theme.css')); ?>" rel="stylesheet">
-    <link rel="shortcut icon" href="<?php echo e(URL('/img/StaySwift Login no bg.png')); ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo e(URL('/img/StaySwift Logo no bg.png')); ?>" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <title>StaySwift — Available Rooms</title>
     <style>
@@ -126,7 +126,6 @@
             margin-bottom: 14px;
         }
 
-        .room-meta-item { }
         .room-meta-label {
             font-size: 7.5px;
             letter-spacing: 0.18em;
@@ -263,7 +262,38 @@
             letter-spacing: 0.22em;
             text-transform: uppercase;
         }
+        .flatpickr-calendar {
+            background: #221e18 !important;
+            border: 1px solid #3a3228 !important;
+            border-radius: 2px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+        }
+        .flatpickr-month, .flatpickr-weekdays, span.flatpickr-weekday {
+            background: #221e18 !important;
+            color: #7a6a56 !important;
+        }
+        .flatpickr-current-month input.cur-year,
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            color: #e8dcc8 !important;
+            background: transparent !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months option { background: #221e18; }
+        .flatpickr-day { color: #d4c4a8 !important; border-radius: 1px !important; }
+        .flatpickr-day:hover { background: #3a3228 !important; border-color: #3a3228 !important; }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+            background: #c9a96e !important;
+            border-color: #c9a96e !important;
+            color: #1a1612 !important;
+        }
+        .flatpickr-day.today { border-color: #c9a96e !important; }
+        .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
+            color: #3a3228 !important;
+        }
+        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #c9a96e !important; }
+        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #e8cfa0 !important; }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
     <div class="d-flex" id="wrapper">
@@ -385,76 +415,31 @@
             return `${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}-${String(next.getDate()).padStart(2,'0')}`;
         }
 
+        let checkInPicker, checkOutPicker;
+
         function setDateConstraints() {
             const minDate = getPHToday();
-            const checkIn = document.getElementById('checkInDate');
-            const checkOut = document.getElementById('checkOutDate');
             const minCheckOut = addOneDay(minDate);
-
-            checkIn.min = minDate;
-            checkIn.value = minDate;
-            checkOut.min = minCheckOut;
-            checkOut.value = minCheckOut;
-
-            checkIn.addEventListener('change', function () {
-                if (!this.value) return;
-                const minCheckOut = addOneDay(this.value);
-                checkOut.min = minCheckOut;
-                checkOut.value = minCheckOut;
+        
+            if (checkInPicker) checkInPicker.destroy();
+            if (checkOutPicker) checkOutPicker.destroy();
+        
+            checkInPicker = flatpickr('#checkInDate', {
+                minDate: minDate,
+                defaultDate: minDate,
+                dateFormat: 'Y-m-d',
+                onChange: function(selectedDates, dateStr) {
+                    const nextDay = addOneDay(dateStr);
+                    checkOutPicker.set('minDate', nextDay);
+                    checkOutPicker.setDate(nextDay);
+                }
             });
-        }
-
-        function renderRoomCard(room) {
-            return `
-                <div class="col-md-6 col-lg-4 d-flex">
-                    <div class="room-card w-100">
-                        <img src="${room.photos}" alt="Room ${room.room_number}">
-                        <div class="room-card-body">
-                            <div class="room-number">Room ${room.room_number}</div>
-                            <div class="room-type-badge">${room.type_of_room}</div>
-                            <div class="room-meta">
-                                <div class="room-meta-item">
-                                    <span class="room-meta-label">Floor</span>
-                                    <span class="room-meta-value">${room.floor}</span>
-                                </div>
-                                <div class="room-meta-item">
-                                    <span class="room-meta-label">Beds</span>
-                                    <span class="room-meta-value">${room.number_of_bed}</span>
-                                </div>
-                                <div class="room-meta-item">
-                                    <span class="room-meta-label">Max Guests</span>
-                                    <span class="room-meta-value">${room.max_person} Persons</span>
-                                </div>
-                            </div>
-                            <div class="room-divider"></div>
-                            <div class="room-details">${room.details}</div>
-                            <div class="room-price">₱${Number(room.price).toLocaleString()}<span> / night</span></div>
-                            <div class="room-divider"></div>
-                            <button onclick="bookReservation(${room.room_id})" type="button" class="book-btn">Book Now</button>
-                        </div>
-                    </div>
-                </div>`;
-        }
-
-        function fetchRooms(capacity = '', type = '', sort = '') {
-            const url = new URL('<?php echo e(url('/rooms/filter')); ?>');
-            url.search = new URLSearchParams({ capacity, type, sort }).toString();
-
-            fetch(url)
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('showTotalRoom');
-                    if (!data.rooms.length) {
-                        container.innerHTML = `
-                            <div class="empty-state col-12">
-                                <i class="fa-solid fa-door-open"></i>
-                                <p>No rooms available</p>
-                            </div>`;
-                        return;
-                    }
-                    container.innerHTML = data.rooms.map(renderRoomCard).join('');
-                })
-                .catch(err => console.error('Error fetching rooms:', err));
+        
+            checkOutPicker = flatpickr('#checkOutDate', {
+                minDate: minCheckOut,
+                defaultDate: minCheckOut,
+                dateFormat: 'Y-m-d',
+            });
         }
 
         document.getElementById('filterForm').addEventListener('change', function () {

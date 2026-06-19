@@ -123,7 +123,7 @@ $(document).ready(function(){
 // FUNCTION FOR BOOKING
 
     function fetchRooms(capacity = '', type = '', sort = '') {
-        const url = new URL('{{ url('/rooms/filter') }}');
+        const url = new URL('/rooms/filter', window.location.origin);
         url.search = new URLSearchParams({ capacity, type, sort }).toString();
         fetch(url)
             .then(r => r.json())
