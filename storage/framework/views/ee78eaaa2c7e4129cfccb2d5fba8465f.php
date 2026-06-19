@@ -264,7 +264,6 @@
             }
 
             $(document).ready(function () {
-                $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
                 showUnpaidBookingPerUser();
             });
 
@@ -333,6 +332,7 @@
                 });
             });
         </script>
+        <script src="<?php echo e(asset('/js/global.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/logout.js')); ?>"></script>
     
 </body>

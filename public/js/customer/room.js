@@ -1,86 +1,63 @@
-// FUNCTION FOR BOOKING
-    function bookReservation(id){
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you want to BOOK this room?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d72323',
-            confirmButtonText: 'Yes, Continue!'
-            }).then((result) => {
-            if (result.isConfirmed) {
-                $('#reservationModal').modal('show');
-                $('#submitDateBooking').off('click').on('click', function() {
-                    var checkInDateTime = $("#checkInDate").val();
-                    var checkOutDateTime = $("#checkOutDate").val();
-                    $.ajax({
-                        url: "/bookReservation",
-                        type:"POST",
-                        method:"POST",
-                        dataType: "json",
-                        data: {roomId: id, checkInDateTime:checkInDateTime, checkOutDateTime:checkOutDateTime},
-                        success: function(response) {
-                            if (response.status == 1) {
-                                fetchRoom();
-                                $("#bookReservationForm").trigger("reset");
-                                $('#reservationModal').modal('hide')
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'success',
-                                    title: 'RESERVATION HAS BEEN SUBMITTED',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                            }else if(response.status == 0){
-                                Swal.fire(
-                                'Added Failed',
-                                'Sorry operation has not stored',
-                                'error'
-                                )
-                            }else if(response.status == 4){
-                                Swal.fire(
-                                'Invalid Check In',
-                                'Please check the date and time of the CHECK IN',
-                                'error'
-                                )
-                            }else if(response.status == 3){
-                                Swal.fire(
-                                'Invalid Check Out',
-                                'Please check the date and time of the CHECK OUT',
-                                'error'
-                                )
-                            }else if(response.status == 2){
-                                Swal.fire(
-                                'Invalid Date and Time',
-                                'The date of both CHECK IN and CHECK OUT must not be the same',
-                                'error'
-                                )
-                            }
-                            else if(response.status == 5){
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'BOOK FAILED',
-                                    text: 'Please complete all of your information.',
-                                    footer: '<a href="/customerAccount">DIRECT ME TO MANAGE ACCOUNT</a>'
-                                })
-                            }
-                            else if (response.status == 7) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'DUPLICATE BOOKING',
-                                    text: 'You already have a reservation for this room on the selected dates.',
-                                });
-                            }
-                        },
-                        error:function(error){
-                            console.log(error)
+function bookReservation(id) {
+    $.ajax({
+        url: "/getRoomBookedDates",
+        type: "GET",
+        dataType: "json",
+        data: { roomId: id },
+        success: function(bookedDates) {
+            const disabledRanges = bookedDates.map(b => ({
+                from: moment(b.start_dataTime).format('YYYY-MM-DD'),
+                to: moment(b.end_dateTime).subtract(1, 'day').format('YYYY-MM-DD')
+            }));
+
+            $('#reservationModal').modal('show');
+            setDateConstraints(disabledRanges);
+
+            $('#submitDateBooking').off('click').on('click', function() {
+                var checkInDateTime = $("#checkInDate").val();
+                var checkOutDateTime = $("#checkOutDate").val();
+                $.ajax({
+                    url: "/bookReservation",
+                    type: "POST",
+                    dataType: "json",
+                    data: { roomId: id, checkInDateTime: checkInDateTime, checkOutDateTime: checkOutDateTime },
+                    success: function(response) {
+                        if (response.status == 1) {
+                            fetchRooms();
+                            $("#bookReservationForm").trigger("reset");
+                            $('#reservationModal').modal('hide');
+                            Swal.fire({
+                                position: 'center', icon: 'success',
+                                title: 'RESERVATION HAS BEEN SUBMITTED',
+                                showConfirmButton: false, timer: 1500
+                            });
+                        } else if (response.status == 0) {
+                            Swal.fire('Added Failed', 'Sorry operation has not stored', 'error');
+                        } else if (response.status == 4) {
+                            Swal.fire('Invalid Check In', 'Please check the date and time of the CHECK IN', 'error');
+                        } else if (response.status == 3) {
+                            Swal.fire('Invalid Check Out', 'Please check the date and time of the CHECK OUT', 'error');
+                        } else if (response.status == 2) {
+                            Swal.fire('Invalid Date and Time', 'The date of both CHECK IN and CHECK OUT must not be the same', 'error');
+                        } else if (response.status == 5) {
+                            Swal.fire({
+                                icon: 'error', title: 'BOOK FAILED',
+                                text: 'Please complete all of your information.',
+                                footer: '<a href="/customerAccount">DIRECT ME TO MANAGE ACCOUNT</a>'
+                            });
+                        } else if (response.status == 6) {
+                            Swal.fire('Room Unavailable', 'This room is already reserved for the selected dates.', 'error');
+                        } else if (response.status == 7) {
+                            Swal.fire('Duplicate Booking', 'You already have a reservation for this room on the selected dates.', 'error');
                         }
-                    }) 
+                    },
+                    error: function(error) { console.log(error); }
                 });
-            }
-        });
-    }
+            });
+        },
+        error: function(error) { console.log(error); }
+    });
+}
 
     function cancelReservation(id){
         Swal.fire({

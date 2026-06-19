@@ -783,5 +783,12 @@ class Customer extends Controller
         return response()->json($data);
     }
 
-    // FUNCTION
+    public function getRoomBookedDates(Request $request)
+    {
+        $dates = reservationModel::where('room_id', $request->roomId)
+            ->whereIn('status', ['Unpaid', 'Pending'])
+            ->get(['start_dataTime', 'end_dateTime']);
+
+        return response()->json($dates);
+    }
 }
