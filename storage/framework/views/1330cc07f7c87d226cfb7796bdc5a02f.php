@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @include('cdn')
-    {{-- CSS --}}
-        <link href="{{ asset('/css/customerDashboard.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
-        <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
-    {{-- CSS --}}
+    <?php echo $__env->make('cdn', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    
+        <link href="<?php echo e(asset('/css/customerDashboard.css')); ?>" rel="stylesheet">
+        <link href="<?php echo e(asset('/css/sideBar.css')); ?>" rel="stylesheet">
+        <link rel="shortcut icon" href="<?php echo e(URL('/img/logo.png')); ?>" type="image/x-icon">
+    
     <title>StaySwift</title>
     <style>
         body, html { background-color: #1a1612 !important; color: #d4c4a8; }
@@ -96,13 +96,13 @@
 <body>
 
     <div class="d-flex" id="wrapper">
-        {{-- SIDE NAV --}}
-            @include('layouts.customerSidebar')
-        {{-- SIDE NAV --}}
+        
+            <?php echo $__env->make('layouts.customerSidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        
 
-        {{-- MAIN CONTENT --}}
+        
             <div id="page-content-wrapper">
-                {{-- NAV BAR --}}
+                
                     <nav class="navbar navbar-expand-lg text-white border-bottom">
                         <div class="container-fluid">
                             <button class="btn btn-lg" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
@@ -111,26 +111,26 @@
                                 <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                     <li>
                                         <a class="nav-link me-3">
-                                            <span>{{ auth()->guard('userModel')->user()->firstname}}</span>
-                                            <span>{{ auth()->guard('userModel')->user()->lastname}}</span>
+                                            <span><?php echo e(auth()->guard('userModel')->user()->firstname); ?></span>
+                                            <span><?php echo e(auth()->guard('userModel')->user()->lastname); ?></span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </nav>
-                {{-- NAV BAR --}}
+                
 
-                {{-- MAIN CONTENT --}}
+                
                     <div class="container-fluid mainBar">
                         <div class="row g-2" id="showPendingReservation"></div>
                     </div>
-                {{-- MAIN CONTENT --}}
+                
             </div>
-        {{-- END MAIN CONTENT --}}
+        
     </div>
 
-    {{-- JS --}}
+    
         <script>
             $(document).ready(function(){
                 showBookingPerUser();
@@ -193,9 +193,10 @@
                     });
                 }
         </script>
-        <script src="{{ asset('/js/dateTime.js') }}"></script>
-        <script src="{{ asset('/js/global.js') }}"></script>
-        <script src="{{ asset('/js/logout.js') }}"></script>
-    {{-- END JS --}}
+        <script src="<?php echo e(asset('/js/dateTime.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/global.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/logout.js')); ?>"></script>
+    
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\resources\views/customer/reservation.blade.php ENDPATH**/ ?>
