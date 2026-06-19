@@ -604,9 +604,11 @@ class Customer extends Controller
             }
         } else {
             echo "
-                <div class='empty-state col-12'>
-                    <i class='fa-solid fa-circle-check'></i>
-                    <p>No completed reservations found</p>
+                <div style='width:100%; text-align:center; padding: 80px 20px;'>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:0 auto 20px;'></div>
+                    <div style='font-family:Cormorant Garamond, serif; font-size:22px; color:#e8dcc8; letter-spacing:0.15em; margin-bottom:10px;'>No Reservations Found</div>
+                    <div style='font-size:11px; color:#7a6a56; letter-spacing:0.1em; text-transform:uppercase;'>You have no completed reservations at this time</div>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:20px auto 0;'></div>
                 </div>
             ";
         }

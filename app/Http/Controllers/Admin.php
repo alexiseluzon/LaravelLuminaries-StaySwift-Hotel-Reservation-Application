@@ -440,5 +440,14 @@ class Admin extends Controller
                 return response()->json($response);
             }
 
+            public function getAllBackOutReservation()
+            {
+                return reservationModel::where('status', 'Cancelled')
+                    ->join('users', 'reservations.user_id', '=', 'users.id')
+                    ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
+                    ->select('reservations.*', 'users.firstname', 'users.lastname', 'users.extention', 'rooms.floor', 'rooms.room_number')
+                    ->get();
+            }
+
     // FUNCTION
 }
