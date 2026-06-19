@@ -570,74 +570,45 @@ class Customer extends Controller
 
                 $totalPayment = $totalNights * $item->price;
                 echo "
-                                <div class='col-lg-6 col-sm-12 g-0 gx-lg-5 text-center text-lg-start'>
-                                    <div class='card mb-3 shadow border-2 border rounded' style='width:100%'>
-                                        <div class='row g-0'>
-                                            <img loading='lazy' src=$item->photos class='card-img-top img-thumdnail' style='height:230px; width:100%;' alt='ship'>
-                                            <div class='col-md-12'>
-                                                <ul class='list-group list-group-flush fw-bold'>
-                                                    <li class='list-group-item'>
-                                                        <div class='row'>
-                                                            <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                                Room Number: <span class='fw-normal'> $item->room_number</span>
-                                                            </div>
-                                                            <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Room Floor:<span class='fw-normal'> $item->floor</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item'>
-                                                        <div class='row'>
-                                                            <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                                Type of Room: <span class='fw-normal'>$item->type_of_room</span>
-                                                            </div>
-                                                            <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Number of Bed:<span class='fw-normal'> $item->number_of_bed Only</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item'>
-                                                        <div class='row'>
-                                                            <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                                Max Person: <span class='fw-normal'>$item->max_person People Only</span>
-                                                            </div>
-                                                            <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item fw-bold' style='color:#'>
-                                                        <div class='col-12'>
-                                                            Details: <span class='fw-normal'>$item->details</span>
-                                                        </div>
-                                                    </li>
-                                                    <li class='list-group-item'>
-                                                        <div class='row py-2'>
-                                                            <div class='col-12 col-lg-7 ps-0 ps-lg-4'>
-                                                                Check In: <span class='fw-normal'> $checkInDateTime - 02:00 PM</span><br>
-                                                                Check Out:<span class='fw-normal'> $checkOutDateTime - 12:00 PM</span>
-                                                            </div>
-                                                            <div class='col-12 col-lg-5 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                                Total Hours: <span class='fw-normal'> $totalNights</span><br>
-                                                                Total Payment:<span class='fw-normal'> ₱$totalPayment.00</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class='col-lg-6 col-sm-12 g-0 gx-lg-5'>
+                        <div class='complete-card'>
+                            <img loading='lazy' src=$item->photos alt='room'>
+                            <div class='complete-card-body'>
+                                <div class='complete-room-type'>$item->type_of_room</div>
+                
+                                <div class='complete-meta'>
+                                    <div class='complete-meta-label'>Room Number<div class='complete-meta-value'>$item->room_number</div></div>
+                                    <div class='complete-meta-label'>Floor<div class='complete-meta-value'>$item->floor</div></div>
+                                    <div class='complete-meta-label'>Number of Beds<div class='complete-meta-value'>$item->number_of_bed Only</div></div>
+                                    <div class='complete-meta-label'>Max Person<div class='complete-meta-value'>$item->max_person People Only</div></div>
+                                    <div class='complete-meta-label'>Price Per Night<div class='complete-meta-value complete-price'>₱$item->price.00</div></div>
                                 </div>
-                            ";
+                
+                                <div class='complete-divider'></div>
+                
+                                <div class='complete-details-label'>Details</div>
+                                <div class='complete-details-text'>$item->details</div>
+                
+                                <div class='complete-divider'></div>
+                
+                                <div class='complete-meta'>
+                                    <div class='complete-meta-label'>Check In<div class='complete-meta-value'>$checkInDateTime<br>02:00 PM</div></div>
+                                    <div class='complete-meta-label'>Check Out<div class='complete-meta-value'>$checkOutDateTime<br>12:00 PM</div></div>
+                                    <div class='complete-meta-label'>Total Nights<div class='complete-meta-value'>$totalNights Night(s)</div></div>
+                                    <div class='complete-meta-label'>Total Payment<div class='complete-meta-value complete-price'>₱$totalPayment.00</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ";
             }
         } else {
             echo "
-                        <div class='row applicantNoSchedule' style='margin-top:20rem; color: #8d8a85;'>
-                            <div class='alert alert-light text-center fs-4' role='alert' style='color: #8d8a85;'>
-                                NO RESERVATION FOUND
-                            </div>
-                        </div>
-                        ";
+                <div class='empty-state col-12'>
+                    <i class='fa-solid fa-circle-check'></i>
+                    <p>No completed reservations found</p>
+                </div>
+            ";
         }
     }
 
