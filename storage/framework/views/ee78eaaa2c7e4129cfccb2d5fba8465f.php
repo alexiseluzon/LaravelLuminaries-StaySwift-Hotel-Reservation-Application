@@ -268,7 +268,45 @@
             });
 
             function showUnpaidBookingPerUser() {
-                $.ajax({ url: '/getUnpaidBooking', method: 'GET', success: data => $('#showUnpaidReservation').html(data) });
+                $.ajax({
+                    url: '/getUnpaidBooking',
+                    method: 'GET',
+                    success: data => {
+                        $('#showUnpaidReservation').html(data);
+                        startCountdowns();
+                    }
+                });
+            }
+
+            let countdownInterval;
+
+            function startCountdowns() {
+                clearInterval(countdownInterval);
+                countdownInterval = setInterval(() => {
+                    document.querySelectorAll('.countdown-timer').forEach(el => {
+                        const expiresAt = new Date(el.dataset.expires).getTime();
+                        const now = Date.now();
+                        const diff = expiresAt - now;
+            
+                        if (diff <= 0) {
+                            el.textContent = 'Expired — cancelling...';
+                            const card = el.closest('.col-lg-6');
+                            if (card && !card.dataset.removing) {
+                                card.dataset.removing = 'true';
+                                setTimeout(() => {
+                                    card.style.transition = 'opacity 0.4s';
+                                    card.style.opacity = '0';
+                                    setTimeout(() => card.remove(), 400);
+                                }, 1000);
+                            }
+                            return;
+                        }
+            
+                        const minutes = Math.floor(diff / 60000);
+                        const seconds = Math.floor((diff % 60000) / 1000);
+                        el.textContent = `Expires in ${minutes}m ${String(seconds).padStart(2, '0')}s`;
+                    });
+                }, 1000);
             }
 
             function deleteReservation(id) {
