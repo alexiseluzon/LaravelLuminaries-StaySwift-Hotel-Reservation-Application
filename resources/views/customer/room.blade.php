@@ -396,6 +396,7 @@
     {{-- END MODAL --}}
 
     <script src="{{ asset('/js/customer/room.js') }}"></script>
+    <script src="{{ asset('/js/global.js') }}"></script>
     <script src="{{ asset('/js/logout.js') }}"></script>
     <script>
         const CUTOFF_HOUR = 14;
