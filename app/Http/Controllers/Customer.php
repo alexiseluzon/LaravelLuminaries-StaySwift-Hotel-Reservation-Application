@@ -459,9 +459,23 @@ class Customer extends Controller
     public function getUnpaidBooking(Request $request)
     {
         $data = reservationModel::join('roomTable', 'reservationTable.room_id', '=', 'roomTable.room_id')
-            ->where(
-                [['reservationTable.status', '=', 'Unpaid'], ['reservationTable.user_id', '=', auth()->guard('userModel')->user()->user_id]]
-            )->orderBy('reservationTable.reservation_id', 'ASC')->get();
+            ->where([
+                ['reservationTable.status', '=', 'Unpaid'],
+                ['reservationTable.user_id', '=', auth()->guard('userModel')->user()->user_id]
+            ])
+            ->orderBy('reservationTable.reservation_id', 'ASC')
+            ->select(
+                'reservationTable.*',
+                'roomTable.photos',
+                'roomTable.room_number',
+                'roomTable.floor',
+                'roomTable.type_of_room',
+                'roomTable.number_of_bed',
+                'roomTable.details',
+                'roomTable.max_person',
+                'roomTable.price'
+            )
+            ->get();
         if ($data->isNotEmpty()) {
             foreach ($data as $item) {
                 $currentDateTime = Carbon::now()->format('F d, Y g:i A');
@@ -475,6 +489,10 @@ class Customer extends Controller
                 $totalNights = ceil($carbonStart->diffInHours($carbonEnd) / 24);
                 $totalPayment = $totalNights * $item->price;
                 $typeOfRoom = $item->type_of_room;
+                $expiresAt = Carbon::parse($item->created_at, 'Asia/Manila')
+                    ->addMinutes(20)
+                    ->setTimezone('UTC')
+                    ->toIso8601String();
 
                 echo "
                     <div class='col-lg-6 col-sm-12 g-0 gx-lg-5'>
@@ -508,6 +526,8 @@ class Customer extends Controller
                                 <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>
                                 <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; margin-bottom:14px;'>Notes: To proceed this booking, payment for the reservation is required.</div>
                 
+                                <div class='countdown-timer' data-expires='$expiresAt' style='font-size:11px; color:#e05555; letter-spacing:0.08em; margin-bottom:14px;'></div>
+
                                 <div style='display:flex; gap:8px; flex-wrap:wrap;'>
                                     <a onclick='deleteReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#e05555; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Cancel Booking</a>
                                     <a onclick='getUpdateUnpaidReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#c9a96e; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Update Booking</a>

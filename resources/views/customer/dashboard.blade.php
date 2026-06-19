@@ -227,16 +227,16 @@
         });
     }
 
-    if(window.location.href === 'http://127.0.0.1:8000/customerDashboard'){
-        $.ajax({
-            url: '/deleteUnpaidReservation',
-            type: 'GET',
-            dataType: 'json',
-        })
-        .done(function(response) {
-            $('#ongoingReservationTable').DataTable().ajax.reload();
-        });
-    }
+    // if(window.location.href === 'http://127.0.0.1:8000/customerDashboard'){
+    //     $.ajax({
+    //         url: '/deleteUnpaidReservation',
+    //         type: 'GET',
+    //         dataType: 'json',
+    //     })
+    //     .done(function(response) {
+    //         $('#ongoingReservationTable').DataTable().ajax.reload();
+    //     });
+    // }
 </script>
 {{-- END JS --}}
 </body>

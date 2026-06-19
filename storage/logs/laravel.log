@@ -4450,3 +4450,19 @@
 #44 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #45 {main}
 "} 
+[2026-06-19 16:10:43] local.ERROR: Class "Illuminate\Support\Facades\Schedule" not found {"exception":"[object] (Error(code: 0): Class \"Illuminate\\Support\\Facades\\Schedule\" not found at C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\routes\\console.php:23)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\app\\Console\\Kernel.php(25): require()
+#1 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(453): App\\Console\\Kernel->commands()
+#2 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#3 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 
+[2026-06-19 16:11:14] local.ERROR: Class "Illuminate\Support\Facades\Schedule" not found {"exception":"[object] (Error(code: 0): Class \"Illuminate\\Support\\Facades\\Schedule\" not found at C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\routes\\console.php:23)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\app\\Console\\Kernel.php(25): require()
+#1 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(453): App\\Console\\Kernel->commands()
+#2 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#3 C:\\xampp\\htdocs\\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\\artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 
