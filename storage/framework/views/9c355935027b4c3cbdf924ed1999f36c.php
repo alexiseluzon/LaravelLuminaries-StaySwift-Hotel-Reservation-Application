@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-
-    <title>StaySwift — Manage Rooms</title>
-
-    @include('cdn')
-    <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/swal-theme.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/roomTheme.css') }}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
+    <?php echo $__env->make('cdn', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <link href="<?php echo e(asset('/css/sideBar.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('/css/swal-theme.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('/css/roomTheme.css')); ?>" rel="stylesheet">
+    <link rel="shortcut icon" href="<?php echo e(URL('/img/StaySwift Logo no bg.png')); ?>" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>StaySwift — Manage Rooms</title>
 </head>
 <body>
     <div class="d-flex" id="wrapper">
-        @include('layouts.adminSidebar')
+        <?php echo $__env->make('layouts.adminSidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg border-bottom">
@@ -27,8 +25,10 @@
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                             <li>
                                 <a class="nav-link me-3">
-                                    {{ auth()->guard('userModel')->user()->firstname }}
-                                    {{ auth()->guard('userModel')->user()->lastname }}
+                                    <?php echo e(auth()->guard('userModel')->user()->firstname); ?>
+
+                                    <?php echo e(auth()->guard('userModel')->user()->lastname); ?>
+
                                 </a>
                             </li>
                         </ul>
@@ -40,17 +40,17 @@
                 <div class="page-panel">
                     <ul class="nav nav-tabs mb-4">
                         <li class="nav-item">
-                            <a class="nav-link" href="/adminRoom">Available Rooms</a>
+                            <a class="nav-link active" href="#">Available Rooms</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">Unavailable Rooms</a>
+                            <a class="nav-link" href="/adminNotAvailableRoom">Unavailable Rooms</a>
                         </li>
                         <li class="nav-item ms-auto">
                             <a href="/addNewRoom" class="btn-gold">Add New Room <i class="bi bi-plus"></i></a>
                         </li>
                     </ul>
 
-                    <table id="notAvailableRoom" class="table table-sm table-bordered text-center align-middle">
+                    <table id="availableRoom" class="table table-sm table-bordered text-center align-middle">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    {{-- UPDATE ROOM MODAL --}}
+    
     <div class="modal fade" id="updateRoomModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -91,7 +91,7 @@
                         <div class="row g-2 mb-3">
                             <div class="col-4">
                                 <label class="form-label">Room Number</label>
-                                <input type="text" class="form-control" id="roomNumber" name="roomNumber" required>
+                                <input type="text" class="form-control" id="roomNumber" name="roomNumber" readonly required>
                             </div>
                             <div class="col-4">
                                 <label class="form-label">Floor</label>
@@ -103,7 +103,7 @@
                                 </select>
                             </div>
                             <div class="col-4">
-                                <label class="form-label">Price / Hour</label>
+                                <label class="form-label">Price / Night</label>
                                 <input type="text" class="form-control" id="roomPricePerHour" name="roomPricePerHour" required>
                             </div>
                         </div>
@@ -128,6 +128,19 @@
                             </div>
                         </div>
 
+                        <div class="row g-2 mb-3">
+                            <div class="col-12">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="roomStatus" name="roomStatus">
+                                    <option value="Available" selected>Available</option>
+                                    <option value="Occupied">Occupied</option>
+                                    <option value="Reserved">Reserved</option>
+                                    <option value="Under Maintenance">Under Maintenance</option>
+                                    <option value="Ready for Inspection">Ready for Inspection</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="row g-2">
                             <div class="col-12">
                                 <label class="form-label">Details</label>
@@ -144,8 +157,8 @@
         </div>
     </div>
 
-    <script src="{{ asset('/js/admin/room.js') }}"></script>
-    <script src="{{ asset('/js/dateTime.js') }}"></script>
-    <script src="{{ asset('/js/logout.js') }}"></script>
+    <script src="<?php echo e(asset('/js/admin/room.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/dateTime.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/logout.js')); ?>"></script>
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\resources\views/admin/room.blade.php ENDPATH**/ ?>

@@ -82,7 +82,7 @@ class Admin extends Controller
             // AVAILABLE ROOM FOR TABLE
             public function getAvailableRoom(Request $request){
                 $data = roomModel::where([['is_available', '=', 1]])->select(
-                    'room_id','room_number','floor','type_of_room','price_per_hour','status'
+                    'room_id','room_number','floor','type_of_room','price','status'
                 )->get();
                 return response()->json($data);
             }
@@ -90,7 +90,7 @@ class Admin extends Controller
             // NOT AVAILABLE ROOM FOR TABLE
             public function getNotAvailableRoom(Request $request){
                 $data = roomModel::where([['is_available', '=', 0]])->select(
-                    'room_id','room_number','floor','type_of_room','price_per_hour'
+                    'room_id','room_number','floor','type_of_room','price'
                 )->get();
                 return response()->json($data);
             }
@@ -111,7 +111,7 @@ class Admin extends Controller
                     'number_of_bed' => $request->bedNumber,
                     'details' => $request->detailsOfRoom,
                     'max_person' => $request->maxPerson,
-                    'price_per_hour' => $request->pricePerHour,
+                    'price' => $request->pricePerHour,
                     'is_available' => 1
                     ]);
                     return response()->json($addRoom ? 1 : 0);
@@ -129,7 +129,7 @@ class Admin extends Controller
                     ->orderBy('reservationTable.reservation_id', 'ASC')
                     ->select(
                         'reservationTable.reservation_id', 'userTable.user_id', 'userTable.lastname', 'userTable.firstname', 'userTable.middlename',
-                        'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price_per_hour', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
+                        'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
                     )->orderBy('reservationTable.start_dataTime', 'ASC')->get();
 
                 foreach ($data as $reservation) {
@@ -156,7 +156,7 @@ class Admin extends Controller
                 ->orderBy('reservationTable.reservation_id', 'ASC')
                 ->select(
                     'reservationTable.reservation_id', 'userTable.user_id', 'userTable.lastname', 'userTable.firstname', 'userTable.middlename',
-                    'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price_per_hour', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
+                    'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
                 )->orderBy('reservationTable.start_dataTime', 'ASC')->get();
 
                 foreach ($data as $reservation) {
@@ -183,7 +183,7 @@ class Admin extends Controller
                 ->orderBy('reservationTable.is_noted', 'ASC')->orderBy('reservationTable.start_dataTime', 'DESC')
                 ->select(
                     'reservationTable.reservation_id','reservationTable.is_noted', 'userTable.user_id', 'userTable.lastname', 'userTable.firstname', 'userTable.middlename',
-                    'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price_per_hour', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
+                    'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
                 )->get();
 
                 foreach ($data as $reservation) {
@@ -210,7 +210,7 @@ class Admin extends Controller
                 ->orderBy('reservationTable.reservation_id', 'ASC')
                 ->select(
                     'reservationTable.reservation_id', 'userTable.user_id', 'userTable.lastname', 'userTable.firstname', 'userTable.middlename',
-                    'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price_per_hour', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
+                    'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
                 )->orderBy('reservationTable.start_dataTime', 'ASC')->get();
 
                 foreach ($data as $reservation) {
@@ -236,7 +236,7 @@ class Admin extends Controller
                 ->where([['reservationTable.status', '=', 'Complete']])->orderBy('reservationTable.reservation_id', 'ASC')
                 ->select(
                     'reservationTable.reservation_id','userTable.user_id','userTable.lastname','userTable.firstname','userTable.middlename','userTable.extention',
-                    'roomTable.room_id', 'roomTable.room_number','roomTable.floor','roomTable.price_per_hour','reservationTable.start_dataTime','reservationTable.end_dateTime',
+                    'roomTable.room_id', 'roomTable.room_number','roomTable.floor','roomTable.price','reservationTable.start_dataTime','reservationTable.end_dateTime',
                 )->orderBy('reservationTable.end_dateTime' , 'ASC')->get();
                 foreach ($data as $reservation) {
                     $startDateTime = Carbon::parse($reservation->start_dataTime);
@@ -256,7 +256,8 @@ class Admin extends Controller
                 ->where([['reservationTable.status', '=', 'UnAttended']])->orderBy('reservationTable.reservation_id', 'ASC')
                 ->select(
                     'reservationTable.reservation_id','userTable.user_id','userTable.lastname','userTable.firstname','userTable.middlename','userTable.extention',
-                    'roomTable.room_id', 'roomTable.room_number','roomTable.floor','roomTable.price_per_hour','reservationTable.start_dataTime','reservationTable.end_dateTime',
+                    'roomTable.room_id', 'roomTable.room_number','roomTable.floor','roomTable.price
+                    ','reservationTable.start_dataTime','reservationTable.end_dateTime',
                 )->orderBy('reservationTable.end_dateTime' , 'ASC')->get();
                 foreach ($data as $reservation) {
                     $startDateTime = Carbon::parse($reservation->start_dataTime);
@@ -360,7 +361,7 @@ class Admin extends Controller
                 $update->details = $request->input('detailsOfRoom');
                 $update->max_person = $request->input('roomMaxPerson');
                 $update->status = $request->input('roomStatus');
-                $update->price_per_hour = $request->input('roomPricePerHour');
+                $update->price = $request->input('roomPricePerHour');
                 $update->save();
 
                 return response()->json(1);

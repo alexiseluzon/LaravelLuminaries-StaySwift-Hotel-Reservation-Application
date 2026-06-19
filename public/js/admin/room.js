@@ -32,7 +32,7 @@ $(document).ready(function(){
             {"data":"floor"},
             {"data":"type_of_room"},
             { "mData": function (data, type, row) {
-                return '₱'+data.price_per_hour+'.00'
+                return '₱'+data.price+'.00'
             }},
             {"data": "room_id",
                 mRender: function (data, type, row) {
@@ -74,7 +74,7 @@ $(document).ready(function(){
             {"data":"room_number"},
             {"data":"floor"},
             {"data":"type_of_room"},
-            {"data":"price_per_hour"},
+            {"data":"price"},
             {"data": "room_id",
                 mRender: function (data, type, row) {
                     return '<button type="button" data-title="View Details?" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" onclick=viewRoomDetails('+data+') class="btn rounded-0 btn-outline-secondary btn-sm py-2 px-3"><i class="bi bi-pencil-square"></i></button> <button type="button" onclick=activateRoom('+data+') class="btn rounded-0 ROUNDED-0 btn-outline-success btn-sm py-2 px-3" data-title="Activate Room?"><i class="bi bi-check2-square"></i></button>'
@@ -148,7 +148,7 @@ $(document).ready(function(){
             $('#roomFloor').val(response.floor)           
             $('#roomStart').val(response.room_number)           
             $('#roomEnd').val(response.room_number)           
-            $('#roomPricePerHour').val(response.price_per_hour)           
+            $('#roomPricePerHour').val(response.price)           
             $('#roomType').val(response.type_of_room)           
             $('#roomBedNumber').val(response.number_of_bed)           
             $('#roomMaxPerson').val(response.max_person)           

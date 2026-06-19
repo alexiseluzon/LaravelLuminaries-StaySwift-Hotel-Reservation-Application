@@ -8,7 +8,7 @@
         <title>StaySwift</title>
             <!-- CSS -->
                 <link rel="shortcut icon" href="<?php echo e(URL('/img/StaySwift Logo no bg.png')); ?>" type="image/x-icon">
-                <link href="<?php echo e(asset('/css/adminDashboard.css')); ?>" rel="stylesheet">
+                <!-- <link href="<?php echo e(asset('/css/adminDashboard.css')); ?>" rel="stylesheet"> -->
                 <link href="<?php echo e(asset('/css/sideBar.css')); ?>" rel="stylesheet">
                 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
             <!-- CSS -->

@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
 
     <title>StaySwift — Manage Rooms</title>
 
-    @include('cdn')
-    <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/swal-theme.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/roomTheme.css') }}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
+    <?php echo $__env->make('cdn', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <link href="<?php echo e(asset('/css/sideBar.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('/css/swal-theme.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('/css/roomTheme.css')); ?>" rel="stylesheet">
+    <link rel="shortcut icon" href="<?php echo e(URL('/img/StaySwift Logo no bg.png')); ?>" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="d-flex" id="wrapper">
-        @include('layouts.adminSidebar')
+        <?php echo $__env->make('layouts.adminSidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg border-bottom">
@@ -27,8 +27,10 @@
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                             <li>
                                 <a class="nav-link me-3">
-                                    {{ auth()->guard('userModel')->user()->firstname }}
-                                    {{ auth()->guard('userModel')->user()->lastname }}
+                                    <?php echo e(auth()->guard('userModel')->user()->firstname); ?>
+
+                                    <?php echo e(auth()->guard('userModel')->user()->lastname); ?>
+
                                 </a>
                             </li>
                         </ul>
@@ -67,7 +69,7 @@
         </div>
     </div>
 
-    {{-- UPDATE ROOM MODAL --}}
+    
     <div class="modal fade" id="updateRoomModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -144,8 +146,8 @@
         </div>
     </div>
 
-    <script src="{{ asset('/js/admin/room.js') }}"></script>
-    <script src="{{ asset('/js/dateTime.js') }}"></script>
-    <script src="{{ asset('/js/logout.js') }}"></script>
+    <script src="<?php echo e(asset('/js/admin/room.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/dateTime.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/logout.js')); ?>"></script>
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\resources\views/admin/notAvailableRoom.blade.php ENDPATH**/ ?>
