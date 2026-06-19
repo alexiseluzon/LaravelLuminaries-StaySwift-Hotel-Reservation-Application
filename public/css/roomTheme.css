@@ -1,0 +1,358 @@
+/* ==========================================================================
+   StaySwift — Shared Room Page Theme (warm dark + gold accents)
+   Used by: customer available rooms page, admin room management pages
+   ========================================================================== */
+
+:root {
+    --c-bg: #1a1612;
+    --c-panel: #221e18;
+    --c-border: #3a3228;
+    --c-text: #d4c4a8;
+    --c-text-bright: #e8dcc8;
+    --c-text-muted: #7a6a56;
+    --c-text-faint: #4a4035;
+    --c-gold: #c9a96e;
+    --c-gold-hover: #e8cfa0;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--c-bg);
+    color: var(--c-text);
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+    background: var(--c-panel) !important;
+    border-color: var(--c-border) !important;
+}
+.navbar h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    color: var(--c-text-bright);
+    font-size: 18px;
+}
+.navbar .nav-link { color: var(--c-text-muted) !important; font-size: 11px; letter-spacing: 0.12em; }
+
+/* ---------- Page layout ---------- */
+.mainBar { padding: 28px 24px; }
+
+.page-panel {
+    background: var(--c-panel);
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    padding: 28px 32px;
+}
+
+.gold-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-gold), transparent);
+    margin: 20px 0 28px;
+}
+
+/* ---------- Tabs ---------- */
+.nav-tabs { border-bottom: 1px solid var(--c-border); }
+.nav-tabs .nav-link {
+    border: none;
+    background: transparent;
+    color: var(--c-text-muted);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    border-bottom: 2px solid transparent;
+}
+.nav-tabs .nav-link:hover { color: var(--c-text); border-bottom-color: var(--c-border); }
+.nav-tabs .nav-link.active {
+    background: transparent;
+    color: var(--c-gold);
+    border-bottom-color: var(--c-gold);
+}
+
+/* ---------- Buttons ---------- */
+.btn-gold {
+    display: inline-block;
+    background: var(--c-gold);
+    color: var(--c-bg);
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 1px;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+.btn-gold:hover { background: var(--c-gold-hover); color: var(--c-bg); }
+
+/* Recolor Bootstrap's default outline buttons (used by dynamically-rendered
+   table action buttons) to match the theme, via Bootstrap 5's CSS vars —
+   no markup or JS changes required. */
+.btn-outline-secondary {
+    --bs-btn-color: var(--c-text-muted);
+    --bs-btn-border-color: var(--c-border);
+    --bs-btn-hover-bg: var(--c-border);
+    --bs-btn-hover-border-color: var(--c-border);
+    --bs-btn-hover-color: var(--c-text-bright);
+}
+.btn-outline-danger {
+    --bs-btn-color: #b97a6e;
+    --bs-btn-border-color: #4a342e;
+    --bs-btn-hover-bg: #4a342e;
+    --bs-btn-hover-border-color: #4a342e;
+    --bs-btn-hover-color: #e8b8a8;
+}
+.btn-outline-success {
+    --bs-btn-color: #8fae7a;
+    --bs-btn-border-color: #36402c;
+    --bs-btn-hover-bg: #36402c;
+    --bs-btn-hover-border-color: #36402c;
+    --bs-btn-hover-color: #c4dcae;
+}
+
+/* ---------- Tables (DataTables) ---------- */
+.table { color: var(--c-text); border-color: var(--c-border) !important; }
+.table thead th {
+    background: var(--c-bg);
+    color: var(--c-text-muted);
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-color: var(--c-border) !important;
+}
+.table tbody td { border-color: var(--c-border) !important; font-size: 12.5px; vertical-align: middle; }
+.table tbody tr:hover { background: rgba(201,169,110,0.05); }
+
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    color: var(--c-text);
+    border-radius: 1px;
+    font-size: 12px;
+}
+.dataTables_wrapper .dataTables_length select:focus,
+.dataTables_wrapper .dataTables_filter input:focus { outline: none; border-color: var(--c-gold); }
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label { color: var(--c-text-muted); font-size: 11px; }
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: var(--c-text-muted) !important;
+    border-radius: 1px !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--c-gold) !important;
+    border-color: var(--c-gold) !important;
+    color: var(--c-bg) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: var(--c-border) !important;
+    color: var(--c-text-bright) !important;
+}
+
+/* ---------- Modal ---------- */
+.modal-content {
+    background: var(--c-panel);
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    color: var(--c-text);
+}
+.modal-header { border-bottom: 1px solid var(--c-border); padding: 20px 24px 16px; }
+.modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 20px;
+    letter-spacing: 0.18em;
+    color: var(--c-text-bright) !important;
+}
+.btn-close { filter: invert(1) brightness(0.5); }
+.modal-body { padding: 24px; }
+.modal-footer { border-top: 1px solid var(--c-border); padding: 16px 24px; }
+
+.modal-body .form-label {
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-text-muted);
+    margin-bottom: 6px;
+}
+.modal-body .form-control,
+.modal-body .form-select {
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    color: var(--c-text);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    border-radius: 1px;
+}
+.modal-body .form-control:focus,
+.modal-body .form-select:focus {
+    border-color: var(--c-gold);
+    box-shadow: 0 0 0 3px rgba(201,169,110,0.1);
+    background: #1e1a15;
+    color: var(--c-text);
+}
+.modal-body .form-select option { background: var(--c-panel); }
+.modal-body .form-control::-webkit-calendar-picker-indicator { filter: invert(0.6); cursor: pointer; }
+
+.modal-btn-close {
+    background: transparent;
+    border: 1px solid var(--c-border);
+    color: var(--c-text-muted);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 1px;
+    transition: border-color 0.2s, color 0.2s;
+}
+.modal-btn-close:hover { border-color: var(--c-text-muted); color: var(--c-text); }
+
+.modal-btn-submit {
+    background: var(--c-gold);
+    color: var(--c-bg);
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    border-radius: 1px;
+    transition: background 0.2s;
+}
+.modal-btn-submit:hover { background: var(--c-gold-hover); }
+
+/* ---------- Room cards (customer listing) ---------- */
+#filterForm .form-label {
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-text-muted);
+    margin-bottom: 6px;
+}
+#filterForm .form-select {
+    background-color: var(--c-bg);
+    border: 1px solid var(--c-border);
+    color: var(--c-text);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    border-radius: 1px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#filterForm .form-select:focus { border-color: var(--c-gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.1); }
+#filterForm .form-select option { background: var(--c-panel); }
+
+#showTotalRoom { margin-top: 28px; }
+
+.room-card {
+    background: var(--c-panel);
+    border: 1px solid var(--c-border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    height: 100%;
+}
+.room-card:hover { border-color: var(--c-gold); box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+.room-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.room-card-body { padding: 20px; }
+
+.room-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--c-text-bright);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+.room-type-badge {
+    display: inline-block;
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+    border: 1px solid var(--c-border);
+    padding: 3px 10px;
+    margin-bottom: 14px;
+}
+.room-divider { height: 1px; background: var(--c-border); margin: 12px 0; }
+.room-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin-bottom: 14px; }
+.room-meta-label {
+    font-size: 7.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-text-muted);
+    display: block;
+    margin-bottom: 2px;
+}
+.room-meta-value { font-size: 12px; color: var(--c-text); }
+.room-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--c-gold);
+    letter-spacing: 0.05em;
+}
+.room-price span { font-size: 12px; color: var(--c-text-muted); font-family: 'Montserrat', sans-serif; }
+.room-details { font-size: 11px; color: var(--c-text-muted); line-height: 1.6; margin: 10px 0 16px; }
+
+.book-btn {
+    width: 100%;
+    background: var(--c-gold);
+    color: var(--c-bg);
+    border: none;
+    padding: 11px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 1px;
+}
+.book-btn:hover { background: var(--c-gold-hover); }
+
+/* ---------- Empty state ---------- */
+.empty-state { text-align: center; margin-top: 8rem; color: var(--c-text-faint); }
+.empty-state i { font-size: 40px; margin-bottom: 16px; display: block; }
+.empty-state p { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; }
+
+/* ---------- Flatpickr (date pickers) ---------- */
+.flatpickr-calendar {
+    background: var(--c-panel) !important;
+    border: 1px solid var(--c-border) !important;
+    border-radius: 2px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+}
+.flatpickr-month, .flatpickr-weekdays, span.flatpickr-weekday {
+    background: var(--c-panel) !important;
+    color: var(--c-text-muted) !important;
+}
+.flatpickr-current-month input.cur-year,
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    color: var(--c-text-bright) !important;
+    background: transparent !important;
+}
+.flatpickr-current-month .flatpickr-monthDropdown-months option { background: var(--c-panel); }
+.flatpickr-day { color: var(--c-text) !important; border-radius: 1px !important; }
+.flatpickr-day:hover { background: var(--c-border) !important; border-color: var(--c-border) !important; }
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+    background: var(--c-gold) !important;
+    border-color: var(--c-gold) !important;
+    color: var(--c-bg) !important;
+}
+.flatpickr-day.today { border-color: var(--c-gold) !important; }
+.flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
+    color: var(--c-border) !important;
+}
+.flatpickr-prev-month svg, .flatpickr-next-month svg { fill: var(--c-gold) !important; }
+.flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: var(--c-gold-hover) !important; }

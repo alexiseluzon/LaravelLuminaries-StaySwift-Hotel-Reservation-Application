@@ -5,7 +5,7 @@
     </div>
     <div class="list-group list-group-flush recruiterLink">
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
-            href="/adminDashboard"><i class="bi bi-bar-chart pe-3"></i> Details</a>
+            href="/adminDashboard"><i class="bi bi-bar-chart pe-3"></i> Dashboard</a>
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
             href="/adminRoom"><i class="bi bi-box pe-3"></i> Rooms</a>
         <a class="list-group-item recruiterA list-group-item-action list-group-item-light p-3" 
