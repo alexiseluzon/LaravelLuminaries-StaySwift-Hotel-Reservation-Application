@@ -5,8 +5,33 @@ $(document).ready(function(){
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    }); 
+    });
 });
+
+// Escapes a value for safe use inside an HTML attribute (e.g. title="...")
+function escapeAttr(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+// Truncates long text and exposes the full text via a native title tooltip
+function renderTruncated(text, maxLength = 60) {
+    var safe = String(text ?? '');
+    var truncated = safe.length > maxLength ? safe.slice(0, maxLength) + '…' : safe;
+    return '<span class="cell-truncate" title="' + escapeAttr(safe) + '">' + escapeAttr(truncated) + '</span>';
+}
+
+function formatPrice(amount) {
+    return '₱' + amount + '.00';
+}
+
+// (Re)initializes Bootstrap tooltips on whatever action buttons exist after a DataTables draw
+function initTooltips() {
+    $('[data-bs-toggle="tooltip"]').tooltip();
+}
 
 // FETCH AVAILABLE ROOM FOR TABLE
     function availableRoom(){
@@ -20,6 +45,7 @@ $(document).ready(function(){
         "info": true,
         "responsive": true,
         "ordering": false,
+        "autoWidth": false,
         "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
         "iDisplayLength": 25,
         "ajax":{
@@ -31,16 +57,22 @@ $(document).ready(function(){
             {"data":"room_number"},
             {"data":"floor"},
             {"data":"type_of_room"},
-            { "mData": function (data, type, row) {
-                return '₱'+data.price+'.00'
+            {"data":"number_of_bed"},
+            {"data":"max_person"},
+            {"data":"price", "render": function (data, type, row) {
+                return formatPrice(data);
+            }},
+            {"data":"details", "render": function (data, type, row) {
+                return renderTruncated(data);
             }},
             {"data": "room_id",
-                mRender: function (data, type, row) {
-                return '<button type="button" data-title="View Details?" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" onclick=viewRoomDetails('+data+') class="btn rounded-0 btn-outline-secondary btn-sm py-2 px-3"><i class="bi bi-pencil-square"></i></button> <button type="button" onclick=deactivateRoom('+data+') class="btn rounded-0 ROUNDED-0 btn-outline-danger btn-sm py-2 px-3" data-title="Deactivate Room?"><i class="bi bi-trash3"></i></button>'
+                render: function (data, type, row) {
+                return '<button type="button" title="Update" data-bs-toggle="tooltip" data-bs-placement="top" onclick=viewRoomDetails('+data+') class="btn rounded-0 btn-outline-secondary btn-sm py-2 px-3"><i class="bi bi-pencil-square"></i></button> <button type="button" title="Deactivate Room" data-bs-toggle="tooltip" data-bs-placement="top" onclick=deactivateRoom('+data+') class="btn rounded-0 btn-outline-danger btn-sm py-2 px-3"><i class="bi bi-toggle-off"></i></button>'
             }
             }
         ],
         order: [[1, 'asc']],
+        drawCallback: initTooltips,
     });
     table.on('order.dt search.dt', function () {
         let i = 1;
@@ -51,7 +83,7 @@ $(document).ready(function(){
     }
 // FETCH AVAILABLE ROOM FOR TABLE
 
-// FETCH AVAILABLE ROOM FOR TABLE
+// FETCH NOT AVAILABLE ROOM FOR TABLE
     function notAvailableRoom(){
     var table = $('#notAvailableRoom').DataTable({
         "language": {
@@ -63,6 +95,7 @@ $(document).ready(function(){
         "info": true,
         "responsive": true,
         "ordering": false,
+        "autoWidth": false,
         "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
         "iDisplayLength": 25,
         "ajax":{
@@ -74,14 +107,22 @@ $(document).ready(function(){
             {"data":"room_number"},
             {"data":"floor"},
             {"data":"type_of_room"},
-            {"data":"price"},
+            {"data":"number_of_bed"},
+            {"data":"max_person"},
+            {"data":"price", "render": function (data, type, row) {
+                return formatPrice(data);
+            }},
+            {"data":"details", "render": function (data, type, row) {
+                return renderTruncated(data);
+            }},
             {"data": "room_id",
-                mRender: function (data, type, row) {
-                    return '<button type="button" data-title="View Details?" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" onclick=viewRoomDetails('+data+') class="btn rounded-0 btn-outline-secondary btn-sm py-2 px-3"><i class="bi bi-pencil-square"></i></button> <button type="button" onclick=activateRoom('+data+') class="btn rounded-0 ROUNDED-0 btn-outline-success btn-sm py-2 px-3" data-title="Activate Room?"><i class="bi bi-check2-square"></i></button>'
+                render: function (data, type, row) {
+                    return '<button type="button" title="Update" data-bs-toggle="tooltip" data-bs-placement="top" onclick=viewRoomDetails('+data+') class="btn rounded-0 btn-outline-secondary btn-sm py-2 px-3"><i class="bi bi-pencil-square"></i></button> <button type="button" title="Activate Room" data-bs-toggle="tooltip" data-bs-placement="top" onclick=activateRoom('+data+') class="btn rounded-0 btn-outline-success btn-sm py-2 px-3"><i class="bi bi-toggle-on"></i></button>'
                 }
             }
         ],
         order: [[1, 'asc']],
+        drawCallback: initTooltips,
     });
     table.on('order.dt search.dt', function () {
         let i = 1;
@@ -90,9 +131,9 @@ $(document).ready(function(){
         });
     }).draw();
     }
-// FETCH AVAILABLE ROOM FOR TABLE
+// FETCH NOT AVAILABLE ROOM FOR TABLE
 
-// ADD ROOM 
+// ADD ROOM
     $(document).ready(function () {
         $('#addRoomDetailsForm').on( 'submit' , function(e){
             e.preventDefault();
@@ -128,7 +169,7 @@ $(document).ready(function(){
                     error:function(error){
                         console.log(error)
                     }
-                }) 
+                })
         });
     });
 // ADD ROOM
@@ -143,22 +184,20 @@ $(document).ready(function(){
             data: {roomId: id},
         })
         .done(function(response) {
-            $('#room_id').val(response.room_id),           
-            $('#roomNumber').val(response.room_number),           
-            $('#roomFloor').val(response.floor)           
-            $('#roomStart').val(response.room_number)           
-            $('#roomEnd').val(response.room_number)           
-            $('#roomPricePerHour').val(response.price)           
-            $('#roomType').val(response.type_of_room)           
-            $('#roomBedNumber').val(response.number_of_bed)           
-            $('#roomMaxPerson').val(response.max_person)           
-            $('#detailsOfRoom').val(response.details)           
+            $('#room_id').val(response.room_id),
+            $('#roomNumber').val(response.room_number),
+            $('#roomFloor').val(response.floor)
+            $('#roomPricePerHour').val(response.price)
+            $('#roomType').val(response.type_of_room)
+            $('#roomBedNumber').val(response.number_of_bed)
+            $('#roomMaxPerson').val(response.max_person)
+            $('#detailsOfRoom').val(response.details)
             $('#roomPhoto').attr("src",response.photos)
         })
     }
 // VIEW DETAILS OF ROOM
 
-// UPDATE ROOM 
+// UPDATE ROOM
     $(document).ready(function () {
         $('#updateRoomForm').on( 'submit' , function(e){
             e.preventDefault();
@@ -175,12 +214,13 @@ $(document).ready(function(){
                 processData: false,
                 success:function(response){
                     if(response == 1){
+                        $('#updateRoomModal').modal('hide');
                         $('#availableRoom').DataTable().ajax.reload();
                         $('#notAvailableRoom').DataTable().ajax.reload();
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            title: 'ROOM HAS BEEN UPDATE SUCCESSFULLY',
+                            title: 'ROOM HAS BEEN UPDATED SUCCESSFULLY',
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -189,10 +229,10 @@ $(document).ready(function(){
                 error:function(error){
                     console.log(error)
                 }
-            }) 
+            })
         });
     });
-// UPDATE ROOM 
+// UPDATE ROOM
 
 // DEACTIVATE ROOM
     function deactivateRoom(id){
@@ -213,7 +253,7 @@ $(document).ready(function(){
                 data: {roomId: id},
             });
             Swal.fire({
-                title: 'DEACTIVATE SUCCESSFULLY',
+                title: 'DEACTIVATED SUCCESSFULLY',
                 icon: 'success',
                 showConfirmButton: false,
                 timer: 1000,
@@ -246,7 +286,7 @@ $(document).ready(function(){
             data: {roomId: id},
         });
         Swal.fire({
-            title: 'ACTIVATE SUCCESSFULLY',
+            title: 'ACTIVATED SUCCESSFULLY',
             icon: 'success',
             showConfirmButton: false,
             timer: 1000,
@@ -259,5 +299,3 @@ $(document).ready(function(){
     });
     }
 // ACTIVATE ROOM
-
-

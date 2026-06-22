@@ -57,7 +57,10 @@
                                 <th>Room Number</th>
                                 <th>Floor</th>
                                 <th>Type of Room</th>
+                                <th>Beds</th>
+                                <th>Max Guests</th>
                                 <th>Price</th>
+                                <th>Details</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -100,11 +103,18 @@
                                     <option value="Second Floor">Second Floor</option>
                                     <option value="Third Floor">Third Floor</option>
                                     <option value="Fourth Floor">Fourth Floor</option>
+                                    <option value="Fifth Floor">Fifth Floor</option>
+                                    <option value="Sixth Floor">Sixth Floor</option>
+                                    <option value="Seventh Floor">Seventh Floor</option>
+                                    <option value="Eighth Floor">Eighth Floor</option>
+                                    <option value="Ninth Floor">Ninth Floor</option>
+                                    <option value="Tenth Floor">Tenth Floor</option>
+                                    <option value="Eleventh Floor">Eleventh Floor</option>
                                 </select>
                             </div>
                             <div class="col-4">
                                 <label class="form-label">Price / Night</label>
-                                <input type="text" class="form-control" id="roomPricePerHour" name="roomPricePerHour" required>
+                                <input type="number" class="form-control" id="roomPricePerHour" name="roomPricePerHour" min="0" step="0.01" required>
                             </div>
                         </div>
 
@@ -112,32 +122,26 @@
                             <div class="col-4">
                                 <label class="form-label">Type of Room</label>
                                 <select class="form-select" id="roomType" name="roomType">
-                                    <option value="Standard Room" selected>Standard Room</option>
-                                    <option value="Superior Double Room">Superior Double Room</option>
-                                    <option value="Single Deluxe Room">Single Deluxe Room</option>
-                                    <option value="Executive Deluxe King Room">Executive Deluxe King Room</option>
+                                    <option value="Standard Room">Standard Room</option>
+                                    <option value="Deluxe Room">Deluxe Room</option>
+                                    <option value="Superior Room">Superior Room</option>
+                                    <option value="Junior Suite">Junior Suite</option>
+                                    <option value="Executive Suite">Executive Suite</option>
+                                    <option value="Family Room">Family Room</option>
+                                    <option value="Connecting Room">Connecting Room</option>
+                                    <option value="Accessible Room">Accessible Room</option>
+                                    <option value="Deluxe Suite">Deluxe Suite</option>
+                                    <option value="Presidential Suite">Presidential Suite</option>
+                                    <option value="Penthouse Suite">Penthouse Suite</option>
                                 </select>
                             </div>
                             <div class="col-4">
                                 <label class="form-label">Beds</label>
-                                <input type="number" class="form-control" id="roomBedNumber" name="roomBedNumber" min="0" max="5" required>
+                                <input type="number" class="form-control" id="roomBedNumber" name="roomBedNumber" min="1" max="5" required>
                             </div>
                             <div class="col-4">
                                 <label class="form-label">Max Person</label>
-                                <input type="number" class="form-control" id="roomMaxPerson" name="roomMaxPerson" min="0" max="10" required>
-                            </div>
-                        </div>
-
-                        <div class="row g-2 mb-3">
-                            <div class="col-12">
-                                <label class="form-label">Status</label>
-                                <select class="form-select" id="roomStatus" name="roomStatus">
-                                    <option value="Available" selected>Available</option>
-                                    <option value="Occupied">Occupied</option>
-                                    <option value="Reserved">Reserved</option>
-                                    <option value="Under Maintenance">Under Maintenance</option>
-                                    <option value="Ready for Inspection">Ready for Inspection</option>
-                                </select>
+                                <input type="number" class="form-control" id="roomMaxPerson" name="roomMaxPerson" min="1" max="10" required>
                             </div>
                         </div>
 

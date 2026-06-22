@@ -82,7 +82,7 @@ class Admin extends Controller
             // AVAILABLE ROOM FOR TABLE
             public function getAvailableRoom(Request $request){
                 $data = roomModel::where([['is_available', '=', 1]])->select(
-                    'room_id','room_number','floor','type_of_room','price','status'
+                    'room_id','room_number','floor','type_of_room','price','number_of_bed','max_person','details'
                 )->get();
                 return response()->json($data);
             }
@@ -90,7 +90,7 @@ class Admin extends Controller
             // NOT AVAILABLE ROOM FOR TABLE
             public function getNotAvailableRoom(Request $request){
                 $data = roomModel::where([['is_available', '=', 0]])->select(
-                    'room_id','room_number','floor','type_of_room','price'
+                    'room_id','room_number','floor','type_of_room','price','number_of_bed','max_person','details'
                 )->get();
                 return response()->json($data);
             }
@@ -349,9 +349,9 @@ class Admin extends Controller
 
                 if ($request->hasFile('roomPhoto')) {
                     $filename = $request->file('roomPhoto');
-                    $imageName = time() . rand() . '.' . $filename->getClientOriginalExtension();
-                    $path = $request->file('roomPhoto')->storeAs('roomPhotos', $imageName, 'public');
-                    $update->photos = '/storage/' . $path;
+                    $imageName = $filename->getClientOriginalName();
+                    $path = $request->file('roomPhoto')->storeAs('rooms', $imageName, 'public');
+                    $update->photos = '/images/' . $path;
                 }
 
                 $update->room_number = $request->input('roomNumber');
