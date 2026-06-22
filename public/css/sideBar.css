@@ -90,3 +90,13 @@
 @media (max-width: 768px) {
     #dateDisplay, #clockDisplay { display: none !important; }
 }
+
+/* Navbar bottom border */
+.navbar {
+    border-color: #c9a96e !important;
+}
+
+/* Sidebar date border-top */
+.sidebar-footing {
+    border-color: #c9a96e !important;
+}

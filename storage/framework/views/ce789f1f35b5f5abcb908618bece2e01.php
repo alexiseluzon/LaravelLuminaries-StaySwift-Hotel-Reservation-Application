@@ -1,6 +1,7 @@
 <div class="border-end bg-white" id="sidebar-wrapper">
     <div class="sidebar-heading border-bottom pt-5 text-center">
         <img class="scpiLogo" src="/img/StaySwift Logo no bg.png">
+        <link href="<?php echo e(asset('/css/sideBar.css')); ?>" rel="stylesheet">
         <p class="portal pt-4">Administrator Portal</p>
     </div>
     <div class="list-group list-group-flush recruiterLink">

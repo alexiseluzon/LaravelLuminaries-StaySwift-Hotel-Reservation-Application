@@ -365,3 +365,81 @@ body {
 }
 .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: var(--c-gold) !important; }
 .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: var(--c-gold-hover) !important; }
+
+.page-panel .form-control,
+.page-panel .form-select {
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    color: var(--c-text);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    border-radius: 1px;
+    color-scheme: dark;
+}
+
+.page-panel .form-control:focus,
+.page-panel .form-select:focus {
+    border-color: var(--c-gold);
+    box-shadow: 0 0 0 3px rgba(201,169,110,0.1);
+    background: #1e1a15;
+    color: var(--c-text);
+}
+
+.page-panel .form-label {
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-text-muted);
+    margin-bottom: 6px;
+}
+
+.page-panel .form-select option { background: var(--c-panel); }
+
+#page-content-wrapper {
+    background: var(--c-bg);
+}
+
+#wrapper {
+    background: var(--c-bg);
+}
+
+.page-panel h5 {
+    color: var(--c-text-bright);
+}
+
+.file-upload-label {
+    display: block;
+    background: var(--c-bg);
+    border: 1px dashed var(--c-border);
+    color: var(--c-text-muted);
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: border-color 0.2s, color 0.2s;
+}
+.file-upload-label:hover {
+    border-color: var(--c-gold);
+    color: var(--c-gold);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: var(--c-text-muted) !important;
+    background: transparent !important;
+    border: 1px solid var(--c-border) !important;
+    border-radius: 1px !important;
+    margin: 0 2px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--c-gold) !important;
+    border-color: var(--c-gold) !important;
+    color: var(--c-bg) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current) {
+    background: var(--c-border) !important;
+    color: var(--c-text-bright) !important;
+    border-color: var(--c-border) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: var(--c-text-faint) !important;
+    border-color: var(--c-text-faint) !important;
+}
