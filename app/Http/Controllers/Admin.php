@@ -100,9 +100,9 @@ class Admin extends Controller
                 $data = roomModel::where([['room_number', '=', $request->roomNumber]])->get();
                 if(!$data->isNotEmpty()){
                     $filename = $request->file('roomPhoto');
-                    $imageName =   time().rand() . '.' .  $filename->getClientOriginalExtension();
-                    $path = $request->file('roomPhoto')->storeAs('roomPhotos', $imageName);
-                    $imageData['roomPhoto'] = '/storage/'.$path;
+                    $imageName = $filename->getClientOriginalName();
+                    $path = $request->file('roomPhoto')->storeAs('rooms', $imageName);
+                    $imageData['roomPhoto'] = '/images/'.$path;
                     $addRoom = roomModel::create([
                     'photos' => $imageData['roomPhoto'],
                     'room_number' => $request->roomNumber,

@@ -86,8 +86,13 @@
 
                         <div class="row g-2 mb-3">
                             <div class="col-12">
-                                <label class="form-label">Room Photo</label>
-                                <input type="file" class="form-control" id="clearPhoto" name="roomPhoto" accept="image/png, image/jpg, image/jpeg, image/gif, image/svg">
+                                <label for="clearPhoto" class="file-upload-label">
+                                    <i class="bi bi-upload me-2"></i>
+                                    <span id="fileUploadText">Choose File</span>
+                                </label>
+                                <input required type="file" id="clearPhoto" name="roomPhoto"
+                                       accept="image/png,image/jpg,image/jpeg,image/gif,image/svg"
+                                       style="display:none">
                             </div>
                         </div>
 

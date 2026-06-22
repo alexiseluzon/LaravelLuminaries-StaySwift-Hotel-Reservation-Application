@@ -46,8 +46,8 @@ function initTooltips() {
         "responsive": true,
         "ordering": false,
         "autoWidth": false,
-        "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-        "iDisplayLength": 25,
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        "iDisplayLength": 5,
         "ajax":{
             "url":"/getAvailableRoom",
             "dataSrc": "",
@@ -96,8 +96,8 @@ function initTooltips() {
         "responsive": true,
         "ordering": false,
         "autoWidth": false,
-        "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-        "iDisplayLength": 25,
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25 , "All"]],
+        "iDisplayLength": 5,
         "ajax":{
             "url":"/getNotAvailableRoom",
             "dataSrc": "",
@@ -151,14 +151,17 @@ function initTooltips() {
                     success:function(response){
                         if(response == 1){
                             $("#addRoomDetailsForm").trigger("reset");
+                            $('#availableRoom').DataTable().ajax.reload();
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
-                                title: 'NEW ROOM HAS BEEN STORED',
+                                title: 'NEW ROOM HAS BEEN ADDED',
                                 showConfirmButton: false,
                                 timer: 1500
                             })
-                        }else if(response == 0){
+                        } else if(response == 2){
+                            Swal.fire('Duplicate', 'Room number already exists', 'warning');
+                        } else {
                             Swal.fire(
                             'Added Failed',
                             'Sorry room has not stored',
@@ -299,3 +302,13 @@ function initTooltips() {
     });
     }
 // ACTIVATE ROOM
+
+document.getElementById('roomPhoto').addEventListener('change', function () {
+    const text = this.files[0] ? this.files[0].name : 'Choose File';
+    document.getElementById('fileUploadText').textContent = text;
+});
+
+document.getElementById('clearPhoto')?.addEventListener('change', function () {
+    const text = this.files[0] ? this.files[0].name : 'Choose File';
+    document.getElementById('fileUploadText').textContent = text;
+});
