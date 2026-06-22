@@ -131,12 +131,13 @@ class Customer extends Controller
             }
         } else {
             echo "
-                        <div class='row applicantNoSchedule' style='margin-top:20rem; color: #8d8a85;'>
-                            <div class='alert alert-light text-center fs-4' role='alert' style='color: #8d8a85;'>
-                                NO ROOM AVAILABLE
-                            </div>
-                        </div>
-                        ";
+                <div style='width:100%; text-align:center; padding: 80px 20px;'>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:0 auto 20px;'></div>
+                    <div style='font-family:Cormorant Garamond, serif; font-size:22px; color:#e8dcc8; letter-spacing:0.15em; margin-bottom:10px;'>No Rooms Found</div>
+                    <div style='font-size:11px; color:#7a6a56; letter-spacing:0.1em; text-transform:uppercase;'>You have no pending reservations at this time</div>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:20px auto 0;'></div>
+                </div>
+            ";
         }
     }
 
@@ -146,7 +147,7 @@ class Customer extends Controller
         $type = $request->input('type');
         $sort = $request->input('sort');
         
-        $query = roomModel::query();
+        $query = roomModel::query()->where('is_available', 1);
 
         if ($capacity) {
             $query->where('max_person', $capacity);
@@ -446,11 +447,13 @@ class Customer extends Controller
             }
         } else {
             echo "
-                    <div class='row applicantNoSchedule' style='margin-top:20rem; color: #8d8a85;'>
-                        <div class='alert alert-light text-center fs-4' role='alert' style='color: #8d8a85;'>
-                            NO RESERVATION FOUND
-                        </div>
-                    </div>
+                </div>
+                    <div style='width:100%; text-align:center; padding: 80px 20px;'>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:0 auto 20px;'></div>
+                    <div style='font-family:Cormorant Garamond, serif; font-size:22px; color:#e8dcc8; letter-spacing:0.15em; margin-bottom:10px;'>No Reservations Found</div>
+                    <div style='font-size:11px; color:#7a6a56; letter-spacing:0.1em; text-transform:uppercase;'>You have no cancelled reservations at this time</div>
+                    <div style='width:40px; height:1px; background:#c9a96e; margin:20px auto 0;'></div>
+                </div>
                 ";
         }
     }
