@@ -8,7 +8,7 @@
     <?php echo $__env->make('cdn', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <link href="<?php echo e(asset('/css/customerDashboard.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('/css/sideBar.css')); ?>" rel="stylesheet">
-    <link rel="shortcut icon" href="<?php echo e(URL('/img/logo.png')); ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo e(URL('/img/StaySwift Logo no bg.png')); ?>" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <title>StaySwift — Dashboard</title>
     <style>
