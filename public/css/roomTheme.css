@@ -150,19 +150,6 @@ body {
 .dataTables_wrapper .dataTables_info,
 .dataTables_wrapper .dataTables_length label,
 .dataTables_wrapper .dataTables_filter label { color: var(--c-text-muted); font-size: 11px; }
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    color: var(--c-text-muted) !important;
-    border-radius: 1px !important;
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: var(--c-gold) !important;
-    border-color: var(--c-gold) !important;
-    color: var(--c-bg) !important;
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: var(--c-border) !important;
-    color: var(--c-text-bright) !important;
-}
 
 /* ---------- Modal ---------- */
 .modal-content {
@@ -422,24 +409,23 @@ body {
     color: var(--c-gold);
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button {
+.dataTables_wrapper .pagination .page-link {
     color: var(--c-text-muted) !important;
     background: transparent !important;
     border: 1px solid var(--c-border) !important;
     border-radius: 1px !important;
     margin: 0 2px;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+.dataTables_wrapper .pagination .page-item.active .page-link {
     background: var(--c-gold) !important;
     border-color: var(--c-gold) !important;
     color: var(--c-bg) !important;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current) {
+.dataTables_wrapper .pagination .page-link:hover {
     background: var(--c-border) !important;
     color: var(--c-text-bright) !important;
-    border-color: var(--c-border) !important;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+.dataTables_wrapper .pagination .page-item.disabled .page-link {
     color: var(--c-text-faint) !important;
     border-color: var(--c-text-faint) !important;
 }
