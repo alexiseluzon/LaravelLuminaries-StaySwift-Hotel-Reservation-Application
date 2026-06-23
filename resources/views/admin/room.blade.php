@@ -48,6 +48,18 @@
                         </li>
                     </ul>
 
+                    <div class="d-flex gap-2 mb-2">
+                        <select id="searchColumn" class="form-select form-select-sm w-auto">
+                            <option value="1">Room Number</option>
+                            <option value="2">Floor</option>
+                            <option value="3">Type</option>
+                            <option value="4">Beds</option>
+                            <option value="5">Max Person</option>
+                            <option value="6">Price</option>
+                        </select>
+                        <input type="text" id="searchInput" class="form-control form-control-sm w-auto" placeholder="Search...">
+                    </div>
+
                     <table id="availableRoom" class="table table-sm table-bordered text-center align-middle">
                         <thead>
                             <tr>

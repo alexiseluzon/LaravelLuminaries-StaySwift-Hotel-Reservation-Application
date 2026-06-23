@@ -35,6 +35,7 @@ function initTooltips() {
 
 // FETCH AVAILABLE ROOM FOR TABLE
     function availableRoom(){
+    if ($('#availableRoom').length === 0) return;
     var table = $('#availableRoom').DataTable({
         "language": {
             "emptyTable": "No Room Found"
@@ -48,6 +49,7 @@ function initTooltips() {
         "autoWidth": false,
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "iDisplayLength": 5,
+        "dom": '<"top"l>rt<"bottom"ip>',
         "ajax":{
             "url":"/getAvailableRoom",
             "dataSrc": "",
@@ -74,17 +76,22 @@ function initTooltips() {
         order: [[1, 'asc']],
         drawCallback: initTooltips,
     });
-    table.on('order.dt search.dt', function () {
-        let i = 1;
-        table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
-            this.data(i++);
-        });
-    }).draw();
+    $('#searchInput').off('keyup').on('keyup', function(){
+        // console.log(col, this.value)
+        var col = $('#searchColumn').val();
+        table.column(col).search(this.value).draw();
+    });
+        $('#searchColumn').off('change').on('change', function(){
+        table.columns().search(''); // clear all column searches
+        $('#searchInput').val('');  // clear input box
+        table.draw();
+    });
     }
 // FETCH AVAILABLE ROOM FOR TABLE
 
 // FETCH NOT AVAILABLE ROOM FOR TABLE
     function notAvailableRoom(){
+    if ($('#notAvailableRoom').length === 0) return;
     var table = $('#notAvailableRoom').DataTable({
         "language": {
             "emptyTable": "No Room Found"
@@ -98,6 +105,7 @@ function initTooltips() {
         "autoWidth": false,
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25 , "All"]],
         "iDisplayLength": 5,
+        "dom": '<"top"l>rt<"bottom"ip>',
         "ajax":{
             "url":"/getNotAvailableRoom",
             "dataSrc": "",
@@ -124,12 +132,16 @@ function initTooltips() {
         order: [[1, 'asc']],
         drawCallback: initTooltips,
     });
-    table.on('order.dt search.dt', function () {
-        let i = 1;
-        table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
-            this.data(i++);
-        });
-    }).draw();
+    $('#searchInput').off('keyup').on('keyup', function(){
+        var col = $('#searchColumn').val();
+        table.column(col).search(this.value).draw();
+        // console.log(col, this.value)
+    });
+    $('#searchColumn').off('change').on('change', function(){
+        table.columns().search(''); // clear all column searches
+        $('#searchInput').val('');  // clear input box
+        table.draw();
+    });
     }
 // FETCH NOT AVAILABLE ROOM FOR TABLE
 
@@ -158,7 +170,9 @@ function initTooltips() {
                                 title: 'NEW ROOM HAS BEEN ADDED',
                                 showConfirmButton: false,
                                 timer: 1500
-                            })
+                            }).then(() => {
+                                window.location.href = "/adminRoom";
+                            });
                         } else if(response == 2){
                             Swal.fire('Duplicate', 'Room number already exists', 'warning');
                         } else {
