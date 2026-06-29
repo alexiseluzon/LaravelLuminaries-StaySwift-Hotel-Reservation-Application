@@ -39,6 +39,17 @@
                     </nav>
                 <!-- NAV BAR -->
 
+                <div class="d-flex gap-2 mb-3">
+                    <select id="searchColumn" class="form-select form-select-sm w-auto">
+                        <option value="1">Customer Name</option>
+                        <option value="2">Room</option>
+                        <option value="3">Check In</option>
+                        <option value="4">Check Out</option>
+                        <option value="5">Total Payment</option><!-- remove this on non-pending pages -->
+                    </select>
+                    <input type="text" id="searchInput" class="form-control form-control-sm w-auto" placeholder="Search...">
+                </div>
+
                 <!-- MAIN CONTENT -->
                     <div class="container-fluid mainBar">
                         <div class="container-fluid">

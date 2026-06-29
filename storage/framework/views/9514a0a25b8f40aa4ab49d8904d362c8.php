@@ -7,8 +7,9 @@
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
     <title>StaySwift</title>
         <!-- CSS -->
-            <link rel="shortcut icon" href="<?php echo e(URL('/img/logo.png')); ?>" type="image/x-icon">
+            <link rel="shortcut icon" href="<?php echo e(URL('/img/StaySwift Logo no bg.png')); ?>" type="image/x-icon">
             <link href="<?php echo e(asset('/css/adminDashboard.css')); ?>" rel="stylesheet">
+            <link href="<?php echo e(asset('/css/reservationTheme.css')); ?>" rel="stylesheet">
         <!-- CSS -->
     <?php echo $__env->make('cdn', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </head>
@@ -39,41 +40,42 @@
                     </nav>
                 <!-- NAV BAR -->
 
-                <div class="d-flex gap-2 mb-3">
-                    <select id="searchColumn" class="form-select form-select-sm w-auto">
-                        <option value="1">Customer Name</option>
-                        <option value="2">Room</option>
-                        <option value="3">Check In</option>
-                        <option value="4">Check Out</option>
-                        <option value="5">Total Payment</option><!-- remove this on non-pending pages -->
-                    </select>
-                    <input type="text" id="searchInput" class="form-control form-control-sm w-auto" placeholder="Search...">
-                </div>
-
                 <!-- MAIN CONTENT -->
                     <div class="container-fluid mainBar">
                         <div class="container-fluid">
-                            <div class="container-fluid px-5 py-4 bg-body rounded shadow-lg">
+                            <div class="container-fluid px-5 py-4 reservation-panel rounded shadow-lg">
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/adminReservation">Pending Reservation</a>
+                                    <a class="nav-link" href="/adminUnpaidReservation">Unpaid Reservation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="adminReservation">Pending Reservation</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/adminOnGoingReservation">On-Going Reservation</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#">Cancelled Reservation</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/adminUnpaidReservation">Unpaid Reservation</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="/adminCompletedReservation">Completed Reservation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#">Cancelled Reservation</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/adminUnattendedReservation">Unattended Reservation</a>
                                 </li>
                             </ul>
+                            
+                            <div class="d-flex gap-2 mb-3">
+                                <select id="searchColumn" class="form-select form-select-sm w-auto">
+                                    <option value="1">Customer Name</option>
+                                    <option value="2">Room</option>
+                                    <option value="3">Check In</option>
+                                    <option value="4">Check Out</option>
+                                    <option value="5">Total Payment</option><!-- remove this on non-pending pages -->
+                                </select>
+                                <input type="text" id="searchInput" class="form-control form-control-sm w-auto" placeholder="Search...">
+                            </div>
+
                             <table id="cancelledReservationTable" class="table table-sm table-bordered text-center align-middle">
                                 <thead>
                                     <tr>

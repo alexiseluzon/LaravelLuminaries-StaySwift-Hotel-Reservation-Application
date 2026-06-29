@@ -46,19 +46,19 @@
                             <div class="container-fluid px-5 py-4 reservation-panel rounded shadow-lg">
                                 <ul class="nav nav-tabs mb-4">
                                     <li class="nav-item">
+                                        <a class="nav-link" href="/adminUnpaidReservation">Unpaid Reservation</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" href="/adminReservation">Pending Reservation</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link active" href="/adminOnGoingReservation">On-Going Reservation</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/adminCancelledReservation">Cancelled Reservation</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/adminUnpaidReservation">Unpaid Reservation</a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a class="nav-link" href="/adminCompletedReservation">Completed Reservation</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/adminCancelledReservation">Cancelled Reservation</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="/adminUnattendedReservation">Unattended Reservation</a>

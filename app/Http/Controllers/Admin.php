@@ -163,7 +163,7 @@ class Admin extends Controller
                     $endDateTime = Carbon::parse($reservation->end_dateTime);
 
                     $totalNights = ceil($startDateTime->diffInHours($endDateTime) / 24);
-                    $totalPayment = $totalNights * $reservation->price_per_hour;
+                    $totalPayment = $totalNights * $reservation->price;
                     $halfTotalPayment = $totalPayment / 2;
 
                     $reservation->totalNights = $totalNights;
@@ -190,7 +190,7 @@ class Admin extends Controller
                     $endDateTime = Carbon::parse($reservation->end_dateTime);
 
                     $totalNights = ceil($startDateTime->diffInHours($endDateTime) / 24);
-                    $totalPayment = $totalNights * $reservation->price_per_hour;
+                    $totalPayment = $totalNights * $reservation->price;
                     $halfTotalPayment = $totalPayment / 2;
 
                     $reservation->totalNights = $totalNights;
@@ -217,7 +217,7 @@ class Admin extends Controller
                     $endDateTime = Carbon::parse($reservation->end_dateTime);
 
                     $totalNights = ceil($startDateTime->diffInHours($endDateTime) / 24);
-                    $totalPayment = $totalNights * $reservation->price_per_hour;
+                    $totalPayment = $totalNights * $reservation->price;
                     $halfTotalPayment = $totalPayment / 2;
 
                     $reservation->totalNights = $totalNights;
@@ -242,7 +242,7 @@ class Admin extends Controller
                     $endDateTime = Carbon::parse($reservation->end_dateTime);
 
                     $totalNights = ceil($startDateTime->diffInHours($endDateTime) / 24);
-                    $totalPayment = $totalNights * $reservation->price_per_hour;
+                    $totalPayment = $totalNights * $reservation->price;
 
                     $reservation->totalPayment = $totalPayment;
                 }
@@ -263,7 +263,7 @@ class Admin extends Controller
                     $endDateTime = Carbon::parse($reservation->end_dateTime);
 
                     $totalNights = ceil($startDateTime->diffInHours($endDateTime) / 24);
-                    $totalPayment = $totalNights * $reservation->price_per_hour;
+                    $totalPayment = $totalNights * $reservation->price;
 
                     $reservation->totalPayment = $totalPayment;
                 }
