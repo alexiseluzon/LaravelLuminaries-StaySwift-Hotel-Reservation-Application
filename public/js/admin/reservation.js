@@ -17,6 +17,7 @@ $(document).ready(function(){
     ongoingReservationTable();
     completedReservationTable();
     backOutReservationTable();
+    cancelledReservationTable();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -384,6 +385,46 @@ function pendingReservationTable(){
     }
 // FETCH ALL COMPLETED TRANSACTION
 
+function cancelledReservationTable(){
+    if ($('#cancelledReservationTable').length === 0) return;
+    var table = $('#cancelledReservationTable').DataTable({
+        "language": { "emptyTable": "No Reservation Found" },
+        "lengthChange": true,
+        "scrollCollapse": true,
+        "paging": true,
+        "info": true,
+        "responsive": true,
+        "ordering": false,
+        "dom": '<"top"l>rt<"bottom"ip>',
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        "iDisplayLength": 5,
+        "ajax": { "url": "/getAllCancelledReservation", "dataSrc": "" },
+        "columns":[
+            {"data":"reservation_id"},
+            { "mData": function (data) {
+                return data.extention ? `${data.firstname} ${data.lastname} ${data.extention}` : `${data.firstname} ${data.lastname}`;
+            }},
+            { "mData": function (data) { return `${data.floor} - Room ${data.room_number}`; }},
+            { "data": "start_dataTime", "render": function(data){ return moment(data).format('MMM DD, YYYY | hh:mm A'); }},
+            { "data": "end_dateTime", "render": function(data){ return moment(data).format('MMM DD, YYYY | hh:mm A'); }},
+            { "data": "totalPayment", "render": function(data){ return '₱' + Number(data).toLocaleString('en-PH', { minimumFractionDigits: 2 }); }},
+            { "mData": function (data) {
+                return '<button type="button" data-bs-toggle="tooltip" onclick="viewReasonOfCancelled('+data.reservation_id+')" class="btn rounded-0 btn-outline-secondary btn-sm py-2 px-3"><i class="bi bi-eye"></i></button>';
+            }},
+        ],
+        order: [[1, 'asc']],
+    });
+
+    wireSearch(table);
+
+    table.on('order.dt search.dt', function () {
+        let i = 1;
+        table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+            this.data(i++);
+        });
+    }).draw();
+}
+
 // DECLINE RESERVATION
     function declineReservation(reservationId, userId){
         Swal.fire({
@@ -619,6 +660,20 @@ function pendingReservationTable(){
         });
     } 
 // BACK OUT RESERVATION
+
+function viewReasonOfCancelled(id){
+    $('#cancelledReasonModal').modal('show')
+    $.ajax({
+        url: '/viewReasonCancelled',
+        type: 'GET',
+        dataType: 'json',
+        data: {reservationId: id},
+    })
+    .done(function(response) {
+        $('#cancelledReason').text(response.reason);
+        $('#cancelledLast').text(response.created_at);
+    })
+}
 
 // VIEW DECLINE REASON
     function viewReasonOfDecline(id){
