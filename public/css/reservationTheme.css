@@ -52,16 +52,16 @@ html, body {
 /* DataTables dark skin */
 .btn-res--icon { padding: 6px 10px; font-size: 12px; }
 
-#pendingReservationTable_wrapper { color: var(--text-value); }
-#pendingReservationTable_wrapper .dataTables_length select,
-#pendingReservationTable_wrapper .dataTables_filter input {
+[id$="ReservationTable_wrapper"] { color: var(--text-value); }
+[id$="ReservationTable_wrapper"] .dataTables_length select,
+[id$="ReservationTable_wrapper"] .dataTables_filter input {
     background: var(--bg-card);
     color: var(--text-value);
     border: 1px solid var(--border-color);
 }
-#pendingReservationTable_wrapper .dataTables_info,
-#pendingReservationTable_wrapper .dataTables_length label,
-#pendingReservationTable_wrapper .dataTables_filter label {
+[id$="ReservationTable_wrapper"] .dataTables_info,
+[id$="ReservationTable_wrapper"] .dataTables_length label,
+[id$="ReservationTable_wrapper"] .dataTables_filter label {
     color: var(--text-label);
 }
 table.dataTable {
@@ -80,16 +80,16 @@ table.dataTable tbody td {
 table.dataTable tbody tr:hover {
     background: rgba(201, 169, 110, 0.08);
 }
-#pendingReservationTable_wrapper .dataTables_paginate .paginate_button {
+[id$="ReservationTable_wrapper"] .dataTables_paginate .paginate_button {
     color: var(--text-value) !important;
     border-color: var(--border-color) !important;
 }
-#pendingReservationTable_wrapper .dataTables_paginate .paginate_button.current {
+[id$="ReservationTable_wrapper"] .dataTables_paginate .paginate_button.current {
     background: var(--accent-gold) !important;
     color: var(--bg-page) !important;
     border-color: var(--accent-gold) !important;
 }
-#pendingReservationTable_wrapper .dataTables_paginate .paginate_button.disabled {
+[id$="ReservationTable_wrapper"] .dataTables_paginate .paginate_button.disabled {
     color: var(--text-label) !important;
 }
 
@@ -117,30 +117,30 @@ table.dataTable tbody tr:hover {
 }
 
 /* DataTables Bootstrap 5 integration (form-select / form-control / pagination) */
-#pendingReservationTable_wrapper .form-select,
-#pendingReservationTable_wrapper .form-control {
+[id$="ReservationTable_wrapper"] .form-select,
+[id$="ReservationTable_wrapper"] .form-control {
     background: var(--bg-page);
     color: var(--text-value);
     border-color: var(--border-color);
 }
-#pendingReservationTable_wrapper .form-select:focus,
-#pendingReservationTable_wrapper .form-control:focus {
+[id$="ReservationTable_wrapper"] .form-select:focus,
+[id$="ReservationTable_wrapper"] .form-control:focus {
     background: var(--bg-page);
     color: var(--text-value);
     border-color: var(--accent-gold);
     box-shadow: none;
 }
-#pendingReservationTable_wrapper .page-link {
+[id$="ReservationTable_wrapper"] .page-link {
     background: var(--bg-page);
     color: var(--text-value);
     border-color: var(--border-color);
 }
-#pendingReservationTable_wrapper .page-item.active .page-link {
+[id$="ReservationTable_wrapper"] .page-item.active .page-link {
     background: var(--accent-gold);
     border-color: var(--accent-gold);
     color: var(--bg-page);
 }
-#pendingReservationTable_wrapper .page-item.disabled .page-link {
+[id$="ReservationTable_wrapper"] .page-item.disabled .page-link {
     background: var(--bg-page);
     color: var(--text-label);
 }
