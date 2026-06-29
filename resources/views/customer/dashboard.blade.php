@@ -164,24 +164,6 @@
         <div class="container-fluid mainBar">
             <div class="row my-3">
                 <div class="col-lg-3 col-sm-12 mb-3">
-                    <div class="stat-card stat-pending stat-card-border-pending">
-                        <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
-                        <div class="stat-info">
-                            <span class="stat-count" id="totalPendingReservation">0</span>
-                            <span class="stat-label">Pending Reservation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-12 mb-3">
-                    <div class="stat-card stat-cancelled stat-card-border-cancelled">
-                        <div class="stat-icon"><i class="bi bi-calendar2-x"></i></div>
-                        <div class="stat-info">
-                            <span class="stat-count" id="totalCancelReservation">0</span>
-                            <span class="stat-label">Cancelled Reservation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-12 mb-3">
                     <div class="stat-card stat-unpaid stat-card-border-unpaid">
                         <div class="stat-icon"><i class="bi bi-piggy-bank"></i></div>
                         <div class="stat-info">
@@ -191,11 +173,29 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-sm-12 mb-3">
+                    <div class="stat-card stat-pending stat-card-border-pending">
+                        <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-count" id="totalPendingReservation">0</span>
+                            <span class="stat-label">Pending Reservation</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-12 mb-3">
                     <div class="stat-card stat-completed stat-card-border-completed">
                         <div class="stat-icon"><i class="bi bi-building-check"></i></div>
                         <div class="stat-info">
                             <span class="stat-count" id="totalCompleteReservation">0</span>
                             <span class="stat-label">Completed Reservation</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-12 mb-3">
+                    <div class="stat-card stat-cancelled stat-card-border-cancelled">
+                        <div class="stat-icon"><i class="bi bi-calendar2-x"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-count" id="totalCancelReservation">0</span>
+                            <span class="stat-label">Cancelled Reservation</span>
                         </div>
                     </div>
                 </div>

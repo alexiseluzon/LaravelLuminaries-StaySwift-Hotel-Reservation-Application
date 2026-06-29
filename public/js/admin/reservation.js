@@ -1,3 +1,15 @@
+function wireSearch(table) {
+    $('#searchInput').off('keyup').on('keyup', function () {
+        var col = $('#searchColumn').val();
+        table.column(col).search(this.value).draw();
+    });
+    $('#searchColumn').off('change').on('change', function () {
+        table.columns().search('');
+        $('#searchInput').val('');
+        table.draw();
+    });
+}
+
 $(document).ready(function(){
     pendingReservationTable();
     acceptReservationTable();
@@ -12,65 +24,60 @@ $(document).ready(function(){
     }); 
 });
 
-// FETCH ALL PENDING RESERVATION FOR TABLES
-    function pendingReservationTable(){
+function pendingReservationTable(){
+    if ($('#pendingReservationTable').length === 0) return;
     var table = $('#pendingReservationTable').DataTable({
-        "language": {
-            "emptyTable": "No Reservation Found"
-        },
+        "language": { "emptyTable": "No Reservation Found" },
         "lengthChange": true,
         "scrollCollapse": true,
         "paging": true,
         "info": true,
         "responsive": true,
         "ordering": false,
-        "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-        "iDisplayLength": 25,
-        "ajax":{
-            "url":"/getAllPendingReservation",
-            "dataSrc": "",
-        },
-        "columns":[
-            {"data":"reservation_id"},
-            { "mData": function (data, type, row) {
-                if(data.extention != null){
-                    return data.firstname+ " " +data.lastname+ " " +data.extention;
-                }else{
-                    return data.firstname+ " " +data.lastname;
-                }
+        "dom": '<"top"l>rt<"bottom"ip>',   // removes default search
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        "iDisplayLength": 5,
+        "ajax": { "url": "/getAllPendingReservation", "dataSrc": "" },
+        "columns": [
+            { "data": null, "render": function (data) { return data.reservation_id; }},
+            { "data": null, "render": function (data) {
+                return data.extention
+                    ? `${data.firstname} ${data.lastname} ${data.extention}`
+                    : `${data.firstname} ${data.lastname}`;
             }},
-            { "mData": function (data, type, row) {
-                    return data.floor+ " - Room " +data.room_number;
+            { "data": null, "render": function (data) {
+                return `${data.floor} - Room ${data.room_number}`;
             }},
-            {"data": "start_dataTime",
-                "render": function(data) {
+            { "data": "start_dataTime", "render": function (data) {
                 return moment(data).format('MMM DD, YYYY | hh:mm A');
-            },
-            "targets": 1
-            },
-            {"data": "end_dateTime",
-                "render": function(data) {
-                return moment(data).format('MMM DD, YYYY | hh:mm A');
-            },
-            "targets": 1
-            },
-            { "mData": function (data, type, row) {
-                return '<button type="button" data-title="Accept Reservation?" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" onclick=acceptReservation('+data.reservation_id+') class="btn rounded-0 btn-outline-success btn-sm py-2 px-3"><i class="bi bi-check2-square"></i></button> <button type="button" onclick="declineReservation('+data.reservation_id+', '+data.user_id+')" class="btn rounded-0 ROUNDED-0 btn-outline-danger btn-sm py-2 px-3" data-title="Decline Reservation?"><i class="bi bi-x-square"></i></button>'
             }},
+            { "data": "end_dateTime", "render": function (data) {
+                return moment(data).format('MMM DD, YYYY | hh:mm A');
+            }},
+            { "data": "totalPayment", "render": function (data) {
+                return '₱' + Number(data).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+            }},
+            { "data": null, "render": function (data) {
+                return '<button type="button" class="btn-res btn-res--pay btn-res--icon" onclick="acceptReservation(' + data.reservation_id + ')"><i class="bi bi-check2-square"></i></button> ' +
+                       '<button type="button" class="btn-res btn-res--cancel btn-res--icon" onclick="declineReservation(' + data.reservation_id + ', ' + data.user_id + ')"><i class="bi bi-x-square"></i></button>';
+            }}
         ],
-        order: [[1, 'asc']],
+        order: [[3, 'asc']]
     });
+
+    wireSearch(table);
+
     table.on('order.dt search.dt', function () {
         let i = 1;
         table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
             this.data(i++);
         });
     }).draw();
-    }
-// FETCH ALL PENDING RESERVATION FOR TABLES
+}
 
 // FETCH ALL ACCEPT RESERVATION FOR TABLE
     function acceptReservationTable(){
+        if ($('#acceptReservationTable').length === 0) return;
         var table = $('#acceptReservationTable').DataTable({
             "language": {
                 "emptyTable": "No Reservation Found"
@@ -81,8 +88,9 @@ $(document).ready(function(){
             "info": true,
             "responsive": true,
             "ordering": false,
-            "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-            "iDisplayLength": 25,
+            "dom": '<"top"l>rt<"bottom"ip>',   // removes default search
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "iDisplayLength": 5,
             "ajax":{
                 "url":"/getAllAcceptReservation",
                 "dataSrc": "",
@@ -117,6 +125,9 @@ $(document).ready(function(){
             ],
             order: [[1, 'asc']],
         });
+
+        wireSearch(table);
+
         table.on('order.dt search.dt', function () {
             let i = 1;
             table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
@@ -128,6 +139,7 @@ $(document).ready(function(){
 
 // FETCH ALL ACCEPT RESERVATION FOR TABLE
     function ongoingReservationTable(){
+        if ($('#ongoingReservationTable').length === 0) return;
         var table = $('#ongoingReservationTable').DataTable({
             "language": {
                 "emptyTable": "No Reservation Found"
@@ -138,8 +150,9 @@ $(document).ready(function(){
             "info": true,
             "responsive": true,
             "ordering": false,
-            "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-            "iDisplayLength": 25,
+            "dom": '<"top"l>rt<"bottom"ip>',   // removes default search
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "iDisplayLength": 5,
             "ajax":{
                 "url":"/getAllOnGoingReservation",
                 "dataSrc": "",
@@ -174,6 +187,9 @@ $(document).ready(function(){
             ],
             order: [[1, 'asc']],
         });
+
+        wireSearch(table);
+
         table.on('order.dt search.dt', function () {
             let i = 1;
             table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
@@ -185,6 +201,7 @@ $(document).ready(function(){
 
 // FETCH ALL DECLINE RESERVATION FOR TABLE
     function declineReservationTable(){
+        if ($('#declineReservationTable').length === 0) return;
         var table = $('#declineReservationTable').DataTable({
             "language": {
                 "emptyTable": "No Reservation Found"
@@ -195,8 +212,9 @@ $(document).ready(function(){
             "info": true,
             "responsive": true,
             "ordering": false,
-            "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-            "iDisplayLength": 25,
+            "dom": '<"top"l>rt<"bottom"ip>',
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "iDisplayLength": 5,
             "ajax":{
                 "url":"/getAllDeclineReservation",
                 "dataSrc": "",
@@ -233,6 +251,9 @@ $(document).ready(function(){
             ],
             order: [[1, 'asc']],
         });
+
+        wireSearch(table);
+
         table.on('order.dt search.dt', function () {
             let i = 1;
             table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
@@ -244,6 +265,7 @@ $(document).ready(function(){
 
 // FETCH ALL COMPLETED TRANSACTION
     function completedReservationTable(){
+        if ($('#completedReservationTable').length === 0) return;
     var table = $('#completedReservationTable').DataTable({
         "language": {
             "emptyTable": "No Reservation Found"
@@ -254,8 +276,9 @@ $(document).ready(function(){
         "info": true,
         "responsive": true,
         "ordering": false,
-        "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-        "iDisplayLength": 25,
+        "dom": '<"top"l>rt<"bottom"ip>',   // removes default search
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        "iDisplayLength": 5,
         "ajax":{
             "url":"/getAllCompletedReservation",
             "dataSrc": "",
@@ -287,6 +310,9 @@ $(document).ready(function(){
         ],
         order: [[1, 'asc']],
     });
+
+    wireSearch(table);
+
     table.on('order.dt search.dt', function () {
         let i = 1;
         table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
@@ -298,6 +324,7 @@ $(document).ready(function(){
 
 // FETCH ALL COMPLETED TRANSACTION
     function backOutReservationTable(){
+        if ($('#backOutReservationTable').length === 0) return;
         var table = $('#backOutReservationTable').DataTable({
             "language": {
                 "emptyTable": "No Reservation Found"
@@ -308,8 +335,9 @@ $(document).ready(function(){
             "info": true,
             "responsive": true,
             "ordering": false,
-            "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-            "iDisplayLength": 25,
+            "dom": '<"top"l>rt<"bottom"ip>',
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "iDisplayLength": 5,
             "ajax":{
                 "url":"/getAllBackOutReservation",
                 "dataSrc": "",
@@ -344,6 +372,9 @@ $(document).ready(function(){
             ],
             order: [[1, 'asc']],
         });
+
+        wireSearch(table);
+
         table.on('order.dt search.dt', function () {
             let i = 1;
             table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
@@ -369,7 +400,7 @@ $(document).ready(function(){
                 const { value: reason } = await Swal.fire({
                     input: 'textarea',
                     title: 'Reason of Decline?',
-                    text: "once you submit, You won't be able to revert this",
+                    text: "Once you submit, You won't be able to revert this",
                     inputPlaceholder: 'Type your reason here...',
                     inputAttributes: {
                     'aria-label': 'Type your message here'
@@ -548,7 +579,7 @@ $(document).ready(function(){
                 const { value: reason } = await Swal.fire({
                     input: 'textarea',
                     title: 'Reason of Back Out?',
-                    text: "once you submit, You won't be able to revert this",
+                    text: "Once you submit, You won't be able to revert this",
                     inputPlaceholder: 'Type your reason here...',
                     inputAttributes: {
                     'aria-label': 'Type your message here'
@@ -618,6 +649,3 @@ $(document).ready(function(){
         })
     } 
 // VIEW BACK OUT REASON
-
-
-

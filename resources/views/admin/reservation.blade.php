@@ -7,8 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>StaySwift</title>
         <!-- CSS -->
-            <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
-            <link href="{{ asset('/css/adminDashboard.css') }}" rel="stylesheet">
+            <link rel="shortcut icon" href="{{ URL('/img/Stayswift Logo no bg.png')}}" type="image/x-icon">
+            <link href="{{ asset('/css/adminDashboard.css') }}" rel="s`tylesheet">
+            <link href="{{ asset('/css/reservationTheme.css') }}" rel="stylesheet">
         <!-- CSS -->
     @include('cdn')
 </head>
@@ -42,7 +43,8 @@
                 <!-- MAIN CONTENT -->
                     <div class="container-fluid mainBar">
                         <div class="container-fluid">
-                            <div class="container-fluid px-5 py-4 bg-body rounded shadow-lg">
+                            <div class="container-fluid px-5 py-4 reservation-panel rounded shadow-lg">
+
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
                                     <a class="nav-link active" href="#">Pending Reservation</a>
@@ -63,6 +65,18 @@
                                     <a class="nav-link" href="/adminUnattendedReservation">Unattended Reservation</a>
                                 </li>
                             </ul>
+
+                            <div class="d-flex gap-2 mb-3">
+                                <select id="searchColumn" class="form-select form-select-sm w-auto">
+                                    <option value="1">Customer Name</option>
+                                    <option value="2">Room</option>
+                                    <option value="3">Check In</option>
+                                    <option value="4">Check Out</option>
+                                    <option value="5">Total Payment</option><!-- remove this on non-pending pages -->
+                                </select>
+                                <input type="text" id="searchInput" class="form-control form-control-sm w-auto" placeholder="Search...">
+                            </div>
+
                             <table id="pendingReservationTable" class="table table-sm table-bordered text-center align-middle display nowrap"  style="width:100%">
                                 <thead>
                                     <tr>
@@ -88,12 +102,7 @@
             <script src="{{ asset('/js/admin/reservation.js') }}"></script>
             <script src="{{ asset('/js/dateTime.js') }}"></script>
             <script src="{{ asset('/js/logout.js') }}"></script>
-            <script>
-                document.querySelector('.ux-data-table').onscroll = function (e) {
-                var topOfDiv = Math.max(document.querySelector(".ux-data-table").scrollTop - 2, 0);
-                document.getElementsByTagName('thead')[0].style = "top:" + topOfDiv + "px;";
-                }
-            </script>
+            <script src="{{ asset('/js/admin/tableScroll.js') }}"></script>
         <!-- JS -->
 </body>
 </html>

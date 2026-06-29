@@ -1,0 +1,46 @@
+:root {
+    --bg-card: #221e18;
+    --bg-image: #1a1612;
+    --bg-page: #1a1612;
+    --border-color: #3a3228;
+    --text-heading: #e8dcc8;
+    --text-label: #7a6a56;
+    --text-value: #d4c4a8;
+    --accent-gold: #c9a96e;
+    --accent-red: #e05555;
+}
+
+#page-content-wrapper,
+.mainBar {
+    background: var(--bg-page);
+    min-height: 100vh;
+}
+
+.res-card { width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); margin-bottom: 1rem; }
+.res-card__image { height: 230px; width: 100%; object-fit: contain; background: var(--bg-image); border-bottom: 1px solid var(--border-color); }
+.res-card__body { padding: 20px 24px; }
+.res-card__title { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--text-heading); letter-spacing: 0.08em; margin-bottom: 16px; }
+
+.res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.res-label { font-size: 10px; color: var(--text-label); letter-spacing: 0.08em; text-transform: uppercase; }
+.res-value { color: var(--text-value); font-size: 12px; margin-top: 3px; text-transform: none; }
+.res-value--accent { color: var(--accent-gold); font-size: 13px; margin-top: 3px; text-transform: none; }
+
+.res-divider { border-top: 1px solid var(--border-color); margin: 14px 0; }
+.res-details { font-size: 12px; color: var(--text-value); margin-bottom: 14px; line-height: 1.6; }
+.res-note { font-size: 10px; color: var(--text-label); letter-spacing: 0.08em; margin-bottom: 14px; }
+.res-note--danger { color: var(--accent-red); }
+
+.res-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-res { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; padding: 11px 20px; border: 1px solid var(--border-color); cursor: pointer; text-decoration: none; display: inline-block; }
+.btn-res--cancel { background: transparent; color: var(--accent-red); }
+.btn-res--update { background: transparent; color: var(--accent-gold); }
+.btn-res--pay { background: var(--accent-gold); color: #1a1612; border-color: var(--accent-gold); }
+
+.countdown-timer { font-size: 11px; color: var(--accent-red); letter-spacing: 0.08em; margin-bottom: 14px; }
+
+.empty-state { width: 100%; text-align: center; padding: 80px 20px; }
+.empty-state__line { width: 40px; height: 1px; background: var(--accent-gold); margin: 0 auto 20px; }
+.empty-state__line--bottom { margin: 20px auto 0; }
+.empty-state__title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--text-heading); letter-spacing: 0.15em; margin-bottom: 10px; }
+.empty-state__subtitle { font-size: 11px; color: var(--text-label); letter-spacing: 0.1em; text-transform: uppercase; }
