@@ -121,30 +121,29 @@ class Admin extends Controller
                 }
             }
 
-            // ALL PENDING RESERVATION
             public function getAllPendingReservation(Request $request) {
                 $data = reservationModel::join('roomTable', 'reservationTable.room_id', '=', 'roomTable.room_id')
                     ->join('userTable', 'reservationTable.user_id', '=', 'userTable.user_id')
-                    ->where([['reservationTable.status', '=', 'Pending']])
-                    ->orderBy('reservationTable.reservation_id', 'ASC')
+                    ->where('reservationTable.status', '=', 'Pending')
                     ->select(
                         'reservationTable.reservation_id', 'userTable.user_id', 'userTable.lastname', 'userTable.firstname', 'userTable.middlename',
-                        'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
-                    )->orderBy('reservationTable.start_dataTime', 'ASC')->get();
-
+                        'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime'
+                    )
+                    ->orderBy('reservationTable.start_dataTime', 'ASC')
+                    ->get();
+            
                 foreach ($data as $reservation) {
-                    $startDateTime = Carbon::parse($reservation->start_dataTime);
-                    $endDateTime = Carbon::parse($reservation->end_dateTime);
-
+                    $startDateTime = Carbon::parse($reservation->start_dataTime, 'Asia/Manila');
+                    $endDateTime = Carbon::parse($reservation->end_dateTime, 'Asia/Manila');
+            
                     $totalNights = ceil($startDateTime->diffInHours($endDateTime) / 24);
-                    $totalPayment = $totalNights * $reservation->price_per_hour;
-                    $halfTotalPayment = $totalPayment / 2;
-
+                    $totalPayment = $totalNights * $reservation->price;
+            
                     $reservation->totalNights = $totalNights;
                     $reservation->totalPayment = $totalPayment;
-                    $reservation->balance = $halfTotalPayment;
+                    $reservation->balance = $totalPayment / 2;
                 }
-
+            
                 return response()->json($data);
             }
 

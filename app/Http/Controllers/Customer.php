@@ -13,7 +13,7 @@ use App\Models\reasonBackOutModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\DB;
 
 class Customer extends Controller
 {
@@ -341,121 +341,86 @@ class Customer extends Controller
     public function getCancelBookPerUser(Request $request)
     {
         $data = reservationModel::join('roomTable', 'reservationTable.room_id', '=', 'roomTable.room_id')
-            ->join('reasonBackOutTable', 'reservationTable.reservation_id', '=', 'reasonBackOutTable.reservation_id')
-            ->where(
-                [['reservationTable.status', '=', 'Cancel'], ['reservationTable.user_id', '=', auth()->guard('userModel')->user()->user_id]]
-            )->orderBy('reservationTable.reservation_id', 'ASC')
+            ->leftJoin('reasonBackOutTable', 'reservationTable.reservation_id', '=', 'reasonBackOutTable.reservation_id')
+            ->where([
+                ['reservationTable.status', '=', 'Cancelled'],
+                ['reservationTable.user_id', '=', auth()->guard('userModel')->user()->user_id],
+            ])
             ->select(
-                'roomTable.room_id',
-                'roomTable.photos',
-                'roomTable.room_number',
-                'roomTable.floor',
-                'roomTable.type_of_room',
-                'roomTable.number_of_bed',
-                'roomTable.details',
-                'roomTable.max_person',
-                'roomTable.price',
-                'reservationTable.book_code',
-                'reservationTable.start_dataTime',
-                'reservationTable.end_dateTime',
-                'reasonBackOutTable.reason',
-                'reasonBackOutTable.updated_at',
+                'roomTable.photos', 'roomTable.room_number', 'roomTable.floor',
+                'roomTable.type_of_room', 'roomTable.number_of_bed', 'roomTable.details',
+                'roomTable.max_person', 'roomTable.price',
+                'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
+                'reservationTable.cancelled_at',
+                'reasonBackOutTable.reason', 'reasonBackOutTable.updated_at'
             )
-            ->orderBy('reasonBackOutTable.updated_at', 'ASC')->get();
-        if ($data->isNotEmpty()) {
-            foreach ($data as $item) {
-                $currentDateTime = Carbon::now()->format('F d, Y g:i A');
-
-                $checkInDateTime = date('F d, Y', strtotime($item->start_dataTime));
-                $checkOutDateTime = date('F d, Y', strtotime($item->end_dateTime));
-                $cancelDateTime = date('F d, Y', strtotime($item->updated_at));
-
-                $carbonStart = Carbon::parse($checkInDateTime);
-                $carbonEnd = Carbon::parse($checkOutDateTime);
-
-                $totalNights = ceil($carbonStart->diffInHours($carbonEnd) / 24);
-
-                $totalPayment = $totalNights * $item->price;
-                echo "
-                        <div class='col-lg-6 col-sm-12 g-0 gx-lg-5 text-center text-lg-start'>
-                            <div class='card mb-3 shadow border-2 border rounded' style='width:100%'>
-                                    <div class='row g-0'>
-                                        <img loading='lazy' src=$item->photos class='card-img-top img-thumdnail' style='height:230px; width:100%;' alt='ship'>
-                                        <div class='col-md-12'>
-                                            <ul class='list-group list-group-flush fw-bold'>
-                                                <li class='list-group-item'>
-                                                    <div class='row'>
-                                                        <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                            Room Number: <span class='fw-normal'> $item->room_number</span>
-                                                        </div>
-                                                        <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                            Room Floor:<span class='fw-normal'> $item->floor</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class='list-group-item'>
-                                                    <div class='row'>
-                                                        <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                            Type of Room: <span class='fw-normal'>$item->type_of_room</span>
-                                                        </div>
-                                                        <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                            Number of Bed:<span class='fw-normal'> $item->number_of_bed</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class='list-group-item'>
-                                                    <div class='row'>
-                                                        <div class='col-12 col-lg-6 ps-0 ps-lg-4'>
-                                                            Max Person: <span class='fw-normal'>$item->max_person People</span>
-                                                        </div>
-                                                        <div class='col-12 col-lg-6 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                            Price Per Night(s): <span class='fw-normal'> ₱$item->price.00</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class='list-group-item fw-bold' style='color:#'>
-                                                    <div class='col-12'>
-                                                        Details: <span class='fw-normal'>$item->details</span>
-                                                    </div>
-                                                </li>
-                                                <li class='list-group-item'>
-                                                    <div class='row'>
-                                                        <div class='col-12 col-lg-7 ps-0 ps-lg-4'>
-                                                            Check In: <span class='fw-normal'> $checkInDateTime - 02:00 PM</span><br>
-                                                            Check Out:<span class='fw-normal'> $checkOutDateTime - 12:00 PM</span>
-                                                        </div>
-                                                        <div class='col-12 col-lg-5 pt-2 pt-lg-0 ps-0 ps-lg-4'>
-                                                            Total Night(s): <span class='fw-normal'> $totalNights</span><br>
-                                                            Total Payment:<span class='fw-normal'> ₱$totalPayment.00</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class='list-group-item fw-bold' style='color:#'>
-                                                <div class='col-12'>
-                                                    Reason: <span class='fw-normal'>$item->reason</span>
-                                                </div>
-                                                </li>
-                                                <li class='list-group-item text-center text-lg-end py-2'>
-                                                    <p class='card-text'><small class='text-danger'>Cancel the Reservation Last $cancelDateTime</small></p>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ";
-            }
-        } else {
-            echo "
-                </div>
-                    <div style='width:100%; text-align:center; padding: 80px 20px;'>
-                    <div style='width:40px; height:1px; background:#c9a96e; margin:0 auto 20px;'></div>
-                    <div style='font-family:Cormorant Garamond, serif; font-size:22px; color:#e8dcc8; letter-spacing:0.15em; margin-bottom:10px;'>No Reservations Found</div>
-                    <div style='font-size:11px; color:#7a6a56; letter-spacing:0.1em; text-transform:uppercase;'>You have no cancelled reservations at this time</div>
-                    <div style='width:40px; height:1px; background:#c9a96e; margin:20px auto 0;'></div>
-                </div>
-                ";
+            ->orderBy('reservationTable.cancelled_at', 'ASC')
+            ->get();
+    
+        if ($data->isEmpty()) {
+            echo $this->emptyStateHtml('You have no cancelled reservations at this time');
+            return;
         }
+    
+        foreach ($data as $item) {
+            $checkInDateTime  = date('F d, Y', strtotime($item->start_dataTime));
+            $checkOutDateTime = date('F d, Y', strtotime($item->end_dateTime));
+            $cancelDateTime = $item->updated_at
+                ? date('F d, Y', strtotime($item->updated_at))
+                : ($item->cancelled_at ? date('F d, Y', strtotime($item->cancelled_at)) : 'Date not recorded');
+            $reason = $item->reason ?? 'No reason provided';
+            $totalNights      = ceil(Carbon::parse($checkInDateTime)->diffInHours(Carbon::parse($checkOutDateTime)) / 24);
+            $totalPayment     = $totalNights * $item->price;
+    
+            echo "
+                <div class='col-lg-6 col-sm-12 g-0 gx-lg-5'>
+                    <div class='res-card'>
+                        <img loading='lazy' src='$item->photos' class='res-card__image' alt='room'>
+                        <div class='res-card__body'>
+                            <div class='res-card__title'>$item->type_of_room</div>
+    
+                            <div class='res-grid'>
+                                <div class='res-label'>Room Number<div class='res-value'>$item->room_number</div></div>
+                                <div class='res-label'>Floor<div class='res-value'>$item->floor</div></div>
+                                <div class='res-label'>Number of Beds<div class='res-value'>$item->number_of_bed Only</div></div>
+                                <div class='res-label'>Max Person<div class='res-value'>$item->max_person People Only</div></div>
+                                <div class='res-label'>Price Per Night<div class='res-value--accent'>₱$item->price.00</div></div>
+                            </div>
+    
+                            <div class='res-divider'></div>
+                            <div class='res-label'>Details</div>
+                            <div class='res-details'>$item->details</div>
+                            <div class='res-divider'></div>
+    
+                            <div class='res-grid'>
+                                <div class='res-label'>Check In<div class='res-value'>$checkInDateTime<br>02:00 PM</div></div>
+                                <div class='res-label'>Check Out<div class='res-value'>$checkOutDateTime<br>12:00 PM</div></div>
+                                <div class='res-label'>Total Nights<div class='res-value'>$totalNights Night(s)</div></div>
+                                <div class='res-label'>Total Payment<div class='res-value--accent'>₱$totalPayment.00</div></div>
+                            </div>
+    
+                            <div class='res-divider'></div>
+                            <div class='res-label'>Reason for Cancellation</div>
+                            <div class='res-details'>$reason</div>
+    
+                            <div class='res-note res-note--danger'>Cancelled on $cancelDateTime</div>
+                        </div>
+                    </div>
+                </div>
+            ";
+        }
+    }
+    
+    private function emptyStateHtml(string $message): string
+    {
+        return "
+            <div class='empty-state'>
+                <div class='empty-state__line'></div>
+                <div class='empty-state__title'>No Reservations Found</div>
+                <div class='empty-state__subtitle'>$message</div>
+                <div class='empty-state__line empty-state__line--bottom'></div>
+            </div>
+        ";
     }
 
     // UNPAID RESERVATION PER USER
@@ -532,7 +497,7 @@ class Customer extends Controller
                                 <div class='countdown-timer' data-expires='$expiresAt' style='font-size:11px; color:#e05555; letter-spacing:0.08em; margin-bottom:14px;'></div>
 
                                 <div style='display:flex; gap:8px; flex-wrap:wrap;'>
-                                    <a onclick='deleteReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#e05555; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Cancel Booking</a>
+                                    <a onclick='cancelReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#e05555; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Cancel Booking</a>
                                     <a onclick='getUpdateUnpaidReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#c9a96e; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Update Booking</a>
                                     <a href='" . route('stripePayment', ['total_payment' => $totalPayment, 'type_of_room' => $typeOfRoom, 'reservation_id' => $item->reservation_id]) . "' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:#c9a96e; color:#1a1612; border:1px solid #c9a96e; cursor:pointer; text-decoration:none;'>Continue to Pay</a>
                                 </div>
@@ -625,10 +590,10 @@ class Customer extends Controller
         $unpaidReservation = reservationModel::where([['user_id', '=', auth()->guard('userModel')->user()->user_id],['status', '=', 'Unpaid']])->get();
         $totalUnpaidReservation = $unpaidReservation->count();
 
-        $cancelledReservation = reservationModel::where([['user_id', '=', auth()->guard('userModel')->user()->user_id],['status', '=', 'Cancel']])->get();
+        $cancelledReservation = reservationModel::where([['user_id', '=', auth()->guard('userModel')->user()->user_id],['status', '=', 'Cancelled']])->get();
         $totalCancelReservation = $cancelledReservation->count();
 
-        $completeReservation = reservationModel::where([['user_id', '=', auth()->guard('userModel')->user()->user_id],['status', '=', 'Complete']])->get();
+        $completeReservation = reservationModel::where([['user_id', '=', auth()->guard('userModel')->user()->user_id],['status', '=', 'Completed']])->get();
         $totalCompleteReservation = $completeReservation->count();
 
         return response()->json([
@@ -647,25 +612,54 @@ class Customer extends Controller
     }
 
     // CANCEL THE ACCEPTED RESERVATION
+    // public function cancelReservation(Request $request)
+    // {
+    //     $cancelReservation = reservationModel::where([['reservation_id', '=', $request->reservationId]])->update(['status' => 'Cancelled']);
+    //     if ($cancelReservation) {
+    //         $backOutReason = reasonBackOutModel::create([
+    //             'reservation_id' => $request->reservationId,
+    //             'user_id' => auth()->guard('userModel')->user()->user_id,
+    //             'reason' => $request->reason,
+    //             'set_by_admin' => 0,
+    //         ]);
+    //         return response()->json($backOutReason ? 1 : 0);
+    //     }
+    // }
+
     public function cancelReservation(Request $request)
     {
-        $cancelReservation = reservationModel::where([['reservation_id', '=', $request->reservationId]])->update(['status' => 'Cancel']);
-        if ($cancelReservation) {
-            $backOutReason = reasonBackOutModel::create([
-                'reservation_id' => $request->reservationId,
-                'user_id' => auth()->guard('userModel')->user()->user_id,
+        $request->validate([
+            'reservationId' => 'required|integer',
+            'reason' => 'required|string|max:255',
+        ]);
+    
+        $reservation = reservationModel::where([
+            ['reservation_id', '=', $request->reservationId],
+            ['user_id', '=', auth()->guard('userModel')->user()->user_id],
+            ['status', '=', 'Unpaid'],
+        ])->first();
+    
+        if (!$reservation) {
+            return response('0', 200);
+        }
+    
+        DB::transaction(function () use ($reservation, $request) {
+            $reservation->update([
+                'status' => 'Cancelled',
+                'cancelled_at' => Carbon::now('Asia/Manila'),
+            ]);
+    
+            DB::table('reasonBackOutTable')->insert([
+                'reservation_id' => $reservation->reservation_id,
+                'user_id' => $reservation->user_id,
                 'reason' => $request->reason,
                 'set_by_admin' => 0,
+                'created_at' => Carbon::now('Asia/Manila'),
+                'updated_at' => Carbon::now('Asia/Manila'),
             ]);
-            return response()->json($backOutReason ? 1 : 0);
-        }
-    }
-
-    // DELETE UNPAID RESERVATION
-    public function deleteReservation(Request $request)
-    {
-        $deleteReservation = reservationModel::where([['reservation_id', '=', $request->reservationId]])->delete();
-        return response()->json($deleteReservation ? 1 : 0);
+        });
+    
+        return response('1', 200);
     }
 
     // FETCH ACCOUNT PER USER

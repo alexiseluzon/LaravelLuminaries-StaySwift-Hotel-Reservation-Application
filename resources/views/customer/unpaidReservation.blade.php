@@ -325,25 +325,27 @@
                 }
             }
 
-            function deleteReservation(id) {
+            function cancelReservation(id) {
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Do you want to cancel this booking?',
+                    title: 'Cancel this booking?',
+                    input: 'text',
+                    inputPlaceholder: 'Reason for cancellation (optional)',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d72323',
                     confirmButtonText: 'Yes, Cancel it'
-                }).then(({ isConfirmed }) => {
+                }).then(({ isConfirmed, value }) => {
                     if (!isConfirmed) return;
                     $.ajax({
-                        url: '/deleteReservation', type: 'GET', dataType: 'text',
-                        data: { reservationId: id },
+                        url: '/cancelReservation', type: 'POST', dataType: 'text',
+                        data: { reservationId: id, reason: value || null },
                         success: r => {
                             if (r == 1) Swal.fire({ title: 'Cancelled', icon: 'success', showConfirmButton: false, timer: 1500 })
                                 .then(() => showUnpaidBookingPerUser());
+                            else Swal.fire({ title: 'Could not cancel', icon: 'error', showConfirmButton: false, timer: 1500 });
                         },
-                        error: err => console.error(err)
+                        error: () => Swal.fire({ title: 'Something went wrong', icon: 'error', showConfirmButton: false, timer: 1500 })
                     });
                 });
             }

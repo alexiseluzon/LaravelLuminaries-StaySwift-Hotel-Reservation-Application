@@ -100,11 +100,11 @@ Route::middleware(['auth:userModel', 'is_customer'])->group(function () {
     // FUNCTION
     Route::get('/getCustomerRoom', [Customer::class, 'getCustomerRoom'])->name('getCustomerRoom');
     Route::post('/bookReservation', [Customer::class, 'bookReservation'])->name('bookReservation');
-    Route::get('/cancelReservation', [Customer::class, 'cancelReservation'])->name('cancelReservation');
+    Route::post('/cancelReservation', [Customer::class, 'cancelReservation'])->name('cancelReservation');
     Route::get('/getBookPerUser', [Customer::class, 'getBookPerUser'])->name('getBookPerUser');
-    Route::get('/getAcceptBookPerUser', [Customer::class, 'getAcceptBookPerUser'])->name('getAcceptBookPerUser');
+    // Route::get('/getAcceptBookPerUser', [Customer::class, 'getAcceptBookPerUser'])->name('getAcceptBookPerUser');
     Route::get('/getCancelBookPerUser', [Customer::class, 'getCancelBookPerUser'])->name('getCancelBookPerUser');
-    Route::get('/getDeclineBookPerUser', [Customer::class, 'getDeclineBookPerUser'])->name('getDeclineBookPerUser');
+    // Route::get('/getDeclineBookPerUser', [Customer::class, 'getDeclineBookPerUser'])->name('getDeclineBookPerUser');
     Route::get('/getUnpaidBooking', [Customer::class, 'getUnpaidBooking'])->name('getUnpaidBooking');
     Route::get('/getCompleteBookPerUser', [Customer::class, 'getCompleteBookPerUser'])->name('getCompleteBookPerUser');
     Route::get('/archivedCancelledReservation', [Customer::class, 'archivedCancelledReservation'])->name('archivedCancelledReservation');

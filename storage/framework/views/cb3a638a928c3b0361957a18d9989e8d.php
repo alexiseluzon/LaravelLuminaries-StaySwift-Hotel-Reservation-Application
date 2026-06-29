@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
     <title>StaySwift</title>
         <!-- CSS -->
-            <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
-            <link href="{{ asset('/css/adminDashboard.css') }}" rel="stylesheet">
+            <link rel="shortcut icon" href="<?php echo e(URL('/img/logo.png')); ?>" type="image/x-icon">
+            <link href="<?php echo e(asset('/css/adminDashboard.css')); ?>" rel="stylesheet">
         <!-- CSS -->
-    @include('cdn')
+    <?php echo $__env->make('cdn', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </head>
 <body>
     <div class="d-flex" id="wrapper">
 
         <!-- SIDE NAV -->
-            @include('layouts.adminSidebar')
+            <?php echo $__env->make('layouts.adminSidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <!-- SIDE NAV -->
 
         <!-- MAIN CONTENT -->
@@ -29,8 +29,8 @@
                                 <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                     <li>
                                         <a class="nav-link me-3">
-                                            <span>{{ auth()->guard('userModel')->user()->firstname}}</span>
-                                            <span>{{ auth()->guard('userModel')->user()->lastname}}</span>
+                                            <span><?php echo e(auth()->guard('userModel')->user()->firstname); ?></span>
+                                            <span><?php echo e(auth()->guard('userModel')->user()->lastname); ?></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -38,17 +38,6 @@
                         </div>
                     </nav>
                 <!-- NAV BAR -->
-
-                <div class="d-flex gap-2 mb-3">
-                    <select id="searchColumn" class="form-select form-select-sm w-auto">
-                        <option value="1">Customer Name</option>
-                        <option value="2">Room</option>
-                        <option value="3">Check In</option>
-                        <option value="4">Check Out</option>
-                        <option value="5">Total Payment</option><!-- remove this on non-pending pages -->
-                    </select>
-                    <input type="text" id="searchInput" class="form-control form-control-sm w-auto" placeholder="Search...">
-                </div>
 
                 <!-- MAIN CONTENT -->
                     <div class="container-fluid mainBar">
@@ -95,9 +84,10 @@
     </div>
 
         <!-- JS -->
-            <script src="{{ asset('/js/admin/reservation.js') }}"></script>
-            <script src="{{ asset('/js/dateTime.js') }}"></script>
-            <script src="{{ asset('/js/logout.js') }}"></script>
+            <script src="<?php echo e(asset('/js/admin/reservation.js')); ?>"></script>
+            <script src="<?php echo e(asset('/js/dateTime.js')); ?>"></script>
+            <script src="<?php echo e(asset('/js/logout.js')); ?>"></script>
         <!-- JS -->
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\LaravelLuminaries-StaySwift-Hotel-Reservation-Application\resources\views/admin/completedReservation.blade.php ENDPATH**/ ?>

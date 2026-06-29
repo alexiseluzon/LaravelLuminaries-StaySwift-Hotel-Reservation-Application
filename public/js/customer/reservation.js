@@ -5,8 +5,8 @@ $(document).ready(function(){
         }
     });
     showBookingPerUser();
-    showAcceptBookingPerUser();
-    showDeclineBookingPerUser();
+    // showAcceptBookingPerUser();
+    // showDeclineBookingPerUser();
 });
 
 // SHOW PENDING RESERVATION PER USER
@@ -22,27 +22,27 @@ $(document).ready(function(){
 // SHOW PENDING RESERVATION PER USER
 
 // SHOW ACCEPT RESERVATION PER USER 
-    function showAcceptBookingPerUser(){
-        $.ajax({
-            url: "/getAcceptBookPerUser",
-            method: 'GET',
-            success : function(data) {
-                $("#showAcceptReservation").html(data);
-            }
-        })
-    }
+    // function showAcceptBookingPerUser(){
+    //     $.ajax({
+    //         url: "/getAcceptBookPerUser",
+    //         method: 'GET',
+    //         success : function(data) {
+    //             $("#showAcceptReservation").html(data);
+    //         }
+    //     })
+    // }
 // SHOW ACCEPT RESERVATION PER USER 
 
 // SHOW DECLINED RESERVATION PER USER
-    function showDeclineBookingPerUser(){
-        $.ajax({
-            url: "/getDeclineBookPerUser",
-            method: 'GET',
-            success : function(data) {
-                $("#showDeclineReservation").html(data);
-            }
-        })
-    }
+    // function showDeclineBookingPerUser(){
+    //     $.ajax({
+    //         url: "/getDeclineBookPerUser",
+    //         method: 'GET',
+    //         success : function(data) {
+    //             $("#showDeclineReservation").html(data);
+    //         }
+    //     })
+    // }
 // SHOW DECLINED RESERVATION PER USER
 
 // FUNCTION FOR BOOKING
@@ -71,7 +71,7 @@ $(document).ready(function(){
             }).then((result) => {
             if (result) {
                 showBookingPerUser();
-                showDeclineBookingPerUser();
+                // showDeclineBookingPerUser();
             }
             });
             }
@@ -116,8 +116,9 @@ $(document).ready(function(){
                                     showConfirmButton: false,
                                     timer: 1000,
                                 }).then((result) => {
-                                if (result) {
-                                    showAcceptBookingPerUser();                                }
+                                // if (result) {
+                                //     showAcceptBookingPerUser();                                
+                                // }
                                 });
                             }else if(response == 0){
                                 Swal.fire({
