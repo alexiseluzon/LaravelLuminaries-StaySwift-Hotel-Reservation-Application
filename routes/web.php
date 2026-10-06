@@ -87,8 +87,8 @@ Route::middleware(['auth:userModel', 'is_customer'])->group(function () {
     Route::get('/customerDeclinedReservation', [Customer::class, 'customerDeclinedReservation'])->name('customerDeclinedReservation');
     Route::get('/customerUnpaidReservation', [Customer::class, 'customerUnpaidReservation'])->name('customerUnpaidReservation');
     Route::get('/customerCancelReservation', [Customer::class, 'customerCancelReservation'])->name('customerCancelReservation');
-    Route::get('/customerCompleted', [Customer::class, 'customerCompleted'])->name('customerReservation');
-    Route::get('/customerAccount', [Customer::class, 'customerAccount'])->name('customerReservation');
+    Route::get('/customerCompleted', [Customer::class, 'customerCompleted'])->name('customerCompleted');
+    Route::get('/customerAccount', [Customer::class, 'customerAccount'])->name('customerAccount');
     Route::get('/customerCredentials', [Customer::class, 'customerCredentials'])->name('customerCredentials');
     Route::get('/payment/{book_code}', [Customer::class, 'payment'])->name('payment');
     
