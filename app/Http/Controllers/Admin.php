@@ -11,6 +11,7 @@ use App\Models\roomModel;
 use App\Models\reservationModel;
 use App\Models\reasonBackOutModel;
 use App\Models\Payment;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Admin extends Controller
 {
@@ -99,10 +100,9 @@ class Admin extends Controller
             public function addRoom(Request $request){
                 $data = roomModel::where([['room_number', '=', $request->roomNumber]])->get();
                 if(!$data->isNotEmpty()){
-                    $filename = $request->file('roomPhoto');
-                    $imageName = $filename->getClientOriginalName();
-                    $path = $request->file('roomPhoto')->storeAs('rooms', $imageName);
-                    $imageData['roomPhoto'] = '/images/'.$path;
+                    $uploaded = Cloudinary::upload($request->file('roomPhoto')->getRealPath(), ['folder' 
+                        => 'rooms']);
+                    $imageData['roomPhoto'] = $uploaded->getSecurePath();
                     $addRoom = roomModel::create([
                     'photos' => $imageData['roomPhoto'],
                     'room_number' => $request->roomNumber,
@@ -347,10 +347,9 @@ class Admin extends Controller
                 $update = roomModel::find($request->room_id);
 
                 if ($request->hasFile('roomPhoto')) {
-                    $filename = $request->file('roomPhoto');
-                    $imageName = $filename->getClientOriginalName();
-                    $path = $request->file('roomPhoto')->storeAs('rooms', $imageName, 'public');
-                    $update->photos = '/images/' . $path;
+                    $uploaded = Cloudinary::upload($request->file('roomPhoto')->getRealPath(), ['folder' 
+                        => 'rooms']);
+                    $update->photos = $uploaded->getSecurePath();
                 }
 
                 $update->room_number = $request->input('roomNumber');

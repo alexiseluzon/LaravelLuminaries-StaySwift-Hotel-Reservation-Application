@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Customer extends Controller
 {
@@ -674,10 +675,9 @@ class Customer extends Controller
     {
         $update = userModel::find($request->userUniqueId);
         if ($request->hasFile('userProfile')) {
-            $filename = $request->file('userProfile');
-            $imageName = time() . rand() . '.' . $filename->getClientOriginalExtension();
-            $path = $request->file('userProfile')->storeAs('userPhotos', $imageName, 'public');
-            $update->photos = '/storage/' . $path;
+            $uploaded = Cloudinary::upload($request->file('userProfile')->getRealPath(), ['folder' => 
+            'userPhotos']);
+            $update->photos = $uploaded->getSecurePath();
         }
 
         $update->lastname = $request->input('userLastName');
