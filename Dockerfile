@@ -25,6 +25,8 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 
 COPY . .
+RUN mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/logs \
+    && chmod -R 775 bootstrap/cache storage
 RUN composer dump-autoload --optimize \
     && php artisan config:cache \
     && php artisan route:cache \
