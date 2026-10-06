@@ -100,7 +100,7 @@ Route::middleware(['auth:userModel', 'is_customer'])->group(function () {
     // FUNCTION
     Route::get('/getCustomerRoom', [Customer::class, 'getCustomerRoom'])->name('getCustomerRoom');
     Route::post('/bookReservation', [Customer::class, 'bookReservation'])->name('bookReservation');
-    Route::post('/cancelReservation', [Customer::class, 'cancelReservation'])->name('cancelReservation');
+    Route::post('/cancelReservation', [Customer::class, 'cancelReservation'])->name('cancelReservationPost');
     Route::get('/getBookPerUser', [Customer::class, 'getBookPerUser'])->name('getBookPerUser');
     // Route::get('/getAcceptBookPerUser', [Customer::class, 'getAcceptBookPerUser'])->name('getAcceptBookPerUser');
     Route::get('/getCancelBookPerUser', [Customer::class, 'getCancelBookPerUser'])->name('getCancelBookPerUser');
@@ -110,7 +110,7 @@ Route::middleware(['auth:userModel', 'is_customer'])->group(function () {
     Route::get('/archivedCancelledReservation', [Customer::class, 'archivedCancelledReservation'])->name('archivedCancelledReservation');
     Route::get('/cancelReservation', [Customer::class, 'cancelReservation'])->name('cancelReservation');
     Route::get('/deleteReservation', [Customer::class, 'deleteReservation'])->name('deleteReservation');
-    Route::get('/getUserInfo', [Customer::class, 'getUserInfo'])->name('getUserInfo');
+    Route::get('/getUserInfo', [Customer::class, 'getUserInfo'])->name('getUserInfoCustomer');
     Route::post('/updateUserAccount', [Customer::class, 'updateUserAccount'])->name('updateUserAccount');
     Route::post('/updateUserCredentials', [Customer::class, 'updateUserCredentials'])->name('updateUserCredentials');
     Route::get('/getAllTotalForCustomer', [Customer::class, 'getAllTotalForCustomer'])->name('getAllTotalForCustomer');
