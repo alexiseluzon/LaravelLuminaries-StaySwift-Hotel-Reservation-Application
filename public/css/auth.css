@@ -345,3 +345,10 @@ body.signup .back-image {
         font-size: 18px;
     }
 }
+
+.demo-divider { display:flex; align-items:center; gap:12px; margin:22px 0 14px; color:#5a4e3e; font-size:9px; letter-spacing:.2em; text-transform:uppercase; }
+.demo-divider::before, .demo-divider::after { content:""; flex:1; height:1px; background:#3a3228; }
+.demo-login-btn { width:100%; background:transparent; color:#c9a96e; border:1px solid #3a3228; padding:12px; font-family:'Montserrat',sans-serif; font-size:10px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:1px; transition:border-color .2s, background .2s; }
+.demo-login-btn:hover:not(:disabled) { border-color:#c9a96e; background:rgba(201,169,110,.08); }
+.demo-login-btn:focus-visible { outline:2px solid #c9a96e; outline-offset:2px; }
+.demo-login-btn:disabled { opacity:.5; cursor:not-allowed; }

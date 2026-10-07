@@ -166,6 +166,41 @@ class Authentication extends Controller
     }
     // FUNCTION FOR ADMIN LOGIN
 
+    // DEMO LOGIN (only when DEMO_LOGIN_ENABLED=true)
+    public function demoLoginFunction(Request $request, string $role)
+    {
+        abort_unless(config('app.demo_login'), 404);
+    
+        $isAdmin = $role === 'admin';
+    
+        $user = userModel::firstOrCreate(
+            ['email' => $isAdmin ? 'demo.admin@stayswift.test' : 'demo.user@stayswift.test'],
+            [
+                'photos'      => '/storage/userPhotos/defaultImage.jpg',
+                'lastname'    => 'Demo',
+                'firstname'   => $isAdmin ? 'Admin' : 'Guest',
+                'middlename'  => '',
+                'extention'   => '',
+                'phoneNumber' => '09000000000',
+                'birthday'    => '2000-01-01',
+                'age'         => 26,
+                'password'    => Hash::make(Str::random(32)),
+            ]
+        );
+    
+        // keep the demo account valid even if it was edited/deactivated
+        $user->forceFill([
+            'is_active'      => 1,
+            'email_verified' => 1,
+            'is_admin'       => $isAdmin ? 1 : 0,
+        ])->save();
+    
+        auth()->guard('userModel')->login($user);
+        $request->session()->regenerate();
+    
+        return response()->json(1);
+    }
+
     // LOGOUT FUNCTION
     public function logoutFunction()
     {

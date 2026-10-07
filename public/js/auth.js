@@ -128,3 +128,25 @@ var sideButtons = document.querySelectorAll('.bottomLink');
 sideButtons.forEach(btn => btn.addEventListener('click', () => {
     document.body.classList.toggle('signup');
 }));
+
+$(document).on('click', '.demo-login-btn', function () {
+    const btn = $(this).prop('disabled', true);
+    const role = btn.data('role');
+    $.ajax({ url: '/demoLogin/' + role, method: 'POST', dataType: 'json' })
+        .done(function (res) {
+            if (res == 1) {
+                Swal.mixin({
+                    toast: true, position: 'top-end', showConfirmButton: false,
+                    timer: 1500, timerProgressBar: true,
+                    didClose: () => { window.location = role === 'admin' ? '/adminDashboard' : '/customerDashboard'; }
+                }).fire({ icon: 'success', title: 'Signed in as demo ' + role });
+            } else {
+                btn.prop('disabled', false);
+                Swal.fire('Demo Login Failed', 'Please try again.', 'error');
+            }
+        })
+        .fail(function (xhr) {
+            btn.prop('disabled', false);
+            Swal.fire('Demo Login Unavailable', xhr.status === 429 ? 'Too many attempts. Wait a minute.' : 'Demo login is disabled.', 'error');
+        });
+});

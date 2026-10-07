@@ -25,6 +25,11 @@ Route::post('/adminLoginFunction', [Authentication::class, 'adminLoginFunction']
 Route::get('/logoutFunction', [Authentication::class, 'logoutFunction'])->name('logoutFunction');
 Route::get('/userVerify/{token}', [Authentication::class, 'userVerify'])->name('userVerify');
 
+Route::post('/demoLogin/{role}', [Authentication::class, 'demoLoginFunction'])
+    ->whereIn('role', ['user', 'admin'])
+    ->middleware('throttle:10,1')
+    ->name('demoLogin');
+
 Route::middleware(['auth:userModel', 'is_admin'])->group(function () {
     // ADMIN DASHBOARD
     // ROUTES
