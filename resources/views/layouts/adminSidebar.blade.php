@@ -23,3 +23,14 @@
         </button>
     </div>
 </div>
+
+<script>
+window.addEventListener('load', function () {
+    if (!window.jQuery || !window.Swal) return;
+    jQuery(document).ajaxError(function (e, xhr) {
+        if (xhr.status === 403 && xhr.responseJSON && xhr.responseJSON.demo_restricted) {
+            Swal.fire({ icon: 'info', title: 'Demo Mode', text: xhr.responseJSON.message });
+        }
+    });
+});
+</script>

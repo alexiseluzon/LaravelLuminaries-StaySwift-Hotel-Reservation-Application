@@ -30,7 +30,7 @@ Route::post('/demoLogin/{role}', [Authentication::class, 'demoLoginFunction'])
     ->middleware('throttle:10,1')
     ->name('demoLogin');
 
-Route::middleware(['auth:userModel', 'is_admin'])->group(function () {
+Route::middleware(['auth:userModel', 'is_admin', 'block_demo_writes'])->group(function () {
     // ADMIN DASHBOARD
     // ROUTES
     Route::get('/adminDashboard', [Admin::class, 'adminDashboard'])->name('adminDashboard');

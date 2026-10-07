@@ -174,7 +174,8 @@ class Authentication extends Controller
         $isAdmin = $role === 'admin';
     
         $user = userModel::firstOrCreate(
-            ['email' => $isAdmin ? 'demo.admin@stayswift.test' : 'demo.user@stayswift.test'],
+            ['email' => $isAdmin ? \App\Http\Middleware\BlockDemoAdminWrites::DEMO_ADMIN_EMAIL
+             : 'demo.user@stayswift.test'],
             [
                 'photos'      => '/storage/userPhotos/defaultImage.jpg',
                 'lastname'    => 'Demo',
