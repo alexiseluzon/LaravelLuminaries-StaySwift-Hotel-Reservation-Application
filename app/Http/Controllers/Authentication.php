@@ -53,6 +53,18 @@ class Authentication extends Controller
     // FUNCTION FOR REGISTRATION
     public function registrationFunction(Request $request)
     {
+        $namePattern = "/^\p{L}+(?:[ '\-]\p{L}+)*$/u";
+        $request->validate([
+            'userFirstName'     => ['required', 'max:50', 'regex:' . $namePattern],
+            'userMiddleName'    => ['nullable', 'max:50', 'regex:' . $namePattern],
+            'userLastName'      => ['required', 'max:50', 'regex:' . $namePattern],
+            'userExtension'     => ['nullable', 'in:Jr.,Sr.,II,III,IV'],
+            'userBirthdate'     => ['required', 'date', 'before:today'],
+            'userEmailAddress'  => ['required', 'email', 'max:255'],
+            'userPhone'         => ['required', 'digits:11'],
+            'userPassword'      => ['required', 'string', 'min:6', 'max:20', 'not_in:password'],
+        ]);
+
         $existingEmail = userModel::select('email')->where('email', '=', $request->userEmailAddress)->get();
         if ($existingEmail->isNotEmpty()) {
             return response()->json(2);
@@ -66,7 +78,7 @@ class Authentication extends Controller
                 'email' => $request->userEmailAddress,
                 'phoneNumber' => $request->userPhone,
                 'birthday' => $request->userBirthdate,
-                'age' => $request->userAge,
+                'age' => \Carbon\Carbon::parse($request->userBirthdate)->age,
                 'password' => Hash::make($request->userPassword),
                 'is_active' => 1,
                 'is_admin' => 0,

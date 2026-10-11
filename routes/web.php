@@ -19,9 +19,11 @@ Route::get('/privacyPolicy', [Authentication::class, 'privacyPolicy'])->name('pr
 Route::get('/dataPrivacy', [Authentication::class, 'dataPrivacy'])->name('dataPrivacy');
 Route::get('/notesRemarks', [Authentication::class, 'notesRemarks'])->name('notesRemarks');
 
-Route::post('/registrationFunction', [Authentication::class, 'registrationFunction'])->name('registrationFunction');
-Route::post('/userLoginFunction', [Authentication::class, 'userLoginFunction'])->name('userLoginFunction');
-Route::post('/adminLoginFunction', [Authentication::class, 'adminLoginFunction'])->name('adminLoginFunction');
+Route::post('/registrationFunction', [Authentication::class, 'registrationFunction'])->
+    middleware('throttle:10,1')->name('registrationFunction');Route::post('/userLoginFunction', 
+    [Authentication::class, 'userLoginFunction'])->name('userLoginFunction');
+Route::post('/adminLoginFunction', [Authentication::class, 'adminLoginFunction'])->
+    name('adminLoginFunction');
 Route::get('/logoutFunction', [Authentication::class, 'logoutFunction'])->name('logoutFunction');
 Route::get('/userVerify/{token}', [Authentication::class, 'userVerify'])->name('userVerify');
 

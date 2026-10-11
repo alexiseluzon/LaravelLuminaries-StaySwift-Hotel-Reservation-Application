@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     @include('cdn')
     <title>StaySwift — Create Account</title>
@@ -294,7 +294,7 @@
 
                 <div class="divider"></div>
 
-                <button type="submit" class="submit-btn">Create Account</button>
+                <button type="submit" class="submit-btn" disabled>Create Account</button>
             </form>
 
             <div class="login-link">
@@ -304,5 +304,6 @@
     </div>
 
     <script src="{{ asset('/js/auth.js') }}"></script>
+    <script src="{{ asset('/js/registration.js') }}"></script>
 </body>
 </html>

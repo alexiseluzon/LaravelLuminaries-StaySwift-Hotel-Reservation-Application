@@ -352,3 +352,8 @@ body.signup .back-image {
 .demo-login-btn:hover:not(:disabled) { border-color:#c9a96e; background:rgba(201,169,110,.08); }
 .demo-login-btn:focus-visible { outline:2px solid #c9a96e; outline-offset:2px; }
 .demo-login-btn:disabled { opacity:.5; cursor:not-allowed; }
+
+.field-error { display: block; margin-top: 5px; font-size: 10px; letter-spacing: .04em; line-height: 1.4; color: #e05555; }
+.field-error[hidden] { display: none; }
+.input-wrap input.is-invalid { border-color: #e05555 !important; }
+.submit-btn:disabled { opacity: .45; cursor: not-allowed; pointer-events: none; }

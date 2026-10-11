@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>StaySwift</title>
         <!-- CSS -->
-            <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
+            <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
             <link href="{{ asset('/css/adminDashboard.css') }}" rel="stylesheet">
         <!-- CSS -->
     @include('cdn')
