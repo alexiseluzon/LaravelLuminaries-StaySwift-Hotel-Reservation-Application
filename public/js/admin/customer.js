@@ -133,7 +133,7 @@ $(document).ready(function(){
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, deactivate it'
         }).then((result) => {
-            if (result.isConfirmed) {
+        if (result.isConfirmed) {
             $.ajax({
                 url: '/deactivateCustomer',
                 type: 'GET',
@@ -166,22 +166,19 @@ $(document).ready(function(){
         }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-            url: '/activateCustomer',
-            type: 'GET',
-            dataType: 'json',
-            data: {customerId: id},
-        });
-        Swal.fire({
-            title: 'Change Status',
-            text: "Customer was deactivate successfully",
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1500,
-        }).then((result) => {
-        if (result) {
-            $('#inactiveCustomer').DataTable().ajax.reload();
-        }
-        });
+                url: '/activateCustomer',
+                type: 'GET',
+                dataType: 'json',
+                data: {customerId: id},
+            }).done(function () {
+                Swal.fire({
+                    title: 'Change Status',
+                    text: "Customer was ACTIVATED successfully",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => $('#inactiveCustomer').DataTable().ajax.reload());
+            });
         }
         });
     } 
