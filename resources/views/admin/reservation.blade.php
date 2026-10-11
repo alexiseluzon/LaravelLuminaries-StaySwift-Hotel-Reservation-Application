@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>StaySwift</title>
         <!-- CSS -->
-            <link rel="shortcut icon" href="{{ URL('/img/Stayswift Logo no bg.png')}}" type="image/x-icon">
+            <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
             <link href="{{ asset('/css/adminDashboard.css') }}" rel="s`tylesheet">
             <link href="{{ asset('/css/reservationTheme.css') }}" rel="stylesheet">
         <!-- CSS -->
@@ -47,19 +47,19 @@
 
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
+                                    <a class="nav-link" href="/adminUnpaidReservation">Unpaid Reservation</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link active" href="#">Pending Reservation</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/adminOnGoingReservation">On-Going Reservation</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/adminCancelledReservation">Cancelled Reservation</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/adminUnpaidReservation">Unpaid Reservation</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="/adminCompletedReservation">Completed Reservation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/adminCancelledReservation">Cancelled Reservation</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/adminUnattendedReservation">Unattended Reservation</a>

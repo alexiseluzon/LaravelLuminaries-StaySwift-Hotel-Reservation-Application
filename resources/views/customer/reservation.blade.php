@@ -9,7 +9,7 @@
     {{-- CSS --}}
         <link href="{{ asset('/css/customerDashboard.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
-        <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
     {{-- CSS --}}
     <title>StaySwift</title>
     <style>

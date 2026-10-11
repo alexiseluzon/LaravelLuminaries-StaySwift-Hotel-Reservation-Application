@@ -6,13 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>StaySwift</title>
-        <!-- CSS -->
-            <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
-            <link href="{{ asset('/css/adminDashboard.css') }}" rel="stylesheet">
-        <!-- CSS -->
+    <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
+    <link href="{{ asset('/css/adminDashboard.css') }}" rel="stylesheet">
     @include('cdn')
+    <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/swal-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/goldTheme.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="gold-page">
     <div class="d-flex" id="wrapper">
 
         <!-- SIDE NAV -->
@@ -56,19 +57,19 @@
                             <div class="container-fluid px-5 py-4 bg-body rounded shadow-lg">
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
+                                    <a class="nav-link active" href="#">Unpaid Reservation</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="/adminReservation">Pending Reservation</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/adminOnGoingReservation">On-Going Reservation</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/adminCancelledReservation">Cancelled Reservation</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#">Unpaid Reservation</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="/adminCompletedReservation">Completed Reservation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/adminCancelledReservation">Cancelled Reservation</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/adminUnattendedReservation">Unattended Reservation</a>

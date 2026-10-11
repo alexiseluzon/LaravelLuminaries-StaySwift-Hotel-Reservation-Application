@@ -6,13 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>StaySwift</title>
-        <!-- CSS -->
-            <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
-            <link href="{{ asset('/css/adminDashboard.css') }}" rel="stylesheet">
-        <!-- CSS -->
+    <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
+    <link href="{{ asset('/css/adminDashboard.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/swal-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/goldTheme.css') }}" rel="stylesheet">
     @include('cdn')
 </head>
-<body>
+<body class="gold-page">
     <div class="d-flex" id="wrapper">
 
         <!-- SIDE NAV -->

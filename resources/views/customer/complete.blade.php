@@ -9,7 +9,7 @@
     <link href="{{ asset('/css/customerDashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/swal-theme.css') }}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ URL('/img/logo.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png')}}" type="image/x-icon">
     <title>StaySwift</title>
     <style>
         body, html { background-color: #1a1612 !important; color: #d4c4a8; }
