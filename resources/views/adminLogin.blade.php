@@ -225,6 +225,12 @@
             </label>
 
             <button type="submit" id="appLoginBtn" name="appLoginBtn" class="submit-btn">Sign In</button>
+            @if(config('app.demo_login'))
+                <div class="demo-divider"><span>Demo</span></div>
+                <button type="button" class="demo-login-btn" data-role="admin" title="Sign in as a demo administrator (no password needed)">
+                    <i class="bi bi-shield-lock"></i> Demo as Admin
+                </button>
+            @endif
         </form>
     </div>
 
