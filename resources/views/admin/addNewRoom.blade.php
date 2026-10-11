@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>StaySwift</title>
+    <title>StaySwift — Add Room</title>
     <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png') }}" type="image/x-icon">
-    <link href="{{ asset('/css/swal-theme.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/roomtheme.css') }}" rel="stylesheet">
     @include('cdn')
+    <link href="{{ asset('/css/sideBar.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/swal-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/roomTheme.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="d-flex" id="wrapper">
