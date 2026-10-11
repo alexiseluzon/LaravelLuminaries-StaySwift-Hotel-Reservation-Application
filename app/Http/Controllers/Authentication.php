@@ -185,7 +185,10 @@ class Authentication extends Controller
                 'phoneNumber' => '09000000000',
                 'birthday'    => '2000-01-01',
                 'age'         => 26,
-                'password'    => Hash::make(Str::random(32)),
+                'password'       => Hash::make(Str::random(32)),
+                'is_active'      => 1,
+                'is_admin'       => $isAdmin ? 1 : 0,
+                'email_verified' => 1,
             ]
         );
     
