@@ -137,7 +137,7 @@ $(document).ready(function(){
             $.ajax({
                 url: '/deactivateCustomer',
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'text',
                 data: {customerId: id},
             }).done(function () {
                 Swal.fire({
@@ -168,7 +168,7 @@ $(document).ready(function(){
             $.ajax({
                 url: '/activateCustomer',
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'text',
                 data: {customerId: id},
             }).done(function () {
                 Swal.fire({

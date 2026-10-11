@@ -264,21 +264,18 @@ function initTooltips() {
             }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                url: '/deactivateRoom',
-                type: 'GET',
-                dataType: 'json',
-                data: {roomId: id},
-            });
-            Swal.fire({
-                title: 'DEACTIVATED SUCCESSFULLY',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1000,
-            }).then((result) => {
-            if (result) {
-                $('#availableRoom').DataTable().ajax.reload();
-            }
-            });
+                    url: '/deactivateRoom',
+                    type: 'GET',
+                    dataType: 'text',
+                    data: {roomId: id},
+                }).done(function () {
+                    Swal.fire({
+                        title: 'DEACTIVATED SUCCESSFULLY',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    }).then(() => $('#availableRoom').DataTable().ajax.reload());
+                });
             }
         });
     }
@@ -295,29 +292,26 @@ function initTooltips() {
         cancelButtonColor: '#d72323',
         confirmButtonText: 'Yes, Continue'
         }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-            url: '/activateRoom',
-            type: 'GET',
-            dataType: 'json',
-            data: {roomId: id},
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/activateRoom',
+                    type: 'GET',
+                    dataType: 'text',
+                    data: {roomId: id},
+                }).done(function () {
+                    Swal.fire({
+                        title: 'ACTIVATED SUCCESSFULLY',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    }).then(() => $('#notAvailableRoom').DataTable().ajax.reload());
+                });
+            }
         });
-        Swal.fire({
-            title: 'ACTIVATED SUCCESSFULLY',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1000,
-        }).then((result) => {
-        if (result) {
-            $('#notAvailableRoom').DataTable().ajax.reload();
-        }
-        });
-        }
-    });
     }
 // ACTIVATE ROOM
 
-document.getElementById('roomPhoto').addEventListener('change', function () {
+document.getElementById('roomPhoto')?.addEventListener('change', function () {
     const text = this.files[0] ? this.files[0].name : 'Choose File';
     document.getElementById('fileUploadText').textContent = text;
 });

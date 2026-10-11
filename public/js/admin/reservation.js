@@ -495,22 +495,19 @@ function cancelledReservationTable(){
         }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-            url: '/acceptReservation',
-            type: 'GET',
-            dataType: 'json',
-            data: {reservationId: id},
-        });
-        Swal.fire({
-            title: 'ACCEPT BOOKING',
-            text: "Reservation was accept successfully",
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1500,
-        }).then((result) => {
-        if (result) {
-            $('#pendingReservationTable').DataTable().ajax.reload();
-        }
-        });
+                url: '/acceptReservation',
+                type: 'GET',
+                dataType: 'text',
+                data: {reservationId: id},
+            }).done(function () {
+                Swal.fire({
+                    title: 'ACCEPT BOOKING',
+                    text: "Reservation was accepted successfully",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => $('#pendingReservationTable').DataTable().ajax.reload());
+            });
         }
         });
     } 
