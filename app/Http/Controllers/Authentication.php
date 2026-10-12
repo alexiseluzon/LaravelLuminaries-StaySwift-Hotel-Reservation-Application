@@ -16,7 +16,8 @@ use App\Mail\userVerifyMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Authentication extends Controller
 {
@@ -85,24 +86,60 @@ class Authentication extends Controller
                 'email_verified' => 0,
             ]);
 
-            $token = Str::random(64);
+        try {
+            $this->sendVerificationEmail($registration);
+        } catch (\Throwable $e) {
+            Log::error('Verification email failed: ' . $e->getMessage());
+            return response()->json(3);
+        }
 
-            userVerify::create([
-                'user_id' => $registration->user_id,
-                'token' => $token
-            ]);
-
-            $email = $request->userEmailAddress;
-            Mail::send('layouts.emailVerificationEmail', ['token' => $token], function ($message) use ($email) {
-                $message->to($email);
-                $message->subject('Verify your Email');
-            });
-
-            return response()->json(1);
+        return response()->json(1);
         }
     }
 
     // FUNCTION FOR REGISTRATION
+
+    private function sendVerificationEmail(userModel $user): void
+    {
+        $token = Str::random(64);
+        userVerify::updateOrCreate(['user_id' => $user->user_id], ['token' => $token]);
+
+        $email = $user->email;
+        Mail::send('layouts.emailVerificationEmail', ['token' => $token], function ($message) use ($email) {
+            $message->to($email);
+            $message->subject('Verify your Email');
+        });
+    }
+
+    public function resendVerification(Request $request)
+    {
+        $request->validate(['email' => ['required', 'email', 'max:255']]);
+        $email = strtolower(trim($request->email));
+        $cooldownKey = 'resend-verify:' . sha1($email);
+
+        // One request per address per minute
+        if (! Cache::add($cooldownKey, 1, 60)) {
+            return response()->json(['status' => 'wait'], 429);
+        }
+
+        $user = userModel::whereRaw('LOWER(email) = ?', [$email])
+            ->where('is_active', 1)
+            ->where('email_verified', 0)
+            ->first();
+
+        if ($user) {
+            try {
+                $this->sendVerificationEmail($user);
+            } catch (\Throwable $e) {
+                Cache::forget($cooldownKey);
+                Log::error('Resend verification failed: ' . $e->getMessage());
+                return response()->json(['status' => 'error'], 500);
+            }
+        }
+
+        // Same answer whether or not the account exists (no account enumeration)
+        return response()->json(['status' => 'sent']);
+    }
 
     // EMAIL VERIFICATION
     public function userVerify($token)
@@ -129,28 +166,53 @@ class Authentication extends Controller
 
     public function userLoginFunction(Request $request)
     {
-        if (auth()->guard('userModel')->attempt($this->userCredentials($request))) {
-            if (auth()->guard('userModel')->user()->is_active != 0) {
-                if (auth()->guard('userModel')->user()->is_admin !== 1) {
-                    if (auth()->guard('userModel')->user()->email_verified == 1) {
-                        $request->session()->regenerate();
-                        return response()->json(1);
-                    } else {
-                        return response()->json(2); // NOT VERIFIED EMAIL
-                    }
-                } else {
-                    return response()->json(0);  // IS ADMIN
-                }
-            } else {
-                return response()->json(3);  // INACTIVE ACCOUNT
-            }
-        } else {
+        $guard = auth()->guard('userModel');
+
+        if (! $guard->attempt($this->userCredentials($request))) {
             return response()->json(0); // WRONG CREDENTIALS
         }
-    }
-    // FUNCTION FOR USER LOGIN
 
-    // FUNCTION FOR ADMIN LOGIN
+        $user = $guard->user();
+        $code = match (true) {
+            $user->is_active == 0 => 3,       // INACTIVE ACCOUNT
+            $user->is_admin === 1 => 0,       // ADMIN USING USER FORM
+            $user->email_verified != 1 => 2,  // NOT VERIFIED EMAIL
+            default => 1,
+        };
+
+        if ($code !== 1) {
+            $guard->logout(); // attempt() already logged them in
+            return response()->json($code);
+        }
+
+        $request->session()->regenerate();
+        return response()->json(1);
+    }
+
+    public function adminLoginFunction(Request $request)
+    {
+        $guard = auth()->guard('userModel');
+
+        if (! $guard->attempt($this->adminCredentials($request))) {
+            return response()->json(0); // WRONG CREDENTIALS
+        }
+
+        $user = $guard->user();
+        $code = match (true) {
+            $user->is_active == 0 => 3,   // INACTIVE ACCOUNT
+            $user->is_admin !== 1 => 0,   // NOT ADMIN
+            default => 1,
+        };
+
+        if ($code !== 1) {
+            $guard->logout();
+            return response()->json($code);
+        }
+
+        $request->session()->regenerate();
+        return response()->json(1);
+    }
+
     protected function adminCredentials(Request $request)
     {
         return [
@@ -158,25 +220,6 @@ class Authentication extends Controller
             'password' => request()->adminPassword,
         ];
     }
-
-    public function adminLoginFunction(Request $request)
-    {
-        if (auth()->guard('userModel')->attempt($this->adminCredentials($request))) {
-            if (auth()->guard('userModel')->user()->is_active != 0) {
-                if (auth()->guard('userModel')->user()->is_admin === 1) {
-                    $request->session()->regenerate();
-                    return response()->json(1);
-                } else {
-                    return response()->json(0); // NOT ADMIN
-                }
-            } else {
-                return response()->json(3); // INACTIVE ACCOUNT
-            }
-        } else {
-            return response()->json(0); // WRONG CREDENTIALS
-        }
-    }
-    // FUNCTION FOR ADMIN LOGIN
 
     // DEMO LOGIN (only when DEMO_LOGIN_ENABLED=true)
     public function demoLoginFunction(Request $request, string $role)

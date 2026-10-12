@@ -151,6 +151,8 @@
                 }).then(function () { form.reset(); window.location.href = '/login'; });
             } else if (res == 2) {
                 Swal.fire('EMAIL NOT AVAILABLE', 'Please choose another email', 'error');
+            } else if (res == 3) {
+                promptResend(byId('userEmailAddress').value.trim(), 'ACCOUNT CREATED', 'We could not send the verification email. Resend it now?');
             } else {
                 Swal.fire('REGISTRATION FAILED', 'Please re-enter your details', 'error');
             }

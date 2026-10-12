@@ -48,7 +48,7 @@ $('#userLoginForm').on('submit', function(e) {
             });
             Toast.fire({ icon: 'success', title: 'Signed in successfully', text: 'Welcome!' });
         } else if (parsed == 2) {
-            Swal.fire('Email Not Verified', 'Please verify your email before logging in.', 'warning');
+            promptResend($('#userEmail').val(), 'Email Not Verified', 'Please verify your email before logging in. Resend the link?');
         } else if (parsed == 3) {
             Swal.fire('Inactive Account', 'Your account has been disabled.', 'error');
         } else {
@@ -116,3 +116,21 @@ $(document).on('click', '.demo-login-btn', function () {
             Swal.fire('Demo Login Unavailable', xhr.status === 429 ? 'Too many attempts. Wait a minute.' : 'Demo login is disabled.', 'error');
         });
 });
+
+// RESEND VERIFICATION EMAIL
+function resendVerification(email) {
+    return $.ajax({ url: '/resendVerification', method: 'POST', dataType: 'json', data: { email: email } })
+        .done(function () {
+            Swal.fire('CHECK YOUR INBOX', 'If this account still needs verification, a new link has been sent. Check your spam folder too.', 'success');
+        })
+        .fail(function (xhr) {
+            var msg = xhr.status === 429
+                ? 'Please wait a minute before requesting another email.'
+                : 'We could not send the email right now. Please try again later.';
+            Swal.fire('NOT SENT', msg, 'error');
+        });
+}
+function promptResend(email, title, text) {
+    Swal.fire({ icon: 'warning', title: title, text: text, showCancelButton: true, confirmButtonText: 'Resend email', cancelButtonText: 'Close' })
+        .then(function (result) { if (result.isConfirmed) resendVerification(email); });
+}
