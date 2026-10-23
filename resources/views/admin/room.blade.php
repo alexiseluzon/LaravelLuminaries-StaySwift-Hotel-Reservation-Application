@@ -100,7 +100,7 @@
                                     <i class="bi bi-upload me-2"></i>
                                     <span id="fileUploadText">Choose File</span>
                                 </label>
-                                <input required type="file" id="clearPhoto" name="roomPhoto"
+                                <input type="file" id="clearPhoto" name="roomPhoto"
                                        accept="image/png,image/jpg,image/jpeg,image/gif,image/svg"
                                        style="display:none">
                             </div>

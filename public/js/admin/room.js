@@ -183,8 +183,15 @@ function initTooltips() {
                             )
                         }
                     },
-                    error:function(error){
-                        console.log(error)
+                    error: function (xhr) {
+                        if (xhr.status === 403 && xhr.responseJSON && xhr.responseJSON.demo_restricted) return; // demo popup handles it
+                        var msg = 'Something went wrong. Please try again.';
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            msg = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                        } else if (xhr.status === 413) {
+                            msg = 'The photo is too large. Maximum is 5 MB.';
+                        }
+                        Swal.fire('Added Failed', msg, 'error');
                     }
                 })
         });
@@ -243,8 +250,15 @@ function initTooltips() {
                         })
                     }
                 },
-                error:function(error){
-                    console.log(error)
+                error: function (xhr) {
+                    if (xhr.status === 403 && xhr.responseJSON && xhr.responseJSON.demo_restricted) return;
+                    var msg = 'Something went wrong. Please try again.';
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                        msg = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                    } else if (xhr.status === 413) {
+                        msg = 'The photo is too large. Maximum is 5 MB.';
+                    }
+                    Swal.fire('Update Failed', msg, 'error');
                 }
             })
         });

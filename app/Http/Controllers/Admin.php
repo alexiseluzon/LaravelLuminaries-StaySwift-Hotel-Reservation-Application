@@ -349,6 +349,12 @@ class Admin extends Controller
 
             // UPDATE ROOM
             public function updateRoom(Request $request) {
+    
+                $request->validate([
+                    'room_id'    => 'required|exists:roomTable,room_id',
+                    'roomPhoto'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+                ]);
+
                 $update = roomModel::find($request->room_id);
 
                 if ($request->hasFile('roomPhoto')) {
@@ -363,7 +369,10 @@ class Admin extends Controller
                 $update->number_of_bed = $request->input('roomBedNumber');
                 $update->details = $request->input('detailsOfRoom');
                 $update->max_person = $request->input('roomMaxPerson');
-                $update->status = $request->input('roomStatus');
+                // replace the status line with:
+                if ($request->filled('roomStatus')) {
+                    $update->status = $request->input('roomStatus');
+                }
                 $update->price = $request->input('roomPricePerHour');
                 $update->save();
 
