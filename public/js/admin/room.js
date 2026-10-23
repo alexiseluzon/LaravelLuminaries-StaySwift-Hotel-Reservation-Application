@@ -151,6 +151,9 @@ function initTooltips() {
             e.preventDefault();
             var currentForm = $('#addRoomDetailsForm')[0];
             var data = new FormData(currentForm);
+            var $btn = $(this).find('button[type="submit"]');
+            if ($btn.prop('disabled')) return; // block double submits
+            var btnHtml = $btn.html();
                 $.ajax({
                     url: "/addRoom",
                     type:"POST",
@@ -160,6 +163,20 @@ function initTooltips() {
                     cache: false,
                     contentType: false,
                     processData: false,
+                    beforeSend: function () {
+                        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Adding...');
+                        Swal.fire({
+                            title: 'Adding room...',
+                            text: 'Uploading photo, please wait.',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            showConfirmButton: false,
+                            didOpen: () => Swal.showLoading()
+                        });
+                    },
+                    complete: function () {
+                        $btn.prop('disabled', false).html(btnHtml);
+                    },
                     success:function(response){
                         if(response == 1){
                             $("#addRoomDetailsForm").trigger("reset");
@@ -184,7 +201,7 @@ function initTooltips() {
                         }
                     },
                     error: function (xhr) {
-                        if (xhr.status === 403 && xhr.responseJSON && xhr.responseJSON.demo_restricted) return; // demo popup handles it
+                        if (xhr.status === 403 && xhr.responseJSON && xhr.responseJSON.demo_restricted) { Swal.close(); return; } // demo popup handles it
                         var msg = 'Something went wrong. Please try again.';
                         if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
                             msg = Object.values(xhr.responseJSON.errors).flat().join('\n');
