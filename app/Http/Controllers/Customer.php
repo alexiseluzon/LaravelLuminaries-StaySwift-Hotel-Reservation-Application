@@ -461,6 +461,8 @@ class Customer extends Controller
 
                 $totalNights = ceil($carbonStart->diffInHours($carbonEnd) / 24);
                 $totalPayment = $totalNights * $item->price;
+                $deposit = number_format($totalPayment / 2, 2);
+                $balance = number_format($totalPayment / 2, 2);
                 $typeOfRoom = $item->type_of_room;
                 $expiresAt = Carbon::parse($item->created_at, 'Asia/Manila')
                     ->addMinutes(20)
@@ -493,7 +495,9 @@ class Customer extends Controller
                                     <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Check In<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$checkInDateTime<br>02:00 PM</div></div>
                                     <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Check Out<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$checkOutDateTime<br>12:00 PM</div></div>
                                     <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Nights<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$totalNights Night(s)</div></div>
-                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Payment<div style='color:#c9a96e; font-size:13px; margin-top:3px; text-transform:none;'>₱$totalPayment.00</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Payment<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>₱" . number_format($totalPayment, 2) . "</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Deposit due now (50%)<div style='color:#c9a96e; font-size:13px; margin-top:3px; text-transform:none;'>₱$deposit</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Balance at check-in<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>₱$balance</div></div>
                                 </div>
                 
                                 <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>
@@ -504,7 +508,7 @@ class Customer extends Controller
                                 <div style='display:flex; gap:8px; flex-wrap:wrap;'>
                                     <a onclick='cancelReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#e05555; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Cancel Booking</a>
                                     <a onclick='getUpdateUnpaidReservation($item->reservation_id)' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:transparent; color:#c9a96e; border:1px solid #3a3228; cursor:pointer; text-decoration:none;'>Update Booking</a>
-                                    <a href='" . route('stripePayment', ['total_payment' => $totalPayment, 'type_of_room' => $typeOfRoom, 'reservation_id' => $item->reservation_id]) . "' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:#c9a96e; color:#1a1612; border:1px solid #c9a96e; cursor:pointer; text-decoration:none;'>Continue to Pay</a>
+                                    <a href='" . route('stripePayment', ['reservation_id' => $item->reservation_id]) . "' style='font-family:Montserrat,sans-serif; font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:11px 20px; background:#c9a96e; color:#1a1612; border:1px solid #c9a96e; cursor:pointer; text-decoration:none;'>Continue to Pay</a>
                                 </div>
                             </div>
                         </div>

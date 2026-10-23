@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\StripeClient;
 use Stripe\Webhook;
+use Carbon\Carbon;
 
 class Stripe extends Controller
 {
@@ -18,30 +19,43 @@ class Stripe extends Controller
     {
         $user = auth()->guard('userModel')->user();
 
-        // Only the owner of an Unpaid reservation can start a payment for it
-        $reservation = reservationModel::where('reservation_id', $request->input('reservation_id'))
-            ->where('user_id', $user->user_id)
-            ->where('status', 'Unpaid')
+        // Reservation must belong to the user and be Unpaid; price comes from the DB, never the browser
+        $reservation = reservationModel::join('roomTable', 'reservationTable.room_id', '=', 'roomTable.room_id')
+            ->where('reservationTable.reservation_id', $request->input('reservation_id'))
+            ->where('reservationTable.user_id', $user->user_id)
+            ->where('reservationTable.status', 'Unpaid')
+            ->select(
+                'reservationTable.reservation_id',
+                'reservationTable.start_dataTime',
+                'reservationTable.end_dateTime',
+                'roomTable.price',
+                'roomTable.type_of_room'
+            )
             ->first();
 
         if (!$reservation) {
             return redirect()->route('cancel');
         }
 
+        $nights = max(1, Carbon::parse($reservation->start_dataTime)->startOfDay()
+            ->diffInDays(Carbon::parse($reservation->end_dateTime)->startOfDay()));
+        $total = $nights * $reservation->price;
+        $deposit = round($total / 2, 2);
+
         $stripe = new StripeClient(config('stripe.stripe_sk'));
         $response = $stripe->checkout->sessions->create([
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'PHP',
-                    'product_data' => ['name' => 'Total Value'],
-                    'unit_amount' => (int) round($request->input('total_payment') * 100),
+                    'product_data' => ['name' => 'Reservation deposit (50%) - ' . $reservation->type_of_room],
+                    'unit_amount' => (int) round($deposit * 100),
                 ],
                 'quantity' => 1,
             ]],
             'metadata' => [
                 'reservation_id' => (string) $reservation->reservation_id,
-                'type_of_room' => $request->input('type_of_room'),
-                'total_nights' => $request->input('total_nights'),
+                'type_of_room' => $reservation->type_of_room,
+                'total_nights' => (string) $nights,
                 'user_email' => $user->email,
             ],
             'mode' => 'payment',

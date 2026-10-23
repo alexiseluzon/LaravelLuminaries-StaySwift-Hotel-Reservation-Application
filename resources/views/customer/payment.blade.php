@@ -70,7 +70,7 @@
                                                 <li class="list-group-item fw-bold">Number of Bed: <span
                                                         class="fw-normal"> {{ $item->number_of_bed }}</span> </li>
                                                 <li class="list-group-item fw-bold">Price Per Night: <span
-                                                        class="fw-normal"> ₱{{ $item->price_per_hour }}.00</span> </li>
+                                                        class="fw-normal"> ₱{{ $item->price }}.00</span> </li>
                                                 <li class="list-group-item fw-bold">Details: <span class="fw-normal">
                                                         {{ $item->details }}</span> </li>
                                                 <li class="list-group-item fw-bold">Check In: <span
@@ -84,7 +84,7 @@
                                                         {{ ceil(\Carbon\Carbon::parse($item->start_dataTime)->diffInHours(\Carbon\Carbon::parse($item->end_dateTime)) / 24) }}
                                                         Night(s)</span></li>
                                                 <li class="list-group-item fw-bold">Total Payment: <span
-                                                        class="fw-normal">₱{{ $item->price_per_hour * ceil(\Carbon\Carbon::parse($item->start_dataTime)->diffInHours(\Carbon\Carbon::parse($item->end_dateTime)) / 24) }}.00</span>
+                                                        class="fw-normal">₱{{ $item->price * ceil(\Carbon\Carbon::parse($item->start_dataTime)->diffInHours(\Carbon\Carbon::parse($item->end_dateTime)) / 24) }}.00</span>
                                                 </li>
                                                 <p class="card-text pt-3 ms-3 fw-bold">Notes: To proceed with securing
                                                     this reservation, you are required to make the necessary payment.
@@ -96,7 +96,7 @@
                                             <button data-bs-toggle="modal" data-bs-target="#updateUnpaidReservationModal" type='button' class='btn btn-sm btn-secondary px-3 py-2 rounded-0 mt-2 text-white'>Update Booking</button>
                                             <a href="{{ route('stripePayment', [
                                                 'total_payment' =>
-                                                    $item->price_per_hour *
+                                                    $item->price *
                                                     ceil(
                                                         \Carbon\Carbon::parse($item->start_dataTime)->diffInHours(\Carbon\Carbon::parse($item->end_dateTime)) / 24,
                                                     ),
