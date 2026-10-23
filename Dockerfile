@@ -38,4 +38,6 @@ RUN chmod +x /start.sh
 
 EXPOSE 10000
 
+RUN printf "upload_max_filesize=10M\npost_max_size=12M\n" > /usr/local/etc/php/conf.d/uploads.ini
+
 CMD ["/start.sh"]

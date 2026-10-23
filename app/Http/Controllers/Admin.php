@@ -98,6 +98,11 @@ class Admin extends Controller
 
             // ADD ROOM FUNCTION
             public function addRoom(Request $request){
+
+                $request->validate([
+                    'roomPhoto' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+                ]);
+
                 $data = roomModel::where([['room_number', '=', $request->roomNumber]])->get();
                 if(!$data->isNotEmpty()){
                     $uploaded = Cloudinary::upload($request->file('roomPhoto')->getRealPath(), ['folder' 
