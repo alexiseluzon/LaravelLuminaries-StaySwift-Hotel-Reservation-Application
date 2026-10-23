@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\Customer;
 use App\Http\Controllers\Stripe;
 
+Route::post('/stripe/webhook', [Stripe::class, 'webhook'])->middleware('throttle:60,1')->name('stripe.webhook');
+
 // LANDING PAGE
 Route::get('/', [Home::class, 'harborView'])->name('harborView');
 Route::get('/rooms', [Customer::class, 'getRooms']);

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="{{ URL('/img/logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ URL('/img/StaySwift Logo no bg.png') }}" type="image/x-icon">
     <title>StaySwift</title>
     @include('cdn')
     {{-- CSS --}}
@@ -31,10 +31,10 @@
                     <div class="container2">
                         <div class="nav-header">
                             <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
-                            <h1 id="fh5co-logo"><a href="/harborView">Harbor View</a></h1>
+                            <h1 id="fh5co-logo"><a href="/">StaySwift</a></h1>
                             <nav id="fh5co-menu-wrap" role="navigation">
                                 <ul class="sf-menu" id="fh5co-primary-menu">
-                                    <li><a class="active" href="/harborView">Home</a></li>
+                                    <li><a class="active" href="/">Home</a></li>
                                     <li><a href="#">Services</a></li>
                                     <li><a href="#">Blog</a></li>
                                     <li><a href="#">Testimonials</a></li>
@@ -60,13 +60,13 @@
 
                                 <p style="color: #ffffff">Welcome to our Hotel Appointment System Notes And Remarks. This
                                     document outlines how
-                                    we, Harbor View Beach Resort, collect, use, disclose,
+                                    we, StaySwift, collect, use, disclose,
                                     and protect your personal information. By using our services and providing your
                                     information, you consent to the practices described in
                                     this Notes And Remarks.</p>
 
                                 <h2 style="color: #ffffff">Compliance with Data Privacy Laws:</h2>
-                                <p style="color: #ffffff">Harbor View Beach Resort is committed to complying with
+                                <p style="color: #ffffff">StaySwift is committed to complying with
                                     Republic Act No. 10173, also
                                     known as the "Data Privacy Act of 2012," and adhering to international data privacy
                                     standards.
@@ -80,7 +80,7 @@
                                     <br>
                                     <br>
 
-                                    The Harbor View Beach Resort places a strong emphasis on seclusion. We are dedicated
+                                    The StaySwift places a strong emphasis on seclusion. We are dedicated
                                     to upholding the highest standards for the security and
                                     protection of personal data in order to gain and keep your trust. Regardless of the
                                     kind of reservations or contractual arrangement,
@@ -90,7 +90,7 @@
                                     well as comfort, luxury, and impeccable service in
                                     every visit.
 
-                                    This Notes And Remarks acts as a framework for Harbor View Beach Resort to follow and
+                                    This Notes And Remarks acts as a framework for StaySwift to follow and
                                     carries out our commitment to
                                     safeguarding your personal information as part of that endeavor.
 
@@ -117,10 +117,10 @@
 
                                 <h2 style="color: #ffffff">Contact Information:</h2>
                                 <address>
-                                    <p style="color: #ffffff">Harbor View Beach Resort<br>
+                                    <p style="color: #ffffff">StaySwift<br>
                                         123 Beachwood Side, Zambales<br>
-                                        Data Protection Officer: Noel John Ervas<br>
-                                        Email: <a>harborview@gmail.com</a></p>
+                                        Data Protection Officer: Alexis E. Luzon<br>
+                                        Email: <a>alexiseluzon@gmail.com</a></p>
                                 </address>
 
                                 <h2 style="color: #ffffff">Changes to Notes And Remarks:</h2>
@@ -132,7 +132,7 @@
 
                                 <p style="color: #ffffff">Your trust is important to us, and we are dedicated to
                                     protecting your personal
-                                    information. Thank you for choosing Harbor View Beach Resort. If you have any
+                                    information. Thank you for choosing StaySwift. If you have any
                                     inquiries or
                                     need further clarification, please don't hesitate to reach out to our Data
                                     Protection Officer.</p>
@@ -150,9 +150,9 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="copyright">
-                                <p><small>&copy; 2023 Harbor View Beach Resort <br> All Rights Reserved. <br>
-                                        Designed by <a href="#" target="_blank">Vince & Reginald</a> <br> Block:
-                                        <a href="http://unsplash.com/" target="_blank">BSIT 3</a></small></p>
+                                <p><small>&copy; 2026 StaySwift <br> All Rights Reserved. <br>
+                                        Designed by <a href="#" target="_blank">Alexis E. Luzon</a> <br> Portfolio:
+                                        <a href="https://alexiseluzon.vercel.app" target="_blank">View Here</a></small></p>
                             </div>
                         </div>
                         <div class="col-md-6">
