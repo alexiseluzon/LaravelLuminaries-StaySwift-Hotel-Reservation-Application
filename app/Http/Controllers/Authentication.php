@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\Models\userModel;
 use App\Models\userVerify;
-use App\Mail\userVerifyMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -152,6 +151,8 @@ class Authentication extends Controller
                 ->update(['email_verified' => 1]);
             return redirect()->to('login')->with('message', 'Email verified successfully!');
         }
+
+        return response()->view('verifyInvalid', [], 404);
     }
     // EMAIL VERIFICATION
 

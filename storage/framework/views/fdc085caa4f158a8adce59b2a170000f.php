@@ -252,6 +252,13 @@
         <span class="brand-sub">Sign in to your account</span>
         <div class="gold-line"></div>
 
+        <?php if(config('app.demo_login')): ?>
+            <div class="demo-divider"><span>Demo</span></div>
+            <button type="button" class="demo-login-btn" data-role="user" title="Sign in as a demo guest (no password needed)">
+                <i class="bi bi-person"></i> Demo as User
+            </button>
+        <?php endif; ?>
+
         <form name="userLoginForm" id="userLoginForm">
             <?php if(session('message')): ?>
                 <div class="alert-success"><?php echo e(session('message')); ?></div>
