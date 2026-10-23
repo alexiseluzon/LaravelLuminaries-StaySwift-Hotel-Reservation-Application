@@ -6,6 +6,29 @@ on:
 jobs:
   phpunit:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testing
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: testing
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      MAIL_MAILER: array
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -17,4 +40,5 @@ jobs:
       - run: mkdir -p bootstrap/cache storage/framework/{cache,sessions,views} storage/logs && chmod -R 775 bootstrap/cache storage
       - run: composer install --no-interaction --prefer-dist --no-progress
       - run: php artisan key:generate
+      - run: php artisan migrate --force
       - run: php artisan test
