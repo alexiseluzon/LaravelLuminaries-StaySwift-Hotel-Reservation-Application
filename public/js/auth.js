@@ -124,9 +124,9 @@ function resendVerification(email) {
             Swal.fire('CHECK YOUR INBOX', 'If this account still needs verification, a new link has been sent. Check your spam folder too.', 'success');
         })
         .fail(function (xhr) {
-            var msg = xhr.status === 429
-                ? 'Please wait a minute before requesting another email.'
-                : 'We could not send the email right now. Please try again later.';
+            var msg = 'We could not send the email right now. Please try again later.';
+            if (xhr.status === 429) msg = 'Please wait a minute before requesting another email.';
+            if (xhr.status === 419) msg = 'Your session expired. Please refresh the page and try again.';
             Swal.fire('NOT SENT', msg, 'error');
         });
 }

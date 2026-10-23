@@ -44,10 +44,11 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
-            'brevo' => [
-                'transport' => 'brevo',
-                'key' => env('BREVO_API_KEY'),
-            ],
+        ],
+
+        'brevo' => [
+            'transport' => 'brevo',
+            'key' => env('BREVO_API_KEY'),
         ],
 
         'ses' => [
