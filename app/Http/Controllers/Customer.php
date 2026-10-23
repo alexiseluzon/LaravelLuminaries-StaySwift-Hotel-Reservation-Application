@@ -176,6 +176,8 @@ class Customer extends Controller
         // 'roomId' => $request->roomId,
         // 'all' => $request->all()
         // ]);
+        \Illuminate\Support\Facades\Cache::add('expire-unpaid', 1, 60)
+        && \Illuminate\Support\Facades\Artisan::call('reservations:cancel-expired-unpaid');
         $checkInDateTime = Carbon::parse($request->checkInDateTime . ' 14:00:00');
         $formattedCheckIn = $checkInDateTime->format('Y-m-d H:i:s');
         $checkOutDateTime = Carbon::parse($request->checkOutDateTime . ' 12:00:00');
@@ -427,6 +429,8 @@ class Customer extends Controller
     // UNPAID RESERVATION PER USER
     public function getUnpaidBooking(Request $request)
     {
+        \Illuminate\Support\Facades\Cache::add('expire-unpaid', 1, 60)
+        && \Illuminate\Support\Facades\Artisan::call('reservations:cancel-expired-unpaid');
         $data = reservationModel::join('roomTable', 'reservationTable.room_id', '=', 'roomTable.room_id')
             ->where([
                 ['reservationTable.status', '=', 'Unpaid'],
@@ -631,7 +635,7 @@ class Customer extends Controller
     {
         $request->validate([
             'reservationId' => 'required|integer',
-            'reason' => 'required|string|max:255',
+            'reason' => 'string|max:255',
         ]);
     
         $reservation = reservationModel::where([

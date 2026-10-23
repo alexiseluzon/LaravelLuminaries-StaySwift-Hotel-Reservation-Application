@@ -208,6 +208,8 @@ class Admin extends Controller
 
             // ALL UNPAID RESERVATION
             public function getAllUnpaidReservation(Request $request){
+                \Illuminate\Support\Facades\Cache::add('expire-unpaid', 1, 60)
+                && \Illuminate\Support\Facades\Artisan::call('reservations:cancel-expired-unpaid');
                 $data = reservationModel::join('roomTable', 'reservationTable.room_id', '=', 'roomTable.room_id')
                 ->join('userTable', 'reservationTable.user_id', '=', 'userTable.user_id')
                 ->where([['reservationTable.status', '=', 'Unpaid']])

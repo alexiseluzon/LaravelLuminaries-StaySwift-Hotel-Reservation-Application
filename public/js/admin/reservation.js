@@ -18,6 +18,7 @@ $(document).ready(function(){
     completedReservationTable();
     backOutReservationTable();
     cancelledReservationTable();
+    unpaidReservationTable();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -74,6 +75,43 @@ function pendingReservationTable(){
             this.data(i++);
         });
     }).draw();
+}
+
+function unpaidReservationTable() {
+    if ($('#unpaidReservationTable').length === 0) return;
+    var table = $('#unpaidReservationTable').DataTable({
+        "language": { "emptyTable": "No Reservation Found" },
+        "lengthChange": true,
+        "paging": true,
+        "info": true,
+        "responsive": true,
+        "ordering": false,
+        "dom": '<"top"l>rt<"bottom"ip>',
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        "iDisplayLength": 5,
+        "ajax": { "url": "/getAllUnpaidReservation", "dataSrc": "" },
+        "columns": [
+            { "data": null, "render": function (data) { return data.reservation_id; } },
+            { "data": null, "render": function (data) {
+                return data.extention
+                    ? `${data.firstname} ${data.lastname} ${data.extention}`
+                    : `${data.firstname} ${data.lastname}`;
+            }},
+            { "data": null, "render": function (data) {
+                return `${data.floor} - Room ${data.room_number}`;
+            }},
+            { "data": "start_dataTime", "render": function (data) {
+                return moment(data).format('MMM DD, YYYY | hh:mm A');
+            }},
+            { "data": "end_dateTime", "render": function (data) {
+                return moment(data).format('MMM DD, YYYY | hh:mm A');
+            }},
+            { "data": "totalPayment", "render": function (data) {
+                return '₱' + Number(data).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+            }}
+        ]
+    });
+    wireSearch(table);
 }
 
 // FETCH ALL ACCEPT RESERVATION FOR TABLE
