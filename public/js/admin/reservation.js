@@ -111,7 +111,10 @@ function unpaidReservationTable() {
             }},
             { "data": "totalPayment", "render": function (data) {
                 return '₱' + Number(data).toLocaleString('en-PH', { minimumFractionDigits: 2 });
-            }}
+            }},
+            { "data": "balance", "render": function (data) {
+                return '₱' + Number(data).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+            }},
         ]
     });
     wireSearch(table);

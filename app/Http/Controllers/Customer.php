@@ -290,6 +290,8 @@ class Customer extends Controller
                 $totalNights = ceil($carbonStart->diffInHours($carbonEnd) / 24);
 
                 $totalPayment = $totalNights * $item->price;
+                $deposit = number_format($totalPayment / 2, 2);
+                $balance = number_format($totalPayment / 2, 2);
                 echo "
                     <div class='col-lg-6 col-sm-12 g-0 gx-lg-5'>
                         <div class='mb-3' style='width:100%; background:#221e18; border:1px solid #3a3228;'>
@@ -316,7 +318,9 @@ class Customer extends Controller
                                     <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Check In<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$checkInDateTime<br>02:00 PM</div></div>
                                     <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Check Out<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$checkOutDateTime<br>12:00 PM</div></div>
                                     <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Nights<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>$totalNights Night(s)</div></div>
-                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Payment<div style='color:#c9a96e; font-size:13px; margin-top:3px; text-transform:none;'>₱$totalPayment.00</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Total Payment<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>₱" . number_format($totalPayment, 2) . "</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Deposit Paid (50%)<div style='color:#d4c4a8; font-size:12px; margin-top:3px; text-transform:none;'>₱$deposit</div></div>
+                                    <div style='font-size:10px; color:#7a6a56; letter-spacing:0.08em; text-transform:uppercase;'>Balance at Check-in<div style='color:#c9a96e; font-size:13px; margin-top:3px; text-transform:none;'>₱$balance</div></div>
                                 </div>
                 
                                 <div style='border-top:1px solid #3a3228; margin:14px 0;'></div>

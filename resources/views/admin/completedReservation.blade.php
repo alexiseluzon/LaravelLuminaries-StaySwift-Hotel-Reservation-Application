@@ -46,6 +46,7 @@
                         <option value="2">Room</option>
                         <option value="3">Check In</option>
                         <option value="4">Check Out</option>
+                        <option value="5">Total Payment</option><!-- remove this on non-pending pages -->
                     </select>
                     <input type="text" id="searchInput" class="form-control form-control-sm w-auto" placeholder="Search...">
                 </div>
@@ -82,6 +83,7 @@
                                         <th class="text-center">Room</th>
                                         <th class="text-center">Check In</th>
                                         <th class="text-center">Check Out</th>
+                                        <th class="text-center">Total Payment</th>
                                     </tr>
                                 </thead>
                             </table>
