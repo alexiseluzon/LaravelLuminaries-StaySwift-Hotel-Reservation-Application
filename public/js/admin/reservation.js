@@ -452,6 +452,12 @@ function cancelledReservationTable(){
             { "data": "start_dataTime", "render": function(data){ return moment(data).format('MMM DD, YYYY | hh:mm A'); }},
             { "data": "end_dateTime", "render": function(data){ return moment(data).format('MMM DD, YYYY | hh:mm A'); }},
             { "data": "totalPayment", "render": function(data){ return '₱' + Number(data).toLocaleString('en-PH', { minimumFractionDigits: 2 }); }},
+            { "data": "refund_status", "render": function (data, type, row) {
+                var amt = '₱' + Number(row.refund_amount || 0).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+                if (data === 'refunded')       return '<span class="badge bg-success">Refunded ' + amt + '</span>';
+                if (data === 'non_refundable') return '<span class="badge bg-secondary">Non-refundable</span>';
+                return '<span class="badge bg-light text-dark border">No payment</span>';
+            }},
             { "mData": function (data) {
                 return '<button type="button" data-bs-toggle="tooltip" onclick="viewReasonOfCancelled('+data.reservation_id+')" class="btn rounded-0 btn-outline-secondary btn-sm py-2 px-3"><i class="bi bi-eye"></i></button>';
             }},

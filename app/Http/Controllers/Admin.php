@@ -183,11 +183,12 @@ class Admin extends Controller
             public function getAllCancelledReservation(Request $request){
                 $data = reservationModel::join('roomTable', 'reservationTable.room_id', '=', 'roomTable.room_id')
                 ->join('userTable', 'reservationTable.user_id', '=', 'userTable.user_id')
-                ->where([['reservationTable.status', '=', 'Cancel']])
+                ->whereIn('reservationTable.status', ['Cancel', 'Cancelled'])
                 ->orderBy('reservationTable.is_noted', 'ASC')->orderBy('reservationTable.start_dataTime', 'DESC')
                 ->select(
                     'reservationTable.reservation_id','reservationTable.is_noted', 'userTable.user_id', 'userTable.lastname', 'userTable.firstname', 'userTable.middlename',
                     'userTable.extention', 'roomTable.room_number', 'roomTable.floor', 'roomTable.price', 'reservationTable.start_dataTime', 'reservationTable.end_dateTime',
+                    'reservationTable.refund_amount', 'reservationTable.refund_status', 'reservationTable.cancelled_at',
                 )->get();
 
                 foreach ($data as $reservation) {
@@ -434,7 +435,7 @@ class Admin extends Controller
 
             // CHECK CANCELLED RESERVATION
             public function checkCancelledReservation(Request $request) {
-                $check = reservationModel::where([['status', '=', 'Cancel'],['is_noted', '=', 0]])->get();
+                $check = reservationModel::whereIn('status', ['Cancel', 'Cancelled'])->where('is_noted', 0)->get();
                 return response()->json($check->count() > 0 ? 1 : 0);
             }
 

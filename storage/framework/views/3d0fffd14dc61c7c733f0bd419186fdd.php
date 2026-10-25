@@ -85,6 +85,7 @@
                                         <th class="text-center">Check In</th>
                                         <th class="text-center">Check Out</th>
                                         <th class="text-center">Total Payments</th>
+                                        <th class="text-center">Refund</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
