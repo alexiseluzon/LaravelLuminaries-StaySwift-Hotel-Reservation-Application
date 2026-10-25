@@ -45,39 +45,39 @@ $(document).ready(function(){
     // }
 // SHOW DECLINED RESERVATION PER USER
 
-// FUNCTION FOR BOOKING
-    function cancelReservation(id){
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you want to CANCEL this RESERVATION?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d72323',
-            confirmButtonText: 'Yes, Cancel it'
-            }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                url: '/cancelReservation',
-                type: 'GET',
-                dataType: 'json',
-                data: {reservationID: id},
-            });
+    function cancelReservation(id) {
+        $.getJSON('/cancelPreview', { reservationId: id }).done(function (p) {
+            if (!p.allowed) { Swal.fire('Cannot cancel', p.message, 'info'); return; }
+            var needReason = p.status === 'Pending';
             Swal.fire({
-                title: 'CANCEL SUCCESSFULLY',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1000,
-            }).then((result) => {
-            if (result) {
-                showBookingPerUser();
-                // showDeclineBookingPerUser();
-            }
+                title: 'Cancel this reservation?',
+                text: p.message,
+                icon: 'warning',
+                input: 'textarea',
+                inputLabel: needReason ? 'Reason (required)' : 'Reason (optional)',
+                inputAttributes: { maxlength: 255 },
+                inputValidator: function (v) { return needReason && !v.trim() ? 'Please give a reason' : null; },
+                showCancelButton: true,
+                confirmButtonText: 'Yes, cancel it',
+                showLoaderOnConfirm: true,
+                allowOutsideClick: function () { return !Swal.isLoading(); },
+                preConfirm: function (reason) {
+                    return $.ajax({
+                        url: '/cancelReservation', type: 'POST',
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        data: { reservationId: id, reason: reason }
+                    }).catch(function (xhr) {
+                        Swal.showValidationMessage((xhr.responseJSON && xhr.responseJSON.message) || 'Cancel failed. Try again.');
+                    });
+                }
+            }).then(function (r) {
+                if (r.isConfirmed && r.value) {
+                    Swal.fire({ icon: 'success', title: 'Reservation cancelled', text: r.value.message, timer: 3000, showConfirmButton: false })
+                        .then(function () { showBookingPerUser(); });
+                }
             });
-            }
-        });
+        }).fail(function () { Swal.fire('Error', 'Please try again.', 'error'); });
     }
-// FUNCTION FOR BOOKING
 
 // BACK OUT RESERVATION
     function backOutReservation(id){

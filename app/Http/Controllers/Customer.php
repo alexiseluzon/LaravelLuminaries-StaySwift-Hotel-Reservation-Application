@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Services\ReservationRefund;
+use App\Models\Payment;
+use Illuminate\Support\Facades\Log;
 
 class Customer extends Controller
 {
@@ -624,55 +627,83 @@ class Customer extends Controller
         return response()->json($archive ? 1 : 0);
     }
 
-    // CANCEL THE ACCEPTED RESERVATION
-    // public function cancelReservation(Request $request)
-    // {
-    //     $cancelReservation = reservationModel::where([['reservation_id', '=', $request->reservationId]])->update(['status' => 'Cancelled']);
-    //     if ($cancelReservation) {
-    //         $backOutReason = reasonBackOutModel::create([
-    //             'reservation_id' => $request->reservationId,
-    //             'user_id' => auth()->guard('userModel')->user()->user_id,
-    //             'reason' => $request->reason,
-    //             'set_by_admin' => 0,
-    //         ]);
-    //         return response()->json($backOutReason ? 1 : 0);
-    //     }
-    // }
+        private function cancellable($id)
+    {
+        return reservationModel::where('reservation_id', $id)
+            ->where('user_id', auth()->guard('userModel')->user()->user_id)
+            ->whereIn('status', ['Unpaid', 'Pending'])
+            ->first();
+    }
 
-    public function cancelReservation(Request $request)
+    public function cancelPreview(Request $request, ReservationRefund $refunds)
+    {
+        $r = $this->cancellable($request->reservationId);
+        if (!$r) {
+            return response()->json(['allowed' => false, 'message' => 'This reservation can no longer be cancelled.']);
+        }
+        $plan = $refunds->plan($r);
+        return response()->json(['allowed' => $plan['allowed'], 'message' => $plan['message'], 'status' => $r->status]);
+    }
+
+    public function cancelReservation(Request $request, ReservationRefund $refunds)
     {
         $request->validate([
             'reservationId' => 'required|integer',
-            'reason' => 'string|max:255',
+            'reason' => 'nullable|string|max:255',
         ]);
-    
-        $reservation = reservationModel::where([
-            ['reservation_id', '=', $request->reservationId],
-            ['user_id', '=', auth()->guard('userModel')->user()->user_id],
-            ['status', '=', 'Unpaid'],
-        ])->first();
-    
+
+        $reservation = $this->cancellable($request->reservationId);
         if (!$reservation) {
-            return response('0', 200);
+            return response()->json(['message' => 'This reservation can no longer be cancelled.'], 422);
         }
-    
-        DB::transaction(function () use ($reservation, $request) {
+
+        $reason = trim((string) $request->reason);
+        if ($reservation->status === 'Pending' && $reason === '') {
+            return response()->json(['message' => 'A reason is required.'], 422);
+        }
+
+        $plan = $refunds->plan($reservation);
+        if (!$plan['allowed']) {
+            return response()->json(['message' => $plan['message']], 422);
+        }
+
+        $refundId = null;
+        if ($plan['refund'] > 0) {
+            try {
+                $refundId = $refunds->refund($plan['payment'], $plan['refund'], $reservation->reservation_id);
+            } catch (\Throwable $e) {
+                Log::error('Refund failed for reservation ' . $reservation->reservation_id . ': ' . $e->getMessage());
+                return response()->json(['message' => 'Refund failed. Your reservation was NOT cancelled. Please try again.'], 500);
+            }
+        }
+
+        $refundStatus = $plan['refund'] > 0 ? 'refunded' : ($reservation->status === 'Pending' ? 'non_refundable' : 'none');
+        $now = Carbon::now('Asia/Manila');
+
+        DB::transaction(function () use ($reservation, $reason, $plan, $refundId, $refundStatus, $now) {
             $reservation->update([
                 'status' => 'Cancelled',
-                'cancelled_at' => Carbon::now('Asia/Manila'),
+                'cancelled_at' => $now,
+                'refund_amount' => $plan['refund'],
+                'refund_status' => $refundStatus,
             ]);
-    
+
             DB::table('reasonBackOutTable')->insert([
                 'reservation_id' => $reservation->reservation_id,
                 'user_id' => $reservation->user_id,
-                'reason' => $request->reason,
+                'reason' => $reason !== '' ? $reason : 'No reason given',
                 'set_by_admin' => 0,
-                'created_at' => Carbon::now('Asia/Manila'),
-                'updated_at' => Carbon::now('Asia/Manila'),
+                'created_at' => $now,
+                'updated_at' => $now,
             ]);
+
+            if ($refundId && $plan['payment']) {
+                Payment::where('id', $plan['payment']->id)
+                    ->update(['refund_id' => $refundId, 'refunded_amount' => $plan['refund']]);
+            }
         });
-    
-        return response('1', 200);
+
+        return response()->json(['message' => $plan['message']]);
     }
 
     // FETCH ACCOUNT PER USER

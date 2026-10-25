@@ -145,6 +145,8 @@ class Stripe extends Controller
                     $payment->customer_email = $session->metadata->user_email ?? $session->customer_details->email ?? '';
                     $payment->payment_status = $session->payment_status;
                     $payment->payment_method = 'Stripe';
+                    $payment->reservation_id = $reservationId;
+                    $payment->payment_intent = $session->payment_intent;
                     $payment->save();
                 }
 

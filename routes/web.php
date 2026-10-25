@@ -121,7 +121,7 @@ Route::middleware(['auth:userModel', 'is_customer'])->group(function () {
     Route::get('/getUnpaidBooking', [Customer::class, 'getUnpaidBooking'])->name('getUnpaidBooking');
     Route::get('/getCompleteBookPerUser', [Customer::class, 'getCompleteBookPerUser'])->name('getCompleteBookPerUser');
     Route::get('/archivedCancelledReservation', [Customer::class, 'archivedCancelledReservation'])->name('archivedCancelledReservation');
-    Route::get('/cancelReservation', [Customer::class, 'cancelReservation'])->name('cancelReservation');
+    Route::get('/cancelPreview', [Customer::class, 'cancelPreview'])->name('cancelPreview');
     Route::get('/deleteReservation', [Customer::class, 'deleteReservation'])->name('deleteReservation');
     Route::get('/getUserInfo', [Customer::class, 'getUserInfo'])->name('getUserInfoCustomer');
     Route::post('/updateUserAccount', [Customer::class, 'updateUserAccount'])->name('updateUserAccount');
