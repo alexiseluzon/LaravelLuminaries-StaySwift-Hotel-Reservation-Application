@@ -182,11 +182,14 @@
                                 data: { reason, reservationId: id },
                                 success: function (response) {
                                     if (response.success) {
-                                        Swal.fire({ title: 'Cancelled Successfully', icon: 'success', timer: 1000, showConfirmButton: false })
+                                        Swal.fire({ title: 'Cancelled Successfully', text: response.message, icon: 'success', timer: 4000, showConfirmButton: false })
                                             .then(() => showBookingPerUser());
                                     } else {
                                         Swal.fire({ icon: 'error', title: 'Cancellation Failed', text: response.message ?? 'Something went wrong.' });
                                     }
+                                },
+                                error: function (xhr) {
+                                    Swal.fire({ icon: 'error', title: 'Cancellation Failed', text: (xhr.responseJSON && xhr.responseJSON.message) || 'Something went wrong.' });
                                 }
                             });
                         });

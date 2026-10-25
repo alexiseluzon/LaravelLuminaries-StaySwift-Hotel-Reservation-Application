@@ -703,7 +703,7 @@ class Customer extends Controller
             }
         });
 
-        return response()->json(['message' => $plan['message']]);
+        return response()->json(['success' => true, 'message' => $plan['message']]);
     }
 
     // FETCH ACCOUNT PER USER
