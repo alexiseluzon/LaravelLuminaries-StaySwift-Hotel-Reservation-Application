@@ -251,7 +251,7 @@ class Customer extends Controller
         }
     }
 
-    public function payment($book_code)
+    public function payment(string $book_code)
     {
         $data = reservationModel::join('roomTable', 'reservationTable.room_id', '=', 'roomTable.room_id')
             ->where([['book_code', '=', $book_code]])->select(

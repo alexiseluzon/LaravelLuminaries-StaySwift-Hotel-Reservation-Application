@@ -124,7 +124,7 @@ class Stripe extends Controller
     }
 
     // Idempotent: safe to call from both success() and webhook(), any number of times
-    private function fulfill($session): bool
+    private function fulfill(\Stripe\Checkout\Session $session): bool
     {
         if (($session->payment_status ?? null) !== 'paid') {
             return false;

@@ -94,19 +94,9 @@
                                         <div class="card-footer bg-white text-end">
                                             <a onclick="deleteReservation({{$item->reservation_id}})" type='button' class='btn btn-sm btn-danger px-3 py-2 rounded-0 mt-2 text-white'>Cancel Booking</a>
                                             <button data-bs-toggle="modal" data-bs-target="#updateUnpaidReservationModal" type='button' class='btn btn-sm btn-secondary px-3 py-2 rounded-0 mt-2 text-white'>Update Booking</button>
-                                            <a href="{{ route('stripePayment', [
-                                                'total_payment' =>
-                                                    $item->price *
-                                                    ceil(
-                                                        \Carbon\Carbon::parse($item->start_dataTime)->diffInHours(\Carbon\Carbon::parse($item->end_dateTime)) / 24,
-                                                    ),
-                                                'type_of_room' => $item->type_of_room,
-                                                'total_nights' => ceil(
-                                                    \Carbon\Carbon::parse($item->start_dataTime)->diffInHours(\Carbon\Carbon::parse($item->end_dateTime)) / 24,
-                                                ),
-                                                'reservation_id' => $item->reservation_id,
-                                            ]) }}"
-                                                class="btn btn-sm btn-primary px-3 py-2 rounded-0 mt-2 text-white">Continue to Pay</a>
+                                            <a href="{{ route('stripePayment', ['reservation_id' => $item->reservation_id]) }}"
+                                                class="btn btn-sm btn-primary px-3 py-2 rounded-0 mt-2 text-white">Continue to Pay
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
