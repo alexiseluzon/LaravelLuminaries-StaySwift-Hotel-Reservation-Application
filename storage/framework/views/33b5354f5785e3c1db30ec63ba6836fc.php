@@ -145,51 +145,63 @@
                     })
                 }
                 function cancelReservation(id) {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Do you want to cancel this booking?",
-                        icon: 'question',
-                        input: "checkbox",
-                        inputValue: 1,
-                        inputPlaceholder: `I read the <a href='notesRemarks'>notes and remarks</a>.`,
-                        confirmButtonText: `Continue&nbsp;<i class="fa fa-arrow-right"></i>`,
-                        inputValidator: (result) => !result && "You need to read the notes and remarks before cancelling."
-                    }).then(({ value: accepted }) => {
-                        if (!accepted) return;
-
+                    $.getJSON('/cancelPreview', { reservationId: id }).done(function (p) {
+                        if (!p.allowed) {
+                            Swal.fire({ icon: 'info', title: 'Cannot Cancel', text: p.message });
+                            return;
+                        }
+                        var needReason = p.status === 'Pending';
+                
                         Swal.fire({
-                            input: 'textarea',
-                            title: 'Reason for Cancelling?',
-                            text: "This cannot be reverted once submitted.",
-                            inputPlaceholder: 'Type your reason here...',
+                            title: 'Cancel this booking?',
+                            text: p.message,
+                            icon: 'question',
+                            input: 'checkbox',
+                            inputValue: 1,
+                            inputPlaceholder: `I read the <a href='notesRemarks'>notes and remarks</a>.`,
                             showCancelButton: true,
-                            didOpen: () => {
-                                const confirmBtn = Swal.getConfirmButton();
-                                const textarea = Swal.getInput();
-                                confirmBtn.disabled = true;
-                                textarea.addEventListener('input', () => {
-                                    confirmBtn.disabled = !textarea.value.trim();
-                                });
-                            }
-                        }).then(({ value: reason }) => {
-                            if (!reason || !reason.trim()) {
-                                Swal.fire({ icon: 'warning', title: 'Reason Required', text: 'Please provide a reason for cancelling.' });
-                                return;
-                            }
-                            $.ajax({
-                                url: '/cancelReservation',
-                                type: 'POST',
-                                data: { reason, reservationId: id },
-                                success: function (response) {
-                                    if (response.success) {
-                                        Swal.fire({ title: 'Cancelled Successfully', icon: 'success', timer: 1000, showConfirmButton: false })
-                                            .then(() => showBookingPerUser());
-                                    } else {
-                                        Swal.fire({ icon: 'error', title: 'Cancellation Failed', text: response.message ?? 'Something went wrong.' });
-                                    }
+                            confirmButtonText: `Continue&nbsp;<i class="fa fa-arrow-right"></i>`,
+                            inputValidator: (result) => !result && "You need to read the notes and remarks before cancelling."
+                        }).then(({ value: accepted }) => {
+                            if (!accepted) return;
+                
+                            Swal.fire({
+                                input: 'textarea',
+                                title: needReason ? 'Reason for Cancelling?' : 'Reason for Cancelling (optional)',
+                                text: "This cannot be reverted once submitted.",
+                                inputPlaceholder: 'Type your reason here...',
+                                inputAttributes: { maxlength: 255 },
+                                showCancelButton: true,
+                                confirmButtonText: 'Cancel Booking',
+                                showLoaderOnConfirm: true,
+                                allowOutsideClick: () => !Swal.isLoading(),
+                                didOpen: () => {
+                                    if (!needReason) return;
+                                    const confirmBtn = Swal.getConfirmButton();
+                                    const textarea = Swal.getInput();
+                                    confirmBtn.disabled = true;
+                                    textarea.addEventListener('input', () => {
+                                        confirmBtn.disabled = !textarea.value.trim();
+                                    });
+                                },
+                                preConfirm: (reason) => {
+                                    return $.ajax({
+                                        url: '/cancelReservation',
+                                        type: 'POST',
+                                        data: { reason: reason, reservationId: id }
+                                    }).catch(function (xhr) {
+                                        Swal.showValidationMessage((xhr.responseJSON && xhr.responseJSON.message) || 'Cancellation failed. Please try again.');
+                                    });
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed && result.value && result.value.success) {
+                                    Swal.fire({ title: 'Cancelled Successfully', text: result.value.message, icon: 'success', timer: 4000, showConfirmButton: false })
+                                        .then(() => showBookingPerUser());
                                 }
                             });
                         });
+                    }).fail(function () {
+                        Swal.fire({ icon: 'error', title: 'Error', text: 'Please try again.' });
                     });
                 }
         </script>
