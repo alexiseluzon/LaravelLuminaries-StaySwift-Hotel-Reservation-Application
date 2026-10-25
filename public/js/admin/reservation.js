@@ -59,6 +59,9 @@ function pendingReservationTable(){
             { "data": "totalPayment", "render": function (data) {
                 return '₱' + Number(data).toLocaleString('en-PH', { minimumFractionDigits: 2 });
             }},
+            { "data": "balance", "render": function (data) {
+                return '₱' + Number(data).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+            }},
             { "data": null, "render": function (data) {
                 return '<button type="button" class="btn-res btn-res--pay btn-res--icon" onclick="acceptReservation(' + data.reservation_id + ')"><i class="bi bi-check2-square"></i></button> ' +
                        '<button type="button" class="btn-res btn-res--cancel btn-res--icon" onclick="declineReservation(' + data.reservation_id + ', ' + data.user_id + ')"><i class="bi bi-x-square"></i></button>';
