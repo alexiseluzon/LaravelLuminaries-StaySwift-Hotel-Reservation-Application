@@ -1,4 +1,6 @@
-FROM php:8.2-fpm-alpine AS base
+FROM php:8.2.35-fpm-alpine AS base
+
+RUN apk upgrade --no-cache ca-certificates
 
 RUN apk add --no-cache \
     nginx \

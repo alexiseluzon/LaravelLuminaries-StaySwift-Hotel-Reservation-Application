@@ -8,4 +8,6 @@ php artisan view:cache
 
 php artisan migrate --force
 
+php -v
+
 exec supervisord -c /etc/supervisor/conf.d/supervisord.conf
