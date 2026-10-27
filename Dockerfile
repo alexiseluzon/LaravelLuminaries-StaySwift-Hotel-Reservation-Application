@@ -1,4 +1,4 @@
-FROM php:8.2.35-fpm-alpine AS base
+FROM php:8.3.36-fpm-alpine AS base
 
 RUN apk upgrade --no-cache ca-certificates
 
